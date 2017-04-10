@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dhis-integration")
 public class DHISIntegrator {
 	
 	@RequestMapping(path = "/", method = RequestMethod.GET)

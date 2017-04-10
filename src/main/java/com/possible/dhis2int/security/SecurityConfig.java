@@ -9,7 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @ComponentScan("com.possible.dhis2int")
-@EnableWebMvc
 public class SecurityConfig extends WebMvcConfigurerAdapter {
 
     private final AuthenticationFilter authenticationFilter;
