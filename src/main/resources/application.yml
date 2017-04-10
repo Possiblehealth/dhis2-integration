@@ -1,0 +1,3 @@
+openmrs.root.url: http://localhost:8050/openmrs/ws/rest/v1
+bahmni.login.url: /bahmni/home/#/login?showLoginMessage
+server.port: 8100
