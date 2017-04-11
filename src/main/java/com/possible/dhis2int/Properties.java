@@ -12,4 +12,6 @@ public class Properties {
 	@Value("${openmrs.root.url}")
 	public String openmrsRootUrl;
 	
+	@Value("${reports.json}")
+	public String reportsJson;
 }

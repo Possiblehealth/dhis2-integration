@@ -7,7 +7,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 /**
- * Copied from https://github.com/keyrunHORNET/date_picker_converter/find/master
+ * Copied from https://github.com/keyrunHORNET/date_picker_converter
+ * /blob/master/library/src/main/java/com/hornet/dateconverter/DateConverter.java
  */
 public class DateConverter {
 	
@@ -15,7 +16,7 @@ public class DateConverter {
 	
 	public DateConverter() {
 	    /*
-        The 0s at index 0 are dummy values so as to make the int array of
+	    The 0s at index 0 are dummy values so as to make the int array of
         days in months seems more intuitive that index 1 refers to first
         month "Baisakh", index 2 refers to second month "Jesth" and so on.
          */
@@ -54,11 +55,23 @@ public class DateConverter {
 		return (yy >= 2009 && yy <= 2033) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 31);
 	}
 	
-	public NepalDate getNepalDate(DateTime date){
+	/*check if nepali date is in the range of conversion*/
+	public static boolean isNepDateInRange(int yy, int mm, int dd) {
+		return (yy >= 2065 && yy <= 2090) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 32);
+	}
+	
+	/*calculate whether english year is leap year or not*/
+	public static boolean isLeapYear(int year) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, year);
+		return cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
+	}
+	
+	public NepalDate getNepalDate(DateTime date) {
 		return getNepaliDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
 	}
 	
-	public DateTime getStartDateOfMonth(DateTime date){
+	public DateTime getStartDateOfMonth(DateTime date) {
 		NepalDate nepalDate = getNepalDate(date);
 		int[] months = daysInMonthMap.get(nepalDate.getYear());
 		int days = months[nepalDate.getMonth()];
@@ -74,7 +87,7 @@ public class DateConverter {
 			int startingEngMonth = 1;
 			int startingEngDay = 1;
 			
-			int startingDayOfWeek = Calendar.SATURDAY; // 2009/1/1 is Saturday
+			int startingDayOfWeek = Calendar.THURSDAY;
 			
 			int startingNepYear = 2065;
 			int startingNepMonth = 9;
@@ -125,6 +138,89 @@ public class DateConverter {
 			tempNepalDate = new NepalDate(nepYY, nepMM, nepDD);
 			
 			return tempNepalDate;
+		} else {
+			throw new IllegalArgumentException("Out of Range: Date is out of range to Convert");
+		}
+	}
+	
+	public ReportDateRange getDateRange(Integer year, Integer month) {
+		int lastDay = daysInMonthMap.get(year)[month];
+		DateTime startDate = getEnglishDate(year, month, 1);
+		DateTime endDate = getEnglishDate(year, month, lastDay);
+		return new ReportDateRange(startDate, endDate);
+	}
+	
+	/*convert nepali date into english date*/
+	public DateTime getEnglishDate(int nepYY, int nepMM, int nepDD) {
+		
+		if (isNepDateInRange(nepYY, nepMM, nepDD)) {
+			
+			int startingEngYear = 2008;
+			int startingEngMonth = 4;
+			int startingEngDay = 13;
+			
+			int startingDayOfWeek = Calendar.SUNDAY; // 2000/1/1 is Wednesday
+			
+			int startingNepYear = 2065;
+			int startingNepMonth = 1;
+			int startingNepDay = 1;
+			
+			int engYY, engMM, engDD;
+			long totalNepDaysCount = 0;
+			
+			//count total no of days in nepali year from our starting range
+			for (int i = startingNepYear; i < nepYY; i++) {
+				for (int j = 1; j <= 12; j++) {
+					totalNepDaysCount = totalNepDaysCount + daysInMonthMap.get(i)[j];
+				}
+			}
+			
+			//Log.d("KG: BS->AD :toYDayCount", "" + totalNepDaysCount);
+			
+			//count total days in terms of month
+			for (int j = startingNepMonth; j < nepMM; j++) {
+				totalNepDaysCount = totalNepDaysCount + daysInMonthMap.get(nepYY)[j];
+			}
+			//Log.d("KG: BS->AD :toMDayCount", "" + totalNepDaysCount);
+			
+			//count total days in terms of date
+			totalNepDaysCount += nepDD - startingNepDay;
+			//Log.d("KG: BS->AD :toDDayCount", "" + totalNepDaysCount);
+			
+			int[] daysInMonth = new int[] { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+			int[] daysInMonthOfLeapYear = new int[] { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+			engYY = startingEngYear;
+			engMM = startingEngMonth;
+			engDD = startingEngDay;
+			int endDayOfMonth = 0;
+			int dayOfWeek = startingDayOfWeek;
+			while (totalNepDaysCount != 0) {
+				if (isLeapYear(engYY)) {
+					endDayOfMonth = daysInMonthOfLeapYear[engMM];
+				} else {
+					endDayOfMonth = daysInMonth[engMM];
+				}
+				engDD++;
+				dayOfWeek++;
+				
+				//Log.d("KG: BS->AD :engDD",""+engDD);
+				if (engDD > endDayOfMonth) {
+					engMM++;
+					engDD = 1;
+					//Log.d("KG: BS->AD :engMM", "" + engMM);
+					if (engMM > 12) {
+						engYY++;
+						engMM = 1;
+					}
+				}
+				//Log.d("KG: BS->AD :engYY",""+engYY);
+				if (dayOfWeek > 7) {
+					dayOfWeek = 1;
+				}
+				//Log.d("KG: BS->AD :totDayCount",""+totalNepDaysCount);
+				totalNepDaysCount--;
+			}
+			return new DateTime(engYY, engMM, engDD, 0, 0);
 		} else {
 			throw new IllegalArgumentException("Out of Range: Date is out of range to Convert");
 		}
