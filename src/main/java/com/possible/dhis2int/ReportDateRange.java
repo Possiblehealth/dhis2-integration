@@ -15,10 +15,10 @@ public class ReportDateRange {
 	}
 	
 	public String getStartDate() {
-		return DateTimeFormat.forPattern("yyyy-mm-dd").print(startDate);
+		return DateTimeFormat.forPattern("yyyy-MM-dd").print(startDate);
 	}
 	
 	public String getEndDate() {
-		return DateTimeFormat.forPattern("yyyy-mm-dd").print(endDate);
+		return DateTimeFormat.forPattern("yyyy-MM-dd").print(endDate);
 	}
 }
