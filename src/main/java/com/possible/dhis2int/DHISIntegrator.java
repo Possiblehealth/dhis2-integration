@@ -32,16 +32,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 public class DHISIntegrator {
 	
-	public static final String reportsBaseUrl = "https://mybahmni.org/bahmnireports/report";
+	private final String DOWNLOAD_FORMAT = "application/vnd.ms-excel";
 	
-	private static final String DOWNLOAD_FORMAT = "application/vnd.ms-excel";
-	
-	private static final String dhisConfigDirectory = "/var/www/bahmni_config/dhis2/";
-	
-	private static String api = "http://35.154.1.137:8080/api/dataValueSets";
-	
-	private static String databaseUrl = "jdbc:mysql://192.168.33.10/openmrs?"
-			+ "user=openmrs-user&password=password";
+	private final String UPLOAD_ENDPOINT = "/api/dataValueSets";
 	
 	private Properties properties;
 	
@@ -49,11 +42,6 @@ public class DHISIntegrator {
 	public DHISIntegrator(Properties properties) {
 		this.properties = properties;
 		
-	}
-	
-	@RequestMapping(path = "/", method = RequestMethod.GET)
-	public String sample(HttpServletResponse response) {
-		return "hello";
 	}
 	
 	@RequestMapping(path = "/upload-to-dhis", method = RequestMethod.GET)
@@ -77,14 +65,14 @@ public class DHISIntegrator {
 		return "ok";
 	}
 	
-	@RequestMapping(path = "/report", method = RequestMethod.GET)
+	@RequestMapping(path = "/download", method = RequestMethod.GET)
 	public void downloadReport(@RequestParam("name") String name,
 	                           @RequestParam("year") Integer year,
 	                           @RequestParam("month") Integer month,
 	                           HttpServletResponse response) {
 		ReportDateRange reportDateRange = new DateConverter().getDateRange(year, month);
 		try {
-			String redirectUri = UriComponentsBuilder.fromHttpUrl(reportsBaseUrl)
+			String redirectUri = UriComponentsBuilder.fromHttpUrl(properties.reportsUrl)
 					.queryParam("responseType", DOWNLOAD_FORMAT)
 					.queryParam("name", name)
 					.queryParam("startDate", reportDateRange.getStartDate())
@@ -97,7 +85,7 @@ public class DHISIntegrator {
 		}
 	}
 	
-	private static JSONObject getConfig(String configFile) {
+	private JSONObject getConfig(String configFile) {
 		try {
 			return new JSONObject(new JSONTokener(new FileReader(configFile)));
 		}
@@ -107,24 +95,25 @@ public class DHISIntegrator {
 		return null;
 	}
 	
-	private static ResultSet getResult(String sql, ReportDateRange dateRange) throws ClassNotFoundException, SQLException {
+	private ResultSet getResult(String sql, ReportDateRange dateRange) throws ClassNotFoundException, SQLException {
 		String formattedSql = sql.replaceAll("#startDate#", dateRange.getStartDate()).replaceAll("#endDate#",
 				dateRange.getEndDate());
-		return DriverManager.getConnection(databaseUrl).createStatement().executeQuery(formattedSql);
+		return DriverManager.getConnection(properties.openmrsDBUrl).createStatement().executeQuery(formattedSql);
 	}
 	
-	private static String getContent(String filePath) throws IOException {
+	private String getContent(String filePath) throws IOException {
 		return Files.readAllLines(Paths.get(filePath)).stream().reduce((x, y) -> x + "\n" + y).get();
 	}
 	
-	private static JSONObject post(JSONObject jsonObject) {
+	private JSONObject post(JSONObject jsonObject) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor("admin", "District123"));
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(properties.dhisUser, properties.dhisPassword));
 		
 		HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
-		ResponseEntity<String> responseEntity = restTemplate.exchange(api, HttpMethod.POST, entity, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(properties.dhisUrl + UPLOAD_ENDPOINT, HttpMethod.POST,
+				entity, String.class);
 		if (responseEntity.getStatusCodeValue() != 200) {
 			System.out.println("Failed due to :" + responseEntity.getBody());
 		}
@@ -167,7 +156,7 @@ public class DHISIntegrator {
 	}
 	
 	private JSONObject getDhisConfig(String programName) {
-		String dhisConfigFile = dhisConfigDirectory + programName + ".json";
+		String dhisConfigFile = properties.dhisConfigDirectory + programName + ".json";
 		return getConfig(dhisConfigFile);
 	}
 }
