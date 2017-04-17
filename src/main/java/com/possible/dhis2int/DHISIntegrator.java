@@ -44,6 +44,11 @@ public class DHISIntegrator {
 		
 	}
 	
+	@RequestMapping(path = "/is-logged-in")
+	public String isLoggedIn(){
+		return "Logged in";
+	}
+	
 	@RequestMapping(path = "/upload-to-dhis", method = RequestMethod.GET)
 	public String uploadToDhis(@RequestParam("name") String name,
 	                           @RequestParam("year") Integer year,

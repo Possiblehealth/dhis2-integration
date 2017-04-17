@@ -1,0 +1,30 @@
+{{#programs}}
+<div id="program-{{index}}" class="dhisContent">
+    <div id="program-name-{{index}}" class="programName">{{name}}</div>
+    <div class="monthOption">
+        <div class="select-style">
+            <select id="month-{{index}}">
+                {{#months}}
+                <option value="{{number}}">{{name}}</option>
+                {{/months}}
+            </select>
+        </div>
+        <div class="select-style">
+            <select id="year-{{index}}">
+                {{#years}}
+                <option value="{{.}}">{{.}}</option>
+                {{/years}}
+            </select>
+        </div>
+    </div>
+    <div class="downloadButton">
+        <input type="button" class="btn" onclick="download({{index}})" value="Download">
+    </div>
+    <div class="comment">
+        <textarea></textarea>
+    </div>
+    <div class="upload">
+        <input type="button" class="btn" value="Upload">
+    </div>
+</div>
+{{/programs}}

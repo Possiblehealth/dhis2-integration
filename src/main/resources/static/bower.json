@@ -1,0 +1,22 @@
+{
+  "name": "dhis2Int",
+  "homepage": "",
+  "authors": [
+    "possibleHealth"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery.min": "https://raw.githubusercontent.com/jquery/jquery-dist/master/dist/jquery.min.js",
+    "mustache.min": "https://raw.githubusercontent.com/janl/mustache.js/v2.3.0/mustache.min.js"
+  }
+}
