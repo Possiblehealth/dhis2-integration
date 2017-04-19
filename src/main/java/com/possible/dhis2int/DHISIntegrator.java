@@ -176,7 +176,7 @@ public class DHISIntegrator {
 	}
 	
 	private JSONObject getDhisConfig(String programName) {
-		String dhisConfigFile = properties.dhisConfigDirectory + programName + ".json";
+		String dhisConfigFile = properties.dhisConfigDirectory + programName.replaceAll(" ","_") + ".json";
 		return getConfig(dhisConfigFile);
 	}
 }
