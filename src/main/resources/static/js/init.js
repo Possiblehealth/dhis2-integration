@@ -1,5 +1,6 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
-var reportsDownloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
+var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
+var uploadUrl = '/dhis-integration/upload-to-dhis?name=NAME&year=YEAR&month=MONTH';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
@@ -72,7 +73,19 @@ function download(index) {
     var year = $('[id="year-'+index+'"]').val();
     var month = $('[id="month-'+index+'"]').val();
     var programName = $('[id="program-name-'+index+'"]').html();
-    var url = reportsDownloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
-    window.location.href = url;
+    var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = "";
+    a.click();
     return false;
+}
+function upload(index) {
+    var year = $('[id="year-'+index+'"]').val();
+    var month = $('[id="month-'+index+'"]').val();
+    var programName = $('[id="program-name-'+index+'"]').html();
+    var url = uploadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
+    $.get(url).then(function(data){
+        console.log(data);
+    });
 }

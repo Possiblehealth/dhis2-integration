@@ -1,5 +1,7 @@
 package com.possible.dhis2int;
 
+import static org.apache.log4j.Logger.getLogger;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -32,6 +35,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 public class DHISIntegrator {
 	
+	private static final Logger logger = getLogger(DHISIntegrator.class);
+	
 	private final String DOWNLOAD_FORMAT = "application/vnd.ms-excel";
 	
 	private final String UPLOAD_ENDPOINT = "/api/dataValueSets";
@@ -45,32 +50,27 @@ public class DHISIntegrator {
 	}
 	
 	@RequestMapping(path = "/is-logged-in")
-	public String isLoggedIn(){
+	public String isLoggedIn() {
 		return "Logged in";
 	}
 	
-	@RequestMapping(path = "/upload-to-dhis", method = RequestMethod.GET)
+	@RequestMapping(path = "/upload-to-dhis")
 	public String uploadToDhis(@RequestParam("name") String name,
 	                           @RequestParam("year") Integer year,
-	                           @RequestParam("month") Integer month) {
-		JSONObject reportConfig = getConfig(properties.reportsJson);
-		List<JSONObject> reports = jsonArraytoList(reportConfig.getJSONObject(name).getJSONObject("config")
-				.getJSONArray("reports"));
-		JSONObject dhisConfig = getDhisConfig(name);
-		ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
-		List programDataValue = getDataValues(reports, dhisConfig, dateRange);
-		
-		JSONObject programDataValueSet = new JSONObject();
-		programDataValueSet.put("orgUnit", dhisConfig.getString("orgUnit"));
-		programDataValueSet.put("dataValues", programDataValue);
-		programDataValueSet.put("period", String.format("%d%02d", year, month));
-		
-		JSONObject response = post(programDataValueSet);
-		
+	                           @RequestParam("month") Integer month,
+	                           HttpServletResponse response) {
+		try {
+			uploadToDhis(name, year, month);
+		}
+		catch (SQLException | IOException e) {
+			logger.error("Upload to DHIS failed", e);
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 		return "ok";
 	}
 	
-	@RequestMapping(path = "/download", method = RequestMethod.GET)
+	@RequestMapping(path = "/download")
 	public void downloadReport(@RequestParam("name") String name,
 	                           @RequestParam("year") Integer year,
 	                           @RequestParam("month") Integer month,
@@ -86,8 +86,26 @@ public class DHISIntegrator {
 			response.sendRedirect(redirectUri);
 		}
 		catch (IOException e) {
+			logger.error("Download failure:", e);
 			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	private void uploadToDhis(String name, Integer year, Integer month) throws SQLException, IOException {
+		JSONObject reportConfig = getConfig(properties.reportsJson);
+		List<JSONObject> childReports = jsonArraytoList(reportConfig.getJSONObject(name).getJSONObject("config")
+				.getJSONArray("reports"));
+		JSONObject dhisConfig = getDhisConfig(name);
+		ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
+		List programDataValue = getDataValues(childReports, dhisConfig.getJSONObject("reports"), dateRange);
+		
+		JSONObject programDataValueSet = new JSONObject();
+		programDataValueSet.put("orgUnit", dhisConfig.getString("orgUnit"));
+		programDataValueSet.put("dataValues", programDataValue);
+		programDataValueSet.put("period", String.format("%d%02d", year, month));
+		
+		JSONObject response = post(programDataValueSet);
 	}
 	
 	private JSONObject getConfig(String configFile) {
@@ -95,12 +113,13 @@ public class DHISIntegrator {
 			return new JSONObject(new JSONTokener(new FileReader(configFile)));
 		}
 		catch (IOException e) {
+			logger.error("Invalid json file:", e);
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	private ResultSet getResult(String sql, ReportDateRange dateRange) throws ClassNotFoundException, SQLException {
+	private ResultSet getResult(String sql, ReportDateRange dateRange) throws SQLException {
 		String formattedSql = sql.replaceAll("#startDate#", dateRange.getStartDate()).replaceAll("#endDate#",
 				dateRange.getEndDate());
 		return DriverManager.getConnection(properties.openmrsDBUrl).createStatement().executeQuery(formattedSql);
@@ -125,23 +144,19 @@ public class DHISIntegrator {
 		return new JSONObject(new JSONTokener(responseEntity.getBody()));
 	}
 	
-	private List getDataValues(List<JSONObject> reports, JSONObject dhisConfig, ReportDateRange dateRange) {
+	private List getDataValues(List<JSONObject> reportSqlConfigs, JSONObject reportDHISConfigs, ReportDateRange dateRange)
+			throws SQLException, IOException {
 		ArrayList<Object> programDataValues = new ArrayList<>();
 		
-		reports.forEach((report) -> {
+		for (JSONObject report : reportSqlConfigs) {
 			String sqlPath = report.getJSONObject("config").getString("sqlPath");
-			try {
-				ResultSet resultSet = getResult(getContent(sqlPath), dateRange);
-				JSONArray dataValues = dhisConfig.getJSONObject("reports")
-						.getJSONObject(report.getString("name"))
-						.getJSONArray("dataValues");
-				updateDataValues(resultSet, dataValues);
-				programDataValues.addAll(jsonArraytoList(dataValues));
-			}
-			catch (IOException | SQLException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		});
+			ResultSet resultSet = getResult(getContent(sqlPath), dateRange);
+			JSONArray dataValues = reportDHISConfigs
+					.getJSONObject(report.getString("name"))
+					.getJSONArray("dataValues");
+			updateDataValues(resultSet, dataValues);
+			programDataValues.addAll(jsonArraytoList(dataValues));
+		}
 		return programDataValues;
 	}
 	
