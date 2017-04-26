@@ -24,12 +24,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -41,10 +38,13 @@ public class DHISIntegrator {
 	
 	private final String UPLOAD_ENDPOINT = "/api/dataValueSets";
 	
+	private final RestTemplateFactory restTemplateFactory;
+	
 	private Properties properties;
 	
 	@Autowired
-	public DHISIntegrator(Properties properties) {
+	public DHISIntegrator(RestTemplateFactory restTemplateFactory, Properties properties) {
+		this.restTemplateFactory = restTemplateFactory;
 		this.properties = properties;
 		
 	}
@@ -130,13 +130,12 @@ public class DHISIntegrator {
 	}
 	
 	private JSONObject post(JSONObject jsonObject) {
+		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(properties.dhisUser, properties.dhisPassword));
-		
 		HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
-		ResponseEntity<String> responseEntity = restTemplate.exchange(properties.dhisUrl + UPLOAD_ENDPOINT, HttpMethod.POST,
+		ResponseEntity<String> responseEntity = restTemplateFactory.getRestTemplate().exchange(
+				properties.dhisUrl + UPLOAD_ENDPOINT, HttpMethod.POST,
 				entity, String.class);
 		if (responseEntity.getStatusCodeValue() != 200) {
 			System.out.println("Failed due to :" + responseEntity.getBody());
