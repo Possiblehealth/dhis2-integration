@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +99,7 @@ public class DHISIntegrator {
 				.getJSONArray("reports"));
 		JSONObject dhisConfig = getDhisConfig(name);
 		ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
-		List programDataValue = getDataValues(childReports, dhisConfig.getJSONObject("reports"), dateRange);
+		List programDataValue = getProgramDataValues(childReports, dhisConfig.getJSONObject("reports"), dateRange);
 		
 		JSONObject programDataValueSet = new JSONObject();
 		programDataValueSet.put("orgUnit", dhisConfig.getString("orgUnit"));
@@ -143,20 +144,31 @@ public class DHISIntegrator {
 		return new JSONObject(new JSONTokener(responseEntity.getBody()));
 	}
 	
-	private List getDataValues(List<JSONObject> reportSqlConfigs, JSONObject reportDHISConfigs, ReportDateRange dateRange)
+	private List getProgramDataValues(List<JSONObject> reportSqlConfigs, JSONObject reportDHISConfigs, ReportDateRange dateRange)
 			throws SQLException, IOException {
 		ArrayList<Object> programDataValues = new ArrayList<>();
 		
 		for (JSONObject report : reportSqlConfigs) {
-			String sqlPath = report.getJSONObject("config").getString("sqlPath");
-			ResultSet resultSet = getResult(getContent(sqlPath), dateRange);
-			JSONArray dataValues = reportDHISConfigs
-					.getJSONObject(report.getString("name"))
-					.getJSONArray("dataValues");
-			updateDataValues(resultSet, dataValues);
+			JSONArray dataValues = getReportDataElements(reportDHISConfigs, dateRange, report);
 			programDataValues.addAll(jsonArraytoList(dataValues));
 		}
 		return programDataValues;
+	}
+	
+	private JSONArray getReportDataElements(JSONObject reportDHISConfigs, ReportDateRange dateRange, JSONObject report)
+			throws SQLException, IOException {
+		JSONArray dataValues = new JSONArray();
+		try{
+			dataValues = reportDHISConfigs
+					.getJSONObject(report.getString("name"))
+					.getJSONArray("dataValues");
+		} catch(JSONException e){
+			return dataValues;
+		}
+		String sqlPath = report.getJSONObject("config").getString("sqlPath");
+		ResultSet resultSet = getResult(getContent(sqlPath), dateRange);
+		updateDataElements(resultSet, dataValues);
+		return dataValues;
 	}
 	
 	private List<JSONObject> jsonArraytoList(JSONArray elements) {
@@ -165,12 +177,12 @@ public class DHISIntegrator {
 		return list;
 	}
 	
-	private void updateDataValues(ResultSet resultSet, JSONArray dataValues) throws SQLException {
-		for (Object dataValue_ : dataValues) {
-			JSONObject dataValue = (JSONObject) dataValue_;
-			resultSet.absolute(dataValue.getInt("row"));
-			String value = resultSet.getString(dataValue.getInt("column"));
-			dataValue.put("value", value);
+	private void updateDataElements(ResultSet resultSet, JSONArray dataElements) throws SQLException {
+		for (Object dataElement_ : dataElements) {
+			JSONObject dataElement = (JSONObject) dataElement_;
+			resultSet.absolute(dataElement.getInt("row"));
+			String value = resultSet.getString(dataElement.getInt("column"));
+			dataElement.put("value", value);
 		}
 	}
 	
