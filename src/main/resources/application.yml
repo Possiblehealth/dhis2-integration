@@ -1,5 +1,12 @@
-openmrs.root.url: http://localhost:8050/openmrs/ws/rest/v1
-bahmni.login.url: /bahmni/home/#/login?showLoginMessage
-server.port: 8100
-server.context-path: /dhis-integration/
+openmrs.root.url: https://localhost.localdomain/openmrs/ws/rest/v1
+bahmni.login.url: https://localhost.localdomain/bahmni/home/#/login?showLoginMessage
+reports.url: https://localhost.localdomain/bahmnireports/report
 reports.json: /var/www/bahmni_config/openmrs/apps/reports/reports.json
+dhis.config.directory: /var/www/bahmni_config/dhis2/
+dhis.url: dhisinstanceurl
+dhis.user: user
+dhis.password: password
+openmrs.db.url: jdbc:mysql://localhost.localdomain/openmrs?user=dbuser&password=dbpassword
+
+server.port: 8040
+server.context-path: /dhis-integration/

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>com.possible</groupId>
-	<artifactId>dhis2Int</artifactId>
+	<artifactId>dhis-integration</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	
 	<parent>
@@ -52,6 +52,7 @@
 	
 	<properties>
 		<start-class>com.possible.dhis2int.Application</start-class>
+		<rpm.build.number>1</rpm.build.number>
 	</properties>
 	
 	
@@ -70,6 +71,67 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<version>2.1.5</version>
+				<executions>
+					<execution>
+						<id>generate-rpm</id>
+						<goals>
+							<goal>rpm</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<name>dhis-integration</name>
+					<group>ict4h.atomfeed</group>
+					<targetOS>Linux</targetOS>
+					<release>${rpm.build.number}</release>
+					<mappings>
+						<mapping>
+							<sources>
+								<source>
+									<location>${basedir}/target/</location>
+									<includes>
+										<include>dhis-integration*.jar</include>
+									</includes>
+								</source>
+							</sources>
+							<directory>/opt/dhis-integration/bin/</directory>
+						</mapping>
+						<mapping>
+							<sources>
+								<source>
+									<location>${basedir}/src/main/resources/application.yml</location>
+								</source>
+							</sources>
+							<directory>/opt/dhis-integration/etc/</directory>
+						</mapping>
+						<mapping>
+							<sources>
+								<source>
+									<location>${basedir}/src/scripts/rpm/</location>
+								</source>
+							</sources>
+							<directory>/opt/dhis-integration/bin/</directory>
+						</mapping>
+					</mappings>
+					
+					<preinstallScriptlet>
+						<scriptFile>${basedir}/src/scripts/installation/preInstall.sh</scriptFile>
+						<fileEncoding>utf-8</fileEncoding>
+					</preinstallScriptlet>
+					<postinstallScriptlet>
+						<scriptFile>${basedir}/src/scripts/installation/postInstall.sh</scriptFile>
+						<fileEncoding>utf-8</fileEncoding>
+					</postinstallScriptlet>
+					<preremoveScriptlet>
+						<scriptFile>${basedir}/src/scripts/installation/preRemove.sh</scriptFile>
+						<fileEncoding>utf-8</fileEncoding>
+					</preremoveScriptlet>
 				</configuration>
 			</plugin>
 		</plugins>

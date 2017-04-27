@@ -89,3 +89,8 @@ function upload(index) {
         console.log(data);
     });
 }
+function confirmAndUpload(index) {
+    if (confirm("This action cannot be reversed. Are you sure, you want to upload?")) {
+        upload(index);
+    }
+}
