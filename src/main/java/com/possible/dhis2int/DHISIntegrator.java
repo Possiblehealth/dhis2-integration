@@ -64,9 +64,10 @@ public class DHISIntegrator {
 			uploadToDhis(name, year, month);
 		}
 		catch (SQLException | IOException e) {
-			logger.error("Upload to DHIS failed", e);
+			logger.error("DHIS submission failed", e);
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return "DHIS submission failed";
 		}
 		return "ok";
 	}

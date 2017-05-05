@@ -76,21 +76,35 @@ function download(index) {
     var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
     var a = document.createElement('a');
     a.href = url;
-    a.download = "";
+    a.target = '_blank';
     a.click();
     return false;
 }
 function upload(index) {
-    var year = $('[id="year-'+index+'"]').val();
-    var month = $('[id="month-'+index+'"]').val();
-    var programName = $('[id="program-name-'+index+'"]').html();
+    var year = element('year',index).val();
+    var month = element('month',index).val();
+    var programName = element('program-name',index).html();
     var url = uploadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
-    $.get(url).then(function(data){
+
+    element('upload',index)
+        .attr('disabled',true)
+        .addClass('btn-disabled');
+    $.get(url).done(function(data){
         console.log(data);
+    }).fail(function(data){
+        console.log(data.responseJSON.error);
+    }).always(function(){
+        element('upload',index)
+            .attr('disabled',false)
+            .removeClass('btn-disabled');
     });
 }
 function confirmAndUpload(index) {
     if (confirm("This action cannot be reversed. Are you sure, you want to upload?")) {
         upload(index);
     }
+}
+function element(name,index){
+    var id = name +'-' + index;
+    return $('[id="'+id+'"]');
 }
