@@ -1,4 +1,4 @@
-package com.possible.dhis2int;
+package com.possible.dhis2int.date;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

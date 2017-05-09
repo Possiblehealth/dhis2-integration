@@ -1,9 +1,11 @@
-package com.possible.dhis2int;
+package com.possible.dhis2int.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import com.possible.dhis2int.Properties;
 
 @Component
 public class RestTemplateFactory {

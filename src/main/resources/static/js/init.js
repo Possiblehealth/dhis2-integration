@@ -92,7 +92,7 @@ function upload(index) {
     $.get(url).done(function(data){
         console.log(data);
     }).fail(function(data){
-        console.log(data.responseJSON.error);
+        console.log(data.responseText);
     }).always(function(){
         element('upload',index)
             .attr('disabled',false)

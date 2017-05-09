@@ -27,6 +27,7 @@ chmod +x /opt/dhis-integration/bin/dhis-integration
 mv /opt/dhis-integration/bin/dhis-integration*.jar /opt/dhis-integration/bin/dhis-integration.jar
 
 ln -sf /opt/dhis-integration/etc/application.yml /etc/dhis-integration/dhis-integration.yml
+ln -sf /opt/dhis-integration/etc/log4j.properties /etc/dhis-integration/log4j.properties
 ln -sf /opt/dhis-integration/var/log/dhis-integration.log /var/log/dhis-integration/dhis-integration.log
 ln -sf /opt/dhis-integration/bin/dhis-integration /etc/init.d/dhis-integration
 

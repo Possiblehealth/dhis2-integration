@@ -32,4 +32,10 @@ public class Properties {
 	
 	@Value("${dhis.user}")
 	public String dhisUser;
+	
+	@Value("${log4j.config.file}")
+	public String log4jConfigFile;
+	
+	@Value("${audit.log.file}")
+	public String auditLogFileName;
 }

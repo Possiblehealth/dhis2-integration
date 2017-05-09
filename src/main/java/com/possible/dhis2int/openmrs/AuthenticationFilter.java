@@ -1,9 +1,8 @@
-package com.possible.dhis2int.security;
+package com.possible.dhis2int.openmrs;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.possible.dhis2int.web.Cookies;
 import com.possible.dhis2int.Properties;
 
 @Component(value = "authenticationFilter")
 public class AuthenticationFilter extends HandlerInterceptorAdapter {
-
-    private static final String DHIS_INTEGRATION_COOKIE_NAME = "reporting_session";
+    
     private OpenMRSAuthenticator authenticator;
     private Properties properties;
 
@@ -36,17 +35,10 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
             return false;
         }
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return redirectToLogin(request, response);
-        }
-        AuthenticationResponse authenticationResponse = AuthenticationResponse.NOT_AUTHENTICATED;
+        Cookies cookies = new Cookies(request);
+        String cookie = cookies.getValue(Cookies.DHIS_INTEGRATION_COOKIE_NAME);
 
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(DHIS_INTEGRATION_COOKIE_NAME)) {
-                authenticationResponse = authenticator.authenticate(cookie.getValue());
-            }
-        }
+        AuthenticationResponse authenticationResponse = authenticator.authenticate(cookie);
 
         switch (authenticationResponse) {
             case AUTHORIZED:

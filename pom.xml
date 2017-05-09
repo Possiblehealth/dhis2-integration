@@ -113,6 +113,14 @@
 						<mapping>
 							<sources>
 								<source>
+									<location>${basedir}/src/main/resources/log4j.properties</location>
+								</source>
+							</sources>
+							<directory>/opt/dhis-integration/etc/</directory>
+						</mapping>
+						<mapping>
+							<sources>
+								<source>
 									<location>${basedir}/src/scripts/rpm/</location>
 								</source>
 							</sources>
