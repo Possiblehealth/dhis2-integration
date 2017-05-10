@@ -1,5 +1,6 @@
 package com.possible.dhis2int.web;
 
+import static com.possible.dhis2int.web.Cookies.BAHMNI_USER;
 import static com.possible.dhis2int.web.Messages.CONFIG_FILE_NOT_FOUND;
 import static com.possible.dhis2int.web.Messages.DHIS_RETURNED_NON_OK_STATUS_CODE;
 import static com.possible.dhis2int.web.Messages.DHIS_SUBMISSION_FAILED;
@@ -7,7 +8,6 @@ import static com.possible.dhis2int.web.Messages.FILE_READING_EXCEPTION;
 import static com.possible.dhis2int.web.Messages.REPORT_DOWNLOAD_FAILED;
 import static com.possible.dhis2int.web.Messages.SQL_EXECUTION_EXCEPTION;
 import static com.possible.dhis2int.web.Messages.SQL_OUTPUT_MAPPING_EXCEPTION;
-import static com.possible.dhis2int.web.Cookies.BAHMNI_USER;
 import static java.lang.String.format;
 import static org.apache.log4j.Logger.getLogger;
 
@@ -31,17 +31,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.possible.dhis2int.Properties;
+import com.possible.dhis2int.date.DateConverter;
+import com.possible.dhis2int.date.ReportDateRange;
 import com.possible.dhis2int.dhis.DHISClient;
 import com.possible.dhis2int.log.AuditLog;
-import com.possible.dhis2int.date.DateConverter;
-import com.possible.dhis2int.Properties;
-import com.possible.dhis2int.date.ReportDateRange;
 
 @RestController
 public class DHISIntegrator {
@@ -89,6 +90,11 @@ public class DHISIntegrator {
 			auditLog.failure(program, userName, DHIS_SUBMISSION_FAILED);
 			return DHIS_SUBMISSION_FAILED;
 		}
+	}
+	
+	@RequestMapping(path = "/download-audit-log", produces = "text/csv")
+	public FileSystemResource downloadAuditLog() {
+		return new FileSystemResource(properties.auditLogFileName);
 	}
 	
 	@RequestMapping(path = "/download")
