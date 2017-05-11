@@ -11,7 +11,9 @@ import static com.possible.dhis2int.web.Messages.SQL_OUTPUT_MAPPING_EXCEPTION;
 import static java.lang.String.format;
 import static org.apache.log4j.Logger.getLogger;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,6 +22,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,9 +95,10 @@ public class DHISIntegrator {
 		}
 	}
 	
-	@RequestMapping(path = "/download-audit-log", produces = "text/csv")
-	public FileSystemResource downloadAuditLog() {
-		return new FileSystemResource(properties.auditLogFileName);
+	@RequestMapping(path = "/dhis-submission-log/download", produces = "text/csv")
+	public FileSystemResource downloadAuditLog(HttpServletResponse response) throws FileNotFoundException {
+		response.setHeader("Content-Disposition", "attachment; filename=" + auditLog.getFileNameTimeStamp());
+		return auditLog.getFile();
 	}
 	
 	@RequestMapping(path = "/download")
@@ -141,7 +145,7 @@ public class DHISIntegrator {
 		programDataValueSet.put("dataValues", programDataValue);
 		programDataValueSet.put("period", format("%d%02d", year, month));
 		
-		return dHISClient.post(UPLOAD_ENDPOINT, programDataValueSet, String.class);
+		return dHISClient.post(UPLOAD_ENDPOINT, programDataValueSet);
 	}
 	
 	private JSONObject getConfig(String configFile) throws DHISIntegratorException {

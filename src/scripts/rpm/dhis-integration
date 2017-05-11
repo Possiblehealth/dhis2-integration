@@ -60,24 +60,35 @@ stop() {
     return
 }
 
+log() {
+    if [ -e /opt/dhis-integration/var/log/dhis-integration.log ];
+    then
+        tail -f /opt/dhis-integration/var/log/dhis-integration.log
+    fi
+    exit 0
+}
+
 case "$1" in
     start)
         start
     ;;
     stop)
-      stop
+        stop
     ;;
     debug)
-      debug
+        debug
     ;;
     restart)
-      stop
-      start
+        stop
+        start
     ;;
     status)
         status
     ;;
     kill)
         stop
+    ;;
+    log)
+        log
     ;;
 esac

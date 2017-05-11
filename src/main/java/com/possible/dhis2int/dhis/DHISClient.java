@@ -25,12 +25,12 @@ public class DHISClient {
 		this.properties = properties;
 	}
 	
-	public <T> ResponseEntity<T> post(String url, JSONObject jsonObject, Class<T> returnType) {
+	public ResponseEntity<String> post(String url, JSONObject jsonObject) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
 		return restTemplateFactory.getRestTemplate().exchange(
 				properties.dhisUrl + url, HttpMethod.POST,
-				entity, returnType);
+				entity, String.class);
 	}
 }

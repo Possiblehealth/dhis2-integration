@@ -8,7 +8,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
 import com.possible.dhis2int.Properties;
@@ -22,11 +26,21 @@ public class AuditLog {
 	
 	private final String HEADER = "Event,Time,User,Status,DataFile";
 	
+	private final String FILE_NAME = "'dhis_submission_log' dd-MM-yyyy HH-mm'.csv'";
+	
 	@Autowired
 	public AuditLog(Properties properties) throws IOException {
 		logFile = new File(properties.auditLogFileName);
 		writer = new PrintWriter(new FileWriter(logFile,true), true);
 		ensureHeaderExists();
+	}
+	
+	public String getFileNameTimeStamp(){
+		return DateTimeFormat.forPattern(FILE_NAME).print(new DateTime());
+	}
+
+	public FileSystemResource getFile() {
+		return new FileSystemResource(logFile);
 	}
 	
 	private void ensureHeaderExists() throws IOException {
