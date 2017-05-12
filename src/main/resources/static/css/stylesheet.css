@@ -76,7 +76,7 @@ textarea, select{
     justify-content: center;
     align-items: center;
 }
-.upload{
+.submit{
     flex: 1.2;
     padding: 5px 10px;
     display: flex;

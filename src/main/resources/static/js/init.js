@@ -1,6 +1,6 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
 var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
-var uploadUrl = '/dhis-integration/upload-to-dhis?name=NAME&year=YEAR&month=MONTH';
+var submitUrl = '/dhis-integration/submit-to-dhis?name=NAME&year=YEAR&month=MONTH';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
@@ -80,13 +80,13 @@ function download(index) {
     a.click();
     return false;
 }
-function upload(index) {
+function submit(index) {
     var year = element('year',index).val();
     var month = element('month',index).val();
     var programName = element('program-name',index).html();
-    var url = uploadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
+    var url = submitUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
 
-    element('upload',index)
+    element('submit',index)
         .attr('disabled',true)
         .addClass('btn-disabled');
     $.get(url).done(function(data){
@@ -94,14 +94,14 @@ function upload(index) {
     }).fail(function(data){
         console.log(data.responseText);
     }).always(function(){
-        element('upload',index)
+        element('submit',index)
             .attr('disabled',false)
             .removeClass('btn-disabled');
     });
 }
-function confirmAndUpload(index) {
-    if (confirm("This action cannot be reversed. Are you sure, you want to upload?")) {
-        upload(index);
+function confirmAndSubmit(index) {
+    if (confirm("This action cannot be reversed. Are you sure, you want to submit?")) {
+        submit(index);
     }
 }
 function element(name,index){

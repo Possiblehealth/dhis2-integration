@@ -6,23 +6,17 @@ import static com.possible.dhis2int.web.Messages.DHIS_RETURNED_NON_OK_STATUS_COD
 import static com.possible.dhis2int.web.Messages.DHIS_SUBMISSION_FAILED;
 import static com.possible.dhis2int.web.Messages.FILE_READING_EXCEPTION;
 import static com.possible.dhis2int.web.Messages.REPORT_DOWNLOAD_FAILED;
-import static com.possible.dhis2int.web.Messages.SQL_EXECUTION_EXCEPTION;
 import static com.possible.dhis2int.web.Messages.SQL_OUTPUT_MAPPING_EXCEPTION;
 import static java.lang.String.format;
 import static org.apache.log4j.Logger.getLogger;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +39,8 @@ import com.possible.dhis2int.Properties;
 import com.possible.dhis2int.date.DateConverter;
 import com.possible.dhis2int.date.ReportDateRange;
 import com.possible.dhis2int.dhis.DHISClient;
-import com.possible.dhis2int.log.AuditLog;
+import com.possible.dhis2int.log.SubmissionLog;
+import com.possible.dhis2int.web.DatabaseDriver.Results;
 
 @RestController
 public class DHISIntegrator {
@@ -54,19 +49,23 @@ public class DHISIntegrator {
 	
 	private final String DOWNLOAD_FORMAT = "application/vnd.ms-excel";
 	
-	private final String UPLOAD_ENDPOINT = "/api/dataValueSets";
+	private final String SUBMISSION_ENDPOINT = "/api/dataValueSets";
 	
 	private final DHISClient dHISClient;
 	
-	private Properties properties;
+	private final DatabaseDriver databaseDriver;
 	
-	private AuditLog auditLog;
+	private final Properties properties;
+	
+	private final SubmissionLog submissionLog;
 	
 	@Autowired
-	public DHISIntegrator(DHISClient dHISClient, Properties properties, AuditLog auditLog) {
+	public DHISIntegrator(DHISClient dHISClient, DatabaseDriver databaseDriver, Properties properties,
+	                      SubmissionLog submissionLog) {
 		this.dHISClient = dHISClient;
+		this.databaseDriver = databaseDriver;
 		this.properties = properties;
-		this.auditLog = auditLog;
+		this.submissionLog = submissionLog;
 	}
 	
 	@RequestMapping(path = "/is-logged-in")
@@ -74,31 +73,31 @@ public class DHISIntegrator {
 		return "Logged in";
 	}
 	
-	@RequestMapping(path = "/upload-to-dhis")
-	public String uploadToDHIS(@RequestParam("name") String program,
+	@RequestMapping(path = "/submit-to-dhis")
+	public String submitToDHIS(@RequestParam("name") String program,
 	                           @RequestParam("year") Integer year,
 	                           @RequestParam("month") Integer month,
 	                           HttpServletRequest clientReq,
 	                           HttpServletResponse clientRes) {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		try {
-			ResponseEntity<String> DHISResponse = uploadToDHIS(program, year, month);
+			ResponseEntity<String> DHISResponse = submitToDHIS(program, year, month);
 			String responseBody = validateSubmission(DHISResponse);
-			auditLog.success(program, userName, responseBody);
+			submissionLog.success(program, userName, responseBody);
 			return responseBody;
 		}
 		catch (DHISIntegratorException e) {
 			logger.error(DHIS_SUBMISSION_FAILED, e);
 			clientRes.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			auditLog.failure(program, userName, DHIS_SUBMISSION_FAILED);
+			submissionLog.failure(program, userName, DHIS_SUBMISSION_FAILED);
 			return DHIS_SUBMISSION_FAILED;
 		}
 	}
 	
-	@RequestMapping(path = "/dhis-submission-log/download", produces = "text/csv")
-	public FileSystemResource downloadAuditLog(HttpServletResponse response) throws FileNotFoundException {
-		response.setHeader("Content-Disposition", "attachment; filename=" + auditLog.getFileNameTimeStamp());
-		return auditLog.getFile();
+	@RequestMapping(path = "/submission-log/download", produces = "text/csv")
+	public FileSystemResource downloadSubmissionLog(HttpServletResponse response) throws FileNotFoundException {
+		response.setHeader("Content-Disposition", "attachment; filename=" + submissionLog.getFileNameTimeStamp());
+		return submissionLog.getFile();
 	}
 	
 	@RequestMapping(path = "/download")
@@ -132,7 +131,7 @@ public class DHISIntegrator {
 		return null;
 	}
 	
-	private ResponseEntity<String> uploadToDHIS(String name, Integer year, Integer month) throws DHISIntegratorException {
+	private ResponseEntity<String> submitToDHIS(String name, Integer year, Integer month) throws DHISIntegratorException {
 		JSONObject reportConfig = getConfig(properties.reportsJson);
 		List<JSONObject> childReports = jsonArrayToList(reportConfig.getJSONObject(name).getJSONObject("config")
 				.getJSONArray("reports"));
@@ -145,7 +144,7 @@ public class DHISIntegrator {
 		programDataValueSet.put("dataValues", programDataValue);
 		programDataValueSet.put("period", format("%d%02d", year, month));
 		
-		return dHISClient.post(UPLOAD_ENDPOINT, programDataValueSet);
+		return dHISClient.post(SUBMISSION_ENDPOINT, programDataValueSet);
 	}
 	
 	private JSONObject getConfig(String configFile) throws DHISIntegratorException {
@@ -157,15 +156,10 @@ public class DHISIntegrator {
 		}
 	}
 	
-	private ResultSet getResult(String sql, ReportDateRange dateRange) throws DHISIntegratorException {
+	private Results getResult(String sql, ReportDateRange dateRange) throws DHISIntegratorException {
 		String formattedSql = sql.replaceAll("#startDate#", dateRange.getStartDate()).replaceAll("#endDate#",
 				dateRange.getEndDate());
-		try {
-			return DriverManager.getConnection(properties.openmrsDBUrl).createStatement().executeQuery(formattedSql);
-		}
-		catch (SQLException e) {
-			throw new DHISIntegratorException(format(SQL_EXECUTION_EXCEPTION, formattedSql), e);
-		}
+		return databaseDriver.executeQuery(formattedSql);
 	}
 	
 	private String getContent(String filePath) throws DHISIntegratorException {
@@ -199,16 +193,10 @@ public class DHISIntegrator {
 			return dataValues;
 		}
 		String sqlPath = report.getJSONObject("config").getString("sqlPath");
-		ResultSet resultSet = getResult(getContent(sqlPath), dateRange);
+		Results results = getResult(getContent(sqlPath), dateRange);
 		for (Object dataValue_ : dataValues) {
 			JSONObject dataValue = (JSONObject) dataValue_;
-			try {
-				updateDataElements(resultSet, dataValue);
-			}
-			catch (SQLException e) {
-				throw new DHISIntegratorException(format
-						(SQL_OUTPUT_MAPPING_EXCEPTION, dataValue.getInt("row"), dataValue.getInt("column"), sqlPath), e);
-			}
+			updateDataElements(results, dataValue);
 		}
 		return dataValues;
 	}
@@ -219,9 +207,8 @@ public class DHISIntegrator {
 		return list;
 	}
 	
-	private void updateDataElements(ResultSet resultSet, JSONObject dataElement) throws SQLException {
-		resultSet.absolute(dataElement.getInt("row"));
-		String value = resultSet.getString(dataElement.getInt("column"));
+	private void updateDataElements(Results results, JSONObject dataElement) {
+		String value = results.get(dataElement.getInt("row"), dataElement.getInt("column"));
 		dataElement.put("value", value);
 	}
 	

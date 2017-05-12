@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import com.possible.dhis2int.Properties;
 
 @Service
-public class AuditLog {
+public class SubmissionLog {
 	
 	private final File logFile;
 	
@@ -26,11 +26,11 @@ public class AuditLog {
 	
 	private final String HEADER = "Event,Time,User,Status,DataFile";
 	
-	private final String FILE_NAME = "'dhis_submission_log' dd-MM-yyyy HH-mm'.csv'";
+	private final String FILE_NAME = "'DHIS2_submission_log' dd-MM-yyyy HH-mm'.csv'";
 	
 	@Autowired
-	public AuditLog(Properties properties) throws IOException {
-		logFile = new File(properties.auditLogFileName);
+	public SubmissionLog(Properties properties) throws IOException {
+		logFile = new File(properties.submissionLogFileName);
 		writer = new PrintWriter(new FileWriter(logFile,true), true);
 		ensureHeaderExists();
 	}
@@ -52,12 +52,12 @@ public class AuditLog {
 		bufferedReader.close();
 	}
 	
-	public void failure(String event, String userId, String dataSent){
-		writer.println(new Record(event,new Date(),userId, Status.Failure,dataSent));
+	public void failure(String report, String userId, String dataSent){
+		writer.println(new Record(report + " Report Submission",new Date(),userId, Status.Failure,dataSent));
 	}
 	
-	public void success(String event, String userId, String dataSent){
-		writer.println(new Record(event,new Date(),userId, Status.Success,dataSent));
+	public void success(String report, String userId, String dataSent){
+		writer.println(new Record(report + " Report Submission",new Date(),userId, Status.Success,dataSent));
 	}
 	
 	public enum Status {
