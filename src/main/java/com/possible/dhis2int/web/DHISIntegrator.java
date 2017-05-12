@@ -33,12 +33,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.possible.dhis2int.db.DatabaseDriver;
 import com.possible.dhis2int.Properties;
 import com.possible.dhis2int.date.DateConverter;
 import com.possible.dhis2int.date.ReportDateRange;
 import com.possible.dhis2int.dhis.DHISClient;
 import com.possible.dhis2int.log.SubmissionLog;
-import com.possible.dhis2int.web.DatabaseDriver.Results;
+import com.possible.dhis2int.db.Results;
 
 @RestController
 public class DHISIntegrator {
