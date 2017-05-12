@@ -21,10 +21,11 @@
         <input type="button" class="btn" onclick="download({{index}})" value="Download">
     </div>
     <div class="comment">
-        <textarea></textarea>
+        <textarea id="comment-{{index}}" index="{{index}}"></textarea>
     </div>
     <div class="submit">
-        <input id="submit-{{index}}" type="button" class="btn" onclick="confirmAndSubmit({{index}})" value="Submit to DHIS">
+        <input id="submit-{{index}}" type="button" class="btn" onclick="confirmAndSubmit({{index}})"
+               value="Submit to DHIS">
     </div>
 </div>
 {{/programs}}

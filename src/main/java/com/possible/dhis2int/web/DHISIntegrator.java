@@ -6,7 +6,6 @@ import static com.possible.dhis2int.web.Messages.DHIS_RETURNED_NON_OK_STATUS_COD
 import static com.possible.dhis2int.web.Messages.DHIS_SUBMISSION_FAILED;
 import static com.possible.dhis2int.web.Messages.FILE_READING_EXCEPTION;
 import static com.possible.dhis2int.web.Messages.REPORT_DOWNLOAD_FAILED;
-import static com.possible.dhis2int.web.Messages.SQL_OUTPUT_MAPPING_EXCEPTION;
 import static java.lang.String.format;
 import static org.apache.log4j.Logger.getLogger;
 
@@ -15,7 +14,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,19 +75,20 @@ public class DHISIntegrator {
 	public String submitToDHIS(@RequestParam("name") String program,
 	                           @RequestParam("year") Integer year,
 	                           @RequestParam("month") Integer month,
+	                           @RequestParam("comment") String comment,
 	                           HttpServletRequest clientReq,
 	                           HttpServletResponse clientRes) {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		try {
 			ResponseEntity<String> DHISResponse = submitToDHIS(program, year, month);
 			String responseBody = validateSubmission(DHISResponse);
-			submissionLog.success(program, userName, responseBody);
+			submissionLog.success(program, userName, comment, responseBody);
 			return responseBody;
 		}
 		catch (DHISIntegratorException e) {
 			logger.error(DHIS_SUBMISSION_FAILED, e);
 			clientRes.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			submissionLog.failure(program, userName, DHIS_SUBMISSION_FAILED);
+			submissionLog.failure(program, userName, comment, DHIS_SUBMISSION_FAILED);
 			return DHIS_SUBMISSION_FAILED;
 		}
 	}

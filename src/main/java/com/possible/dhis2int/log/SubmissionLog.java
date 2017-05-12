@@ -10,7 +10,6 @@ import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
@@ -22,42 +21,40 @@ public class SubmissionLog {
 	
 	private final File logFile;
 	
-	private PrintWriter writer;
-	
-	private final String HEADER = "Event,Time,User,Status,DataFile";
-	
 	private final String FILE_NAME = "'DHIS2_submission_log' dd-MM-yyyy HH-mm'.csv'";
+	
+	private PrintWriter writer;
 	
 	@Autowired
 	public SubmissionLog(Properties properties) throws IOException {
 		logFile = new File(properties.submissionLogFileName);
-		writer = new PrintWriter(new FileWriter(logFile,true), true);
+		writer = new PrintWriter(new FileWriter(logFile, true), true);
 		ensureHeaderExists();
 	}
 	
-	public String getFileNameTimeStamp(){
+	public String getFileNameTimeStamp() {
 		return DateTimeFormat.forPattern(FILE_NAME).print(new DateTime());
 	}
-
+	
 	public FileSystemResource getFile() {
 		return new FileSystemResource(logFile);
+	}
+	
+	public void failure(String report, String userId, String comment, String dataSent) {
+		writer.println(new Record(report + " Report Submission", new Date(), userId, comment, Status.Failure, dataSent));
+	}
+	
+	public void success(String report, String userId, String comment, String dataSent) {
+		writer.println(new Record(report + " Report Submission", new Date(), userId, comment, Status.Success, dataSent));
 	}
 	
 	private void ensureHeaderExists() throws IOException {
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(logFile));
 		String firstLine = bufferedReader.readLine();
-		if(firstLine == null || firstLine.isEmpty()){
-			writer.println(HEADER);
+		if (firstLine == null || firstLine.isEmpty()) {
+			writer.println(Record.HEADER);
 		}
 		bufferedReader.close();
-	}
-	
-	public void failure(String report, String userId, String dataSent){
-		writer.println(new Record(report + " Report Submission",new Date(),userId, Status.Failure,dataSent));
-	}
-	
-	public void success(String report, String userId, String dataSent){
-		writer.println(new Record(report + " Report Submission",new Date(),userId, Status.Success,dataSent));
 	}
 	
 	public enum Status {
@@ -66,23 +63,33 @@ public class SubmissionLog {
 	}
 	
 	public static class Record {
+		
+		final static String HEADER = "Event,Time,User,Comment,Status,DataFile";
+		
 		String event;
+		
 		Date time;
+		
 		String userId;
+		
+		String comment;
+		
 		Status status;
+		
 		String dataFile;
 		
-		public Record(String event, Date time, String userId, Status status, String dataFile) {
+		public Record(String event, Date time, String userId, String comment, Status status, String dataFile) {
 			this.event = event;
 			this.time = time;
 			this.userId = userId;
+			this.comment = comment;
 			this.status = status;
 			this.dataFile = dataFile;
 		}
 		
 		@Override
 		public String toString() {
-			return event + ',' + time + ',' + userId + ',' + status + ',' + dataFile;
+			return event + ',' + time + ',' + userId + ',' + comment + ',' + status + ',' + dataFile;
 		}
 	}
 }

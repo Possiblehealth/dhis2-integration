@@ -1,6 +1,6 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
 var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
-var submitUrl = '/dhis-integration/submit-to-dhis?name=NAME&year=YEAR&month=MONTH';
+var submitUrl = '/dhis-integration/submit-to-dhis';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
@@ -26,7 +26,8 @@ var years = range(supportedStartDate, supportedEndDate);
 $(document).ready(function () {
     isAuthenticated()
         .then(renderPrograms)
-        .then(selectApproxLatestNepaliYear);
+        .then(selectApproxLatestNepaliYear)
+        .then(registerOnchangeOnComment);
 });
 
 function isAuthenticated() {
@@ -81,22 +82,24 @@ function download(index) {
     return false;
 }
 function submit(index) {
-    var year = element('year',index).val();
-    var month = element('month',index).val();
-    var programName = element('program-name',index).html();
-    var url = submitUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
+    var year = element('year', index).val();
+    var month = element('month', index).val();
+    var programName = element('program-name', index).html();
+    var comment = element('comment', index).val();
+    var parameters = {
+        year: year,
+        month: month,
+        name: programName,
+        comment: comment
+    };
 
-    element('submit',index)
-        .attr('disabled',true)
-        .addClass('btn-disabled');
-    $.get(url).done(function(data){
+    disableBtn(element('submit', index));
+    $.get(submitUrl, parameters).done(function (data) {
         console.log(data);
-    }).fail(function(data){
+    }).fail(function (data) {
         console.log(data.responseText);
-    }).always(function(){
-        element('submit',index)
-            .attr('disabled',false)
-            .removeClass('btn-disabled');
+    }).always(function () {
+        enableBtn(element('submit', index));
     });
 }
 function confirmAndSubmit(index) {
@@ -107,4 +110,24 @@ function confirmAndSubmit(index) {
 function element(name,index){
     var id = name +'-' + index;
     return $('[id="'+id+'"]');
+}
+function enableBtn(btn){
+    return btn.attr('disabled', false).removeClass('btn-disabled');
+}
+function disableBtn(btn){
+    return btn.attr('disabled', true).addClass('btn-disabled');
+}
+function disableAllSubmitBtns(){
+    disableBtn($("[id*='submit-']"));
+}
+function registerOnchangeOnComment(){
+    disableAllSubmitBtns();
+    $("[id*='comment-']").on('change keyup paste',function(event){
+        var index = $(event.target).attr('index');
+        if($(event.target).val().trim()!=""){
+            enableBtn(element('submit',index));
+        } else {
+            disableBtn(element('submit',index));
+        }
+    });
 }

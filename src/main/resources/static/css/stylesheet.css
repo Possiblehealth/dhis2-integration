@@ -162,3 +162,8 @@ a.header-link {
 a.header-link:hover {
     opacity: 0.7;
 }
+.mandate-comment::before {
+    content: "*";
+    color: #ff4444;
+    font-size: 11px;
+}
