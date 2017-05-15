@@ -36,6 +36,6 @@ public class Properties {
 	@Value("${log4j.config.file}")
 	public String log4jConfigFile;
 	
-	@Value("${submission.log.file}")
-	public String submissionLogFileName;
+	@Value("${submission.audit.folder}")
+	public String submissionAuditFolder;
 }

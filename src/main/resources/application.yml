@@ -11,4 +11,4 @@ openmrs.db.url: jdbc:mysql://localhost.localdomain/openmrs?user=dbuser&password=
 log4j.config.file: log4j.properties
 server.port: 8040
 server.context-path: /dhis-integration/
-submission.log.file: /dhis-integration-data/dhis-submission.log
+submission.audit.folder: /dhis-integration-data

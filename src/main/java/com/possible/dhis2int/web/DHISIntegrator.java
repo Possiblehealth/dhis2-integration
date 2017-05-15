@@ -1,8 +1,8 @@
 package com.possible.dhis2int.web;
 
+import static com.possible.dhis2int.audit.Submission.Status.Failure;
 import static com.possible.dhis2int.web.Cookies.BAHMNI_USER;
 import static com.possible.dhis2int.web.Messages.CONFIG_FILE_NOT_FOUND;
-import static com.possible.dhis2int.web.Messages.DHIS_RETURNED_NON_OK_STATUS_CODE;
 import static com.possible.dhis2int.web.Messages.DHIS_SUBMISSION_FAILED;
 import static com.possible.dhis2int.web.Messages.FILE_READING_EXCEPTION;
 import static com.possible.dhis2int.web.Messages.REPORT_DOWNLOAD_FAILED;
@@ -33,12 +33,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.possible.dhis2int.audit.Submission;
+import com.possible.dhis2int.audit.Submission.Status;
+import com.possible.dhis2int.audit.SubmittedDataStore;
 import com.possible.dhis2int.db.DatabaseDriver;
 import com.possible.dhis2int.Properties;
 import com.possible.dhis2int.date.DateConverter;
 import com.possible.dhis2int.date.ReportDateRange;
 import com.possible.dhis2int.dhis.DHISClient;
-import com.possible.dhis2int.log.SubmissionLog;
+import com.possible.dhis2int.audit.SubmissionLog;
 import com.possible.dhis2int.db.Results;
 
 @RestController
@@ -58,13 +61,16 @@ public class DHISIntegrator {
 	
 	private final SubmissionLog submissionLog;
 	
+	private final SubmittedDataStore submittedDataStore;
+	
 	@Autowired
 	public DHISIntegrator(DHISClient dHISClient, DatabaseDriver databaseDriver, Properties properties,
-	                      SubmissionLog submissionLog) {
+	                      SubmissionLog submissionLog, SubmittedDataStore submittedDataStore) {
 		this.dHISClient = dHISClient;
 		this.databaseDriver = databaseDriver;
 		this.properties = properties;
 		this.submissionLog = submissionLog;
+		this.submittedDataStore = submittedDataStore;
 	}
 	
 	@RequestMapping(path = "/is-logged-in")
@@ -73,30 +79,34 @@ public class DHISIntegrator {
 	}
 	
 	@RequestMapping(path = "/submit-to-dhis")
-	public String submitToDHIS(@RequestParam("name") String program,
+	public Status submitToDHIS(@RequestParam("name") String program,
 	                           @RequestParam("year") Integer year,
 	                           @RequestParam("month") Integer month,
 	                           @RequestParam("comment") String comment,
 	                           HttpServletRequest clientReq,
-	                           HttpServletResponse clientRes) {
+	                           HttpServletResponse clientRes) throws IOException {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
+		Submission submission = new Submission();
+		String filePath = submittedDataStore.getAbsolutePath(submission);
+		Status status;
 		try {
-			ResponseEntity<String> DHISResponse = submitToDHIS(program, year, month);
-			String responseBody = validateSubmission(DHISResponse);
-			submissionLog.success(program, userName, comment, responseBody);
-			return responseBody;
+			submitToDHIS(submission, program, year, month);
+			status = submission.getStatus();
 		}
 		catch (DHISIntegratorException e) {
+			status = Failure;
+			submission.setException(e);
 			logger.error(DHIS_SUBMISSION_FAILED, e);
 			clientRes.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			submissionLog.failure(program, userName, comment, DHIS_SUBMISSION_FAILED);
-			return DHIS_SUBMISSION_FAILED;
 		}
+		submittedDataStore.write(submission);
+		submissionLog.log(program, userName, comment, status, filePath);
+		return status;
 	}
 	
 	@RequestMapping(path = "/submission-log/download", produces = "text/csv")
 	public FileSystemResource downloadSubmissionLog(HttpServletResponse response) throws FileNotFoundException {
-		response.setHeader("Content-Disposition", "attachment; filename=" + submissionLog.getFileNameTimeStamp());
+		response.setHeader("Content-Disposition", "attachment; filename=" + submissionLog.getDownloadFileName());
 		return submissionLog.getFile();
 	}
 	
@@ -121,17 +131,7 @@ public class DHISIntegrator {
 		}
 	}
 	
-	private String validateSubmission(ResponseEntity<String> submissionRes)
-			throws DHISIntegratorException {
-		if (submissionRes.getStatusCodeValue() != 200) {
-			throw new DHISIntegratorException(
-					format(DHIS_RETURNED_NON_OK_STATUS_CODE, submissionRes.getStatusCodeValue(), submissionRes.getBody()));
-		}
-		JSONObject submissionResBody = new JSONObject(new JSONTokener(submissionRes.getBody()));
-		return null;
-	}
-	
-	private ResponseEntity<String> submitToDHIS(String name, Integer year, Integer month) throws DHISIntegratorException {
+	private Submission submitToDHIS(Submission submission, String name, Integer year, Integer month) throws DHISIntegratorException {
 		JSONObject reportConfig = getConfig(properties.reportsJson);
 		List<JSONObject> childReports = jsonArrayToList(reportConfig.getJSONObject(name).getJSONObject("config")
 				.getJSONArray("reports"));
@@ -144,7 +144,10 @@ public class DHISIntegrator {
 		programDataValueSet.put("dataValues", programDataValue);
 		programDataValueSet.put("period", format("%d%02d", year, month));
 		
-		return dHISClient.post(SUBMISSION_ENDPOINT, programDataValueSet);
+		ResponseEntity<String> responseEntity = dHISClient.post(SUBMISSION_ENDPOINT, programDataValueSet);
+		submission.setPostedData(programDataValueSet);
+		submission.setResponse(responseEntity);
+		return submission;
 	}
 	
 	private JSONObject getConfig(String configFile) throws DHISIntegratorException {

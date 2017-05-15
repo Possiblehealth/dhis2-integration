@@ -1,4 +1,4 @@
-package com.possible.dhis2int.log;
+package com.possible.dhis2int.audit;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,25 +15,28 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
 import com.possible.dhis2int.Properties;
+import com.possible.dhis2int.audit.Submission.Status;
 
 @Service
 public class SubmissionLog {
 	
 	private final File logFile;
 	
-	private final String FILE_NAME = "'DHIS2_submission_log' dd-MM-yyyy HH-mm'.csv'";
+	private final String DOWNLOAD_FILE_NAME = "'DHIS2_submission_log' dd-MM-yyyy HH-mm'.csv'";
+	
+	private final String LOG_FILE_NAME = "dhis-submission.log";
 	
 	private PrintWriter writer;
 	
 	@Autowired
 	public SubmissionLog(Properties properties) throws IOException {
-		logFile = new File(properties.submissionLogFileName);
+		logFile = new File(properties.submissionAuditFolder+'/'+ LOG_FILE_NAME);
 		writer = new PrintWriter(new FileWriter(logFile, true), true);
 		ensureHeaderExists();
 	}
 	
-	public String getFileNameTimeStamp() {
-		return DateTimeFormat.forPattern(FILE_NAME).print(new DateTime());
+	public String getDownloadFileName() {
+		return DateTimeFormat.forPattern(DOWNLOAD_FILE_NAME).print(new DateTime());
 	}
 	
 	public FileSystemResource getFile() {
@@ -44,8 +47,8 @@ public class SubmissionLog {
 		writer.println(new Record(report + " Report Submission", new Date(), userId, comment, Status.Failure, dataSent));
 	}
 	
-	public void success(String report, String userId, String comment, String dataSent) {
-		writer.println(new Record(report + " Report Submission", new Date(), userId, comment, Status.Success, dataSent));
+	public void log(String report, String userId, String comment, Status status, String dataSent) {
+		writer.println(new Record(report + " Report Submission", new Date(), userId, comment, status, dataSent));
 	}
 	
 	private void ensureHeaderExists() throws IOException {
@@ -55,11 +58,6 @@ public class SubmissionLog {
 			writer.println(Record.HEADER);
 		}
 		bufferedReader.close();
-	}
-	
-	public enum Status {
-		Success,
-		Failure
 	}
 	
 	public static class Record {
