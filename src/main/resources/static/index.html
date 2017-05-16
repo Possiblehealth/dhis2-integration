@@ -36,6 +36,9 @@
         <div class="submit">
 
         </div>
+        <div class="status">
+            Status
+        </div>
     </div>
 
     <div id="programs">
@@ -44,6 +47,14 @@
 
 <script src="bower_components/jquery.min/index.js"></script>
 <script src="bower_components/mustache.min/index.js"></script>
+<script id="failure-status-template" type="x-tmpl-mustache">
+    <u class="status-failure" onclick='alert({{message}}); console.log({{message}})'>
+        <b>Failure</b>
+    </u>
+</script>
+<script id="success-status-template" type="x-tmpl-mustache">
+    <b class="status-success">Success</b>
+</script>
 <script src="js/init.js"></script>
 </body>
 </html>

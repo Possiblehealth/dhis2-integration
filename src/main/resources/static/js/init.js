@@ -70,10 +70,19 @@ function getDHISPrograms() {
         return DHISPrograms;
     });
 }
+function putStatus(data, index) {
+    if (data.status == 'Success') {
+        return element('status', index).html($('#success-status-template').html());
+    }
+    var template = $('#failure-status-template').html();
+    Mustache.parse(template);
+    data.message = JSON.stringify(data.exception || data.response);
+    element('status', index).html(Mustache.render(template, data));
+}
 function download(index) {
-    var year = $('[id="year-'+index+'"]').val();
-    var month = $('[id="month-'+index+'"]').val();
-    var programName = $('[id="program-name-'+index+'"]').html();
+    var year = element('year', index).val();
+    var month = element('month', index).val();
+    var programName = element('program-name', index).html();
     var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
     var a = document.createElement('a');
     a.href = url;
@@ -95,9 +104,9 @@ function submit(index) {
 
     disableBtn(element('submit', index));
     $.get(submitUrl, parameters).done(function (data) {
-        console.log(data);
-    }).fail(function (data) {
-        console.log(data.responseText);
+        putStatus(JSON.parse(data), index);
+    }).fail(function (error) {
+        putStatus({status:'Failure',exception:error}, index);
     }).always(function () {
         enableBtn(element('submit', index));
     });

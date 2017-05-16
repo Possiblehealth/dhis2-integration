@@ -79,7 +79,7 @@ public class DHISIntegrator {
 	}
 	
 	@RequestMapping(path = "/submit-to-dhis")
-	public Status submitToDHIS(@RequestParam("name") String program,
+	public String submitToDHIS(@RequestParam("name") String program,
 	                           @RequestParam("year") Integer year,
 	                           @RequestParam("month") Integer month,
 	                           @RequestParam("comment") String comment,
@@ -97,11 +97,10 @@ public class DHISIntegrator {
 			status = Failure;
 			submission.setException(e);
 			logger.error(DHIS_SUBMISSION_FAILED, e);
-			clientRes.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 		submittedDataStore.write(submission);
 		submissionLog.log(program, userName, comment, status, filePath);
-		return status;
+		return submission.getInfo();
 	}
 	
 	@RequestMapping(path = "/submission-log/download", produces = "text/csv")

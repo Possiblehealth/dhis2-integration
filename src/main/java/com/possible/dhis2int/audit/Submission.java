@@ -29,7 +29,7 @@ public class Submission {
 	
 	public String toString() {
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("response",response.getBody());
+		jsonObject.put("response", response==null? null: response.getBody());
 		jsonObject.put("exception",exception);
 		jsonObject.put("request",postedData);
 		return jsonObject.toString(INDENT_FACTOR);
@@ -56,7 +56,7 @@ public class Submission {
 	}
 	
 	public Status getStatus() {
-		if (response.getStatusCodeValue() != 200) {
+		if (response==null || response.getStatusCodeValue() != 200) {
 			return Status.Failure;
 		}
 		JSONObject responseBody;
@@ -74,6 +74,14 @@ public class Submission {
 	
 	public void setException(DHISIntegratorException exception) {
 		this.exception = exception;
+	}
+	
+	public String getInfo() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("status",getStatus());
+		jsonObject.put("exception",exception);
+		jsonObject.put("response", response==null? null: response.getBody());
+		return jsonObject.toString(INDENT_FACTOR);
 	}
 	
 	private boolean hasConflicts(JSONObject responseBody) {
