@@ -31,9 +31,13 @@ $(document).ready(function () {
 });
 
 function isAuthenticated() {
-    return $.get("is-logged-in").then(function(status){
-        if(status!='Logged in'){
+    return $.get("is-logged-in").then(function(response){
+        if(response!='Logged in'){
             window.location.href = loginRedirectUrl + window.location.href;
+        }
+    }).fail(function(response){
+        if(response && response.status != 200){
+            window.location.href = loginRedirectUrl;
         }
     });
 }
@@ -78,6 +82,10 @@ function putStatus(data, index) {
     Mustache.parse(template);
     data.message = JSON.stringify(data.exception || data.response);
     element('status', index).html(Mustache.render(template, data));
+    element('status', index).find('.status-failure').on('click', function(){
+        alert(data.message);
+        console.log(data.message);
+    });
 }
 function download(index) {
     var year = element('year', index).val();
@@ -105,8 +113,11 @@ function submit(index) {
     disableBtn(element('submit', index));
     $.get(submitUrl, parameters).done(function (data) {
         putStatus(JSON.parse(data), index);
-    }).fail(function (error) {
-        putStatus({status:'Failure',exception:error}, index);
+    }).fail(function (response) {
+        if(response.status == 403){
+            putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
+        }
+        putStatus({status:'Failure', exception: response}, index);
     }).always(function () {
         enableBtn(element('submit', index));
     });
