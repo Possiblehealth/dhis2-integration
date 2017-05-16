@@ -11,7 +11,7 @@ import com.possible.dhis2int.web.DHISIntegratorException;
 
 public class Submission {
 	
-	public static final String FILE_NAME = "'data_submitted_on_'yyyyMMddHHmm'.json'";
+	public static final String FILE_NAME = "'data_submitted_on_'yyyyMMddHHmmss'.json'";
 	
 	private final String fileName;
 	
