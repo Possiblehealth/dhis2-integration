@@ -22,10 +22,14 @@ public class DatabaseDriver {
 		this.properties = properties;
 	}
 	
-	public Results executeQuery(String formattedSql) throws DHISIntegratorException {
+	public Results executeQuery(String formattedSql, String type) throws DHISIntegratorException {
 		Connection connection = null;
 		try {
+
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			if("ElisGeneric".equalsIgnoreCase(type)) {
+				connection = DriverManager.getConnection(properties.openelisDBUrl);
+			}
 			ResultSet resultSet = connection.createStatement().executeQuery(formattedSql);
 			return Results.create(resultSet);
 		}

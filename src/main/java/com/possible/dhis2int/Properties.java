@@ -27,6 +27,9 @@ public class Properties {
 	@Value("${openmrs.db.url}")
 	public String openmrsDBUrl;
 	
+	@Value("${openelis.db.url}")
+	public String openelisDBUrl;
+	
 	@Value("${dhis.password}")
 	public String dhisPassword;
 	

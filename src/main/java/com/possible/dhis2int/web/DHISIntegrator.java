@@ -130,10 +130,27 @@ public class DHISIntegrator {
 		}
 	}
 	
-	private Submission submitToDHIS(Submission submission, String name, Integer year, Integer month) throws DHISIntegratorException {
+	private Submission submitToDHIS(Submission submission, String name, Integer year, Integer month) throws DHISIntegratorException, JSONException {
 		JSONObject reportConfig = getConfig(properties.reportsJson);
-		List<JSONObject> childReports = jsonArrayToList(reportConfig.getJSONObject(name).getJSONObject("config")
-				.getJSONArray("reports"));
+		
+		List<JSONObject> childReports = new ArrayList<JSONObject>();
+		
+		if("ElisGeneric".equalsIgnoreCase(reportConfig.getJSONObject(name).getString("type"))){
+			JSONObject reportObj = new JSONObject();
+			reportObj.put("name", reportConfig.getJSONObject(name).getString("name"));
+			reportObj.put("type", reportConfig.getJSONObject(name).getString("type"));
+			
+			JSONObject configObj = new JSONObject();
+			configObj.put("sqlPath", reportConfig.getJSONObject(name).getJSONObject("config").get("sqlPath"));
+			
+			reportObj.put("config", configObj);
+			childReports.add(reportObj);
+			
+		}else {
+			childReports = jsonArrayToList(reportConfig.getJSONObject(name).getJSONObject("config")
+					.getJSONArray("reports"));
+		}
+		
 		JSONObject dhisConfig = getDHISConfig(name);
 		ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
 		List programDataValue = getProgramDataValues(childReports, dhisConfig.getJSONObject("reports"), dateRange);
@@ -158,10 +175,10 @@ public class DHISIntegrator {
 		}
 	}
 	
-	private Results getResult(String sql, ReportDateRange dateRange) throws DHISIntegratorException {
+	private Results getResult(String sql, String type, ReportDateRange dateRange) throws DHISIntegratorException {
 		String formattedSql = sql.replaceAll("#startDate#", dateRange.getStartDate()).replaceAll("#endDate#",
 				dateRange.getEndDate());
-		return databaseDriver.executeQuery(formattedSql);
+		return databaseDriver.executeQuery(formattedSql, type);
 	}
 	
 	private String getContent(String filePath) throws DHISIntegratorException {
@@ -195,7 +212,8 @@ public class DHISIntegrator {
 			return dataValues;
 		}
 		String sqlPath = report.getJSONObject("config").getString("sqlPath");
-		Results results = getResult(getContent(sqlPath), dateRange);
+		String type = report.getString("type");
+		Results results = getResult(getContent(sqlPath), type, dateRange);
 		for (Object dataValue_ : dataValues) {
 			JSONObject dataValue = (JSONObject) dataValue_;
 			updateDataElements(results, dataValue);
