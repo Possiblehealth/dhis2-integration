@@ -1,0 +1,94 @@
+#!/bin/bash
+#
+# dhis-integration         start/stop/status script
+#
+# chkconfig:  2345 64 36
+# description: Console service for dhis-integration
+# processname: dhis-integration
+# config: /etc/dhis-integration
+
+DHIS_INTEGRATION_USER='bahmni'
+
+dhisIntegrationPid() {
+    echo `ps -fe | grep 'dhis-integration*.jar' | grep -v grep | tr -s " "|cut -d" " -f2`
+}
+
+start(){
+    pid=$(dhisIntegrationPid)
+    if [ -n "$pid" ]
+    then
+        echo -e "\e[00;31mService dhis-integration is already running (pid: $pid)\e[00m"
+    else
+        /bin/su -s /bin/bash ${DHIS_INTEGRATION_USER} /opt/dhis-integration/bin/start.sh
+        echo -e "\e[00;32mStarting dhis-integration\e[00m"
+    fi
+    return 0
+}
+
+debug() {
+    pid=$(dhisIntegrationPid)
+    if [ -n "$pid" ]
+    then
+        echo -e "\e[00;31mService dhis-integration is already running (pid: $pid)\e[00m"
+    else
+        /bin/su -s /bin/bash ${DHIS_INTEGRATION_USER} /opt/dhis-integration/bin/debug.sh
+        echo -e "\e[00;32mStarting dhis-integration in debug mode\e[00m"
+    fi
+    return 0
+}
+status() {
+    pid=$(dhisIntegrationPid)
+    if [ -n "$pid" ];
+    then
+        echo -e "\e[00;32mdhis-integration is running with pid: $pid\e[00m"
+        exit 0
+    else
+        echo -e "\e[00;31mdhis-integration is not running\e[00m"
+        exit 3
+    fi
+}
+
+stop() {
+    pid=$(dhisIntegrationPid)
+    if [ -n "$pid" ];
+    then
+        echo -e "\e[00;31mTerminating dhis-integration\e[00m"
+        kill -9 ${pid}
+    else
+        echo -e "\e[00;31mdhis-integration is not running\e[00m"
+    fi
+    return
+}
+
+log() {
+    if [ -e /opt/dhis-integration/var/log/dhis-integration.log ];
+    then
+        tail -f /opt/dhis-integration/var/log/dhis-integration.log
+    fi
+    exit 0
+}
+
+case "$1" in
+    start)
+        start
+    ;;
+    stop)
+        stop
+    ;;
+    debug)
+        debug
+    ;;
+    restart)
+        stop
+        start
+    ;;
+    status)
+        status
+    ;;
+    kill)
+        stop
+    ;;
+    log)
+        log
+    ;;
+esac
