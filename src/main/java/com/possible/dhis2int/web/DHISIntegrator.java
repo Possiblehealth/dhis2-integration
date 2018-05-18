@@ -207,9 +207,8 @@ public class DHISIntegrator {
 		JSONArray dataValues = new JSONArray();
 		try {
 			dataValues = reportDHISConfigs.getJSONObject(report.getString("name")).getJSONArray("dataValues");
-		}
-		catch (JSONException e) {
-			return dataValues;
+		} catch (JSONException e) {
+			throw new DHISIntegratorException(e.getMessage(), e);		
 		}
 		String sqlPath = report.getJSONObject("config").getString("sqlPath");
 		String type = report.getString("type");

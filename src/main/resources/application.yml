@@ -7,7 +7,7 @@ dhis.url: dhisinstanceurl
 dhis.user: user
 dhis.password: password
 openmrs.db.url: jdbc:mysql://localhost.localdomain/openmrs?user=dbuser&password=dbpassword
-
+openelis.db.url: jdbc:mysql://localhost.localdomain/openmrs?user=dbuser&password=dbpassword
 log4j.config.file: log4j.properties
 server.port: 8040
 server.context-path: /dhis-integration/
