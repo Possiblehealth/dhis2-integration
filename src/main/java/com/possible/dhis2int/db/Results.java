@@ -25,4 +25,8 @@ public class Results {
 	public String get(Integer row, Integer column) {
 		return rows.get(row - 1).get(column - 1);
 	}
+	
+	public List<List<String>> getRows() {
+		return rows;
+	}
 }

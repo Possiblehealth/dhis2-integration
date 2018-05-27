@@ -7,8 +7,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.springframework.http.ResponseEntity;
 
-import com.possible.dhis2int.web.DHISIntegratorException;
-
 public class Submission {
 	
 	public static final String FILE_NAME = "'data_submitted_on_'yyyyMMddHHmmss'.json'";
@@ -19,7 +17,9 @@ public class Submission {
 	
 	private ResponseEntity<String> response;
 	
-	private DHISIntegratorException exception;
+	private Exception exception;
+
+	private Status status;
 	
 	private final static Integer INDENT_FACTOR = 1;
 	
@@ -27,7 +27,7 @@ public class Submission {
 		this.fileName = DateTimeFormat.forPattern(FILE_NAME).print(new DateTime());
 	}
 	
-	public String toString() {
+	public String toStrings() throws JSONException {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("response", response==null? null: response.getBody());
 		jsonObject.put("exception",exception);
@@ -55,7 +55,15 @@ public class Submission {
 		this.response = response;
 	}
 	
-	public Status getStatus() {
+	public void setStatus(Status stat) {
+		this.status = stat;
+	}
+	
+	public Status retrieveStatus() {
+		return status;
+	}
+	
+	public Status getStatus() throws JSONException {
 		if (response==null || response.getStatusCodeValue() != 200) {
 			return Status.Failure;
 		}
@@ -72,11 +80,11 @@ public class Submission {
 		return Status.Success;
 	}
 	
-	public void setException(DHISIntegratorException exception) {
+	public void setException(Exception exception) {
 		this.exception = exception;
 	}
 	
-	public String getInfo() {
+	public String getInfo() throws JSONException {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("status",getStatus());
 		jsonObject.put("exception",exception);
@@ -88,11 +96,11 @@ public class Submission {
 		return responseBody.has("conflicts");
 	}
 	
-	private boolean isIgnored(JSONObject responseBody) {
+	private boolean isIgnored(JSONObject responseBody) throws JSONException {
 		return responseBody.getJSONObject("importCount").getInt("ignored") > 0;
 	}
 	
-	private boolean isServerError(JSONObject responseBody) {
+	private boolean isServerError(JSONObject responseBody) throws JSONException {
 		return "ERROR".equals(responseBody.getString("status"));
 	}
 	

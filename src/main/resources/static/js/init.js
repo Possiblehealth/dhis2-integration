@@ -1,6 +1,6 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
 var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
-var submitUrl = '/dhis-integration/submit-to-dhis';
+var submitUrl = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;

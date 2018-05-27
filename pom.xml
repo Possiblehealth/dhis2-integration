@@ -63,11 +63,15 @@
 
 	<build>
 		<plugins>
+		
+		
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<addResources>true</addResources>
+<!-- 				   <outputDirectory>../../../bahmni/bahmni-vagrant/dhis2-integration/</outputDirectory>
+ -->					
 				</configuration>
 			</plugin>
 			<plugin>
@@ -76,6 +80,8 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+<!-- 			    <outputDirectory>../../../bahmni/bahmni-vagrant/dhis2-integration/</outputDirectory>
+ -->					
 				</configuration>
 			</plugin>
 			<plugin>
