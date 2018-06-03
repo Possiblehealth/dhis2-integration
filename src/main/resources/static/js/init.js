@@ -1,6 +1,7 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
 var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
-var submitUrl = '/dhis-integration/submit-to-dhis-atr';
+var submitUrl = '/dhis-integration/submit-to-dhis';
+var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr'
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
@@ -98,7 +99,7 @@ function download(index) {
     a.click();
     return false;
 }
-function submit(index) {
+function submit(index, attribute) {
     var year = element('year', index).val();
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
@@ -111,6 +112,9 @@ function submit(index) {
     };
 
     disableBtn(element('submit', index));
+    if(attribute == 'true'){
+    	submitUrl = submitUrlAtr;
+    }
     $.get(submitUrl, parameters).done(function (data) {
         putStatus(JSON.parse(data), index);
     }).fail(function (response) {
@@ -122,9 +126,9 @@ function submit(index) {
         enableBtn(element('submit', index));
     });
 }
-function confirmAndSubmit(index) {
+function confirmAndSubmit(index, attribute) {
     if (confirm("This action cannot be reversed. Are you sure, you want to submit?")) {
-        submit(index);
+        submit(index, attribute);
     }
 }
 function element(name,index){
