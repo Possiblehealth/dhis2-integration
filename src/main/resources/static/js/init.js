@@ -112,10 +112,11 @@ function submit(index, attribute) {
     };
 
     disableBtn(element('submit', index));
-    if(attribute == 'true'){
-    	submitUrl = submitUrlAtr;
+    var submitTo = submitUrl;
+    if(attribute == true){
+    	submitTo = submitUrlAtr;
     }
-    $.get(submitUrl, parameters).done(function (data) {
+    $.get(submitTo, parameters).done(function (data) {
         putStatus(JSON.parse(data), index);
     }).fail(function (response) {
         if(response.status == 403){

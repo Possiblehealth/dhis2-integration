@@ -116,12 +116,6 @@ public class DHISIntegrator {
 		Results results;
 		int i = 0;
 		try {
-
-			/*
-			 * if(!"true".equalsIgnoreCase(dhisConfig.getString("attribute"))){ //flow for
-			 * attributeOptionCombo }else { }
-			 */
-
 			JSONObject reportConfig = getConfig(properties.reportsJson);
 			List<JSONObject> childReports = jsonArrayToList(
 					reportConfig.getJSONObject(program).getJSONObject("config").getJSONArray("reports"));
@@ -141,25 +135,29 @@ public class DHISIntegrator {
 			}
 
 		} catch (DHISIntegratorException | JSONException | SQLException e) {
-			if(batchSubmission.size() > 0) {
+			if (batchSubmission.size() > 0) {
 				batchSubmission.get(i).setStatus(Failure);
 				batchSubmission.get(i).setException(e);
 			}
 			logger.error(e.getMessage(), e);
 			headSubmission.setException(e);
 		} finally {
-			submittedDataStore.write(batchSubmission);
 			Status status = Status.Failure;
-			for(Submission submit : batchSubmission) {
-				headSubmission =  submit;
-				if(Status.Failure.equals(submit.retrieveStatus())) {
-					status = Failure;
-					headSubmission = submit;
-					break;				
-				}
+			String filePathData = "No Data sent";
+			if (batchSubmission.size() > 0) {
+				filePathData = filePath;
+				submittedDataStore.write(batchSubmission, filePathData);
 				status = Status.Success;
+				for (Submission submit : batchSubmission) {
+					headSubmission = submit;
+					if (Status.Failure.equals(submit.retrieveStatus())) {
+						status = Failure;
+						headSubmission = submit;
+						break;
+					}
+				}
 			}
-			submissionLog.log(program, userName, comment, status, filePath);
+			submissionLog.log(program, userName, comment, status, filePathData);
 		}
 		return headSubmission.getInfo();
 	}

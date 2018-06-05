@@ -30,12 +30,8 @@ public class SubmittedDataStore {
 		return file.getAbsolutePath();
 	}
 	
-	public String write(List<Submission> submissions) throws IOException, JSONException {
-		Submission submission = new Submission();
-		if(submissions.size() > 0) {
-			submission = submissions.get(submissions.size()-1);
-		}
-		File file = new File(getAbsolutePath(submission));
+	public String write(List<Submission> submissions, String filePath) throws IOException, JSONException {
+		File file = new File(filePath);
 		FileWriter fileWriter = new FileWriter(file);
 		for (Submission submis : submissions) {
 			fileWriter.write(submis.toStrings());
