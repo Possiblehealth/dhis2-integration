@@ -169,11 +169,12 @@ public class DHISIntegrator {
 				numberOfFemalesMoreThanSix);
 
 	}
-	
+
 	@RequestMapping(path = "/submit-to-dhis")
 	public String submitToDHIS(@RequestParam("name") String program, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month, @RequestParam("comment") String comment, @RequestParam("isImam") Boolean isImam, HttpServletRequest clientReq,
-			HttpServletResponse clientRes) throws IOException, JSONException {
+			@RequestParam("month") Integer month, @RequestParam("comment") String comment,
+			@RequestParam("isImam") Boolean isImam, HttpServletRequest clientReq, HttpServletResponse clientRes)
+			throws IOException, JSONException {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		Submission submission = new Submission();
 		String filePath = submittedDataStore.getAbsolutePath(submission);
@@ -190,7 +191,7 @@ public class DHISIntegrator {
 			submission.setException(e);
 			logger.error(DHIS_SUBMISSION_FAILED, e);
 		}
-		
+
 		submittedDataStore.write(submission);
 		submissionLog.log(program, userName, comment, status, filePath);
 		return submission.getInfo();
@@ -286,7 +287,8 @@ public class DHISIntegrator {
 
 	@RequestMapping(path = "/download")
 	public void downloadReport(@RequestParam("name") String name, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month, @RequestParam("isImam") Boolean isImam, HttpServletResponse response) throws JSONException {
+			@RequestParam("month") Integer month, @RequestParam("isImam") Boolean isImam, HttpServletResponse response)
+			throws JSONException {
 		ReportDateRange reportDateRange = new DateConverter().getDateRange(year, month);
 		if (isImam != null && isImam) {
 			prepareImamReport(year, month);
@@ -328,7 +330,7 @@ public class DHISIntegrator {
 		JSONObject dhisConfig = getDHISConfig(name);
 		ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
 		List<Object> programDataValue = getProgramDataValues(childReports, dhisConfig.getJSONObject("reports"),
-				dateRange, year, month, name);
+				dateRange);
 
 		JSONObject programDataValueSet = new JSONObject();
 		programDataValueSet.put("orgUnit", dhisConfig.getString("orgUnit"));
@@ -364,13 +366,11 @@ public class DHISIntegrator {
 	}
 
 	private List<Object> getProgramDataValues(List<JSONObject> reportSqlConfigs, JSONObject reportDHISConfigs,
-			ReportDateRange dateRange, Integer year, Integer month, String programName)
-			throws DHISIntegratorException, JSONException, IOException {
+			ReportDateRange dateRange) throws DHISIntegratorException, JSONException, IOException {
 		ArrayList<Object> programDataValues = new ArrayList<>();
 
 		for (JSONObject report : reportSqlConfigs) {
-			JSONArray dataValues = getReportDataElements(reportDHISConfigs, dateRange, report, year, month,
-					programName);
+			JSONArray dataValues = getReportDataElements(reportDHISConfigs, dateRange, report);
 			programDataValues.addAll(jsonArrayToList(dataValues));
 		}
 		return programDataValues;
@@ -391,8 +391,7 @@ public class DHISIntegrator {
 		return programDataValues;
 	}
 
-	private JSONArray getReportDataElements(JSONObject reportDHISConfigs, ReportDateRange dateRange, JSONObject report,
-			Integer year, Integer month, String programName)
+	private JSONArray getReportDataElements(JSONObject reportDHISConfigs, ReportDateRange dateRange, JSONObject report)
 			throws DHISIntegratorException, JSONException, IOException {
 		JSONArray dataValues = new JSONArray();
 		try {
