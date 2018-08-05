@@ -1,8 +1,9 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
-var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
+var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM';
 var submitUrl = '/dhis-integration/submit-to-dhis';
-var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr'
+var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
+var NUTRITION_PROGRAM = '03-1 Nutrition Dataset Newly Registered And 03-2 Acute Malnutrition';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
@@ -92,7 +93,8 @@ function download(index) {
     var year = element('year', index).val();
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
-    var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
+    var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
+    var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month).replace('IS_IMAM', isImam);
     var a = document.createElement('a');
     a.href = url;
     a.target = '_blank';
@@ -104,11 +106,13 @@ function submit(index, attribute) {
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
     var comment = element('comment', index).val();
+    var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
     var parameters = {
         year: year,
         month: month,
         name: programName,
-        comment: comment
+        comment: comment,
+        isImam: isImam
     };
 
     disableBtn(element('submit', index));

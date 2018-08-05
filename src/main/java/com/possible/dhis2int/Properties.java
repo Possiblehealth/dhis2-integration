@@ -41,4 +41,7 @@ public class Properties {
 	
 	@Value("${submission.audit.folder}")
 	public String submissionAuditFolder;
+	
+	@Value("${dhis.imam.dataset.id}")
+	public String dhisImamDataSetId;
 }
