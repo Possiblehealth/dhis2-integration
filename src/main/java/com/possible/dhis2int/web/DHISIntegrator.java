@@ -68,9 +68,8 @@ public class DHISIntegrator {
 
 	private final SubmittedDataStore submittedDataStore;
 
-	private final String IMAM_PROGRAM_NAME = "03-1_Nutrition_Dataset_Newly_Registered_And_03-2_Acute_Malnutrition";
+	private final String IMAM_PROGRAM_NAME = "03-2_Nutrition_Acute_Malnutrition";
 	private final String IMAM = "Integrated Management of Acute Malnutrition (IMAM) Program";
-	private final String IMAM_REPORT_NAME = "03-1 Nutrition Dataset Newly Registered And 03-2 Acute Malnutrition";
 
 	@Autowired
 	public DHISIntegrator(DHISClient dHISClient, DatabaseDriver databaseDriver, Properties properties,
@@ -92,11 +91,9 @@ public class DHISIntegrator {
 		logger.info("Inside prepareImamReport method");
 
 		String imamDataSetId = properties.dhisImamDataSetId;
-		System.out.println(imamDataSetId);
 
 		JSONObject dhisConfig = (JSONObject) getDHISConfig(IMAM_PROGRAM_NAME);
 		String orgUnit = (String) dhisConfig.get("orgUnit");
-		System.out.println(orgUnit);
 
 		StringBuilder dhisRequestUrl = new StringBuilder(DHIS_GET_URL);
 		dhisRequestUrl.append("?dataSetId=").append(imamDataSetId).append("&organisationUnitId=").append(orgUnit)
@@ -108,7 +105,6 @@ public class DHISIntegrator {
 		dhisConfig = (JSONObject) dhisConfig.get("reports");
 
 		JSONArray dataValues = new JSONArray();
-		JSONArray filteredDataValues = new JSONArray();
 		dataValues = dhisConfig.getJSONObject(IMAM).getJSONArray("dataValues");
 		JSONArray fieldsFromDhis = new JSONArray();
 
@@ -119,9 +115,6 @@ public class DHISIntegrator {
 			JSONObject dataValue = (JSONObject) dataValue_;
 			if (dataValue.has("getElementBack") && dataValue.get("getElementBack") != null
 					&& (Boolean) dataValue.get("getElementBack")) {
-				System.out.println("\n\n Inside the value true.....");
-				System.out.println("categoryOptionCombo=>" + dataValue.get("categoryOptionCombo"));
-				System.out.println("dataElement=>" + dataValue.get("dataElement"));
 				String id = new StringBuilder().append(dataValue.get("dataElement")).append("-")
 						.append(dataValue.get("categoryOptionCombo")).toString();
 
@@ -135,20 +128,6 @@ public class DHISIntegrator {
 					}
 				}
 
-			}
-		}
-
-		JSONObject reportConfig = getConfig(properties.reportsJson);
-		List<JSONObject> childReports = jsonArrayToList(
-				reportConfig.getJSONObject(IMAM_REPORT_NAME).getJSONObject("config").getJSONArray("reports"));
-		String sqlPath = null;
-		for (JSONObject jsonObject : childReports) {
-			String programName = jsonObject.getString("name");
-			System.out.println(programName);
-			System.out.println(programName.contains("IMAM"));
-			if (programName.contains("IMAM")) {
-				sqlPath = jsonObject.getJSONObject("config").getString("sqlPath");
-				break;
 			}
 		}
 
@@ -404,7 +383,6 @@ public class DHISIntegrator {
 		Results results = getResult(getContent(sqlPath), type, dateRange);
 
 		for (Object dataValue_ : jsonArrayToList(dataValues)) {
-			System.out.println(dataValue_.toString());
 			JSONObject dataValue = (JSONObject) dataValue_;
 			updateDataElements(results, dataValue);
 		}

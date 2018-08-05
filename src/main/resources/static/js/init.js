@@ -3,7 +3,7 @@ var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&is
 var submitUrl = '/dhis-integration/submit-to-dhis';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
-var NUTRITION_PROGRAM = '03-1 Nutrition Dataset Newly Registered And 03-2 Acute Malnutrition';
+var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
