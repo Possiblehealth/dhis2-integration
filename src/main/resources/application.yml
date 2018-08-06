@@ -6,7 +6,7 @@ dhis.config.directory: /var/www/bahmni_config/dhis2/
 dhis.url: dhisinstanceurl
 dhis.user: user
 dhis.password: password
-openmrs.db.url: jdbc:mysql://localhost.localdomain/openmrs?user=dbuser&password=dbpassword
+openmrs.db.url: jdbc:mysql://localhost.localdomain/openmrs?user=root&password=password
 openelis.db.url: jdbc:mysql://localhost.localdomain/openmrs?user=dbuser&password=dbpassword
 log4j.config.file: log4j.properties
 server.port: 8040

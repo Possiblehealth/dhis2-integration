@@ -50,6 +50,10 @@ public class SubmissionLog {
 	public void log(String report, String userId, String comment, Status status, String dataSent) {
 		writer.println(new Record(report + " Report Submission", new Date(), userId, comment, status, dataSent));
 	}
+
+	public void logstatus(String report, String userId, String log, Status status, String comment) {
+		writer.println(new Recordlog(report + " Report Submission",new Date(),userId, comment, status, comment));
+	}
 	
 	private void ensureHeaderExists() throws IOException {
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(logFile));
@@ -84,10 +88,14 @@ public class SubmissionLog {
 			this.status = status;
 			this.dataFile = dataFile;
 		}
-		
 		@Override
 		public String toString() {
 			return event + ',' + time + ',' + userId + ',' + comment + ',' + status + ',' + dataFile;
 		}
+		
+			
+		
+		
 	}
+		
 }

@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,12 +33,16 @@ import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.possible.dhis2int.Properties;
+import com.possible.dhis2int.audit.Recordlog;
 import com.possible.dhis2int.audit.Submission;
 import com.possible.dhis2int.audit.Submission.Status;
 import com.possible.dhis2int.audit.SubmissionLog;
@@ -176,7 +182,45 @@ public class DHISIntegrator {
 
 		submittedDataStore.write(submission);
 		submissionLog.log(program, userName, comment, status, filePath);
+		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
+
 		return submission.getInfo();
+	}
+
+	@RequestMapping(path = "/submit-to-dhis_report_status")
+	public String submitToDHISLOG(@RequestParam("name") String program, @RequestParam("year") Integer year,
+			@RequestParam("month") Integer month, @RequestParam("comment") String comment, HttpServletRequest clientReq,
+			HttpServletResponse clientRes) throws IOException, JSONException {
+		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
+		Submission submission = new Submission();
+		Status status;
+		try {
+			submitToDHIS(submission, program, year, month);
+			status = submission.getStatus();
+		} catch (DHISIntegratorException | JSONException e) {
+			status = Failure;
+			submission.setException(e);
+			logger.error(DHIS_SUBMISSION_FAILED, e);
+		}
+		submittedDataStore.write(submission);
+
+		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
+		return submission.getInfo();
+	}
+
+	private String recordLog(String userName, String program, Integer year, Integer month, String log, Status status,
+			String comment) throws IOException, JSONException {
+		Date date = new Date();
+		Recordlog recordLog = new Recordlog(program, date, userName, log, status, comment);
+		databaseDriver.recordQueryLog(recordLog, month, year);
+		return "Saved";
+	}
+
+	@RequestMapping(path = "/log")
+	public String getLog(@RequestParam String programName, @RequestParam("year") Integer year,
+			@RequestParam("month") Integer month) throws SQLException {
+		logger.info("Inside getLog method");
+		return databaseDriver.getQuerylog(programName, month, year);
 	}
 
 	@RequestMapping(path = "/submit-to-dhis-atr")
@@ -232,6 +276,7 @@ public class DHISIntegrator {
 				}
 			}
 			submissionLog.log(program, userName, comment, status, filePathData);
+			recordLog(userName, program, year, month, comment, status, comment);
 		}
 		return headSubmission.getInfo();
 	}
