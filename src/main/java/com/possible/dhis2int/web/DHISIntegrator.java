@@ -167,9 +167,7 @@ public class DHISIntegrator {
 		if (isImam != null && isImam) {
 			prepareImamReport(year, month);
 		}
-		System.out.println("isImam==" + isImam);
 		try {
-			prepareImamReport(year, month);
 			submitToDHIS(submission, program, year, month);
 			status = submission.getStatus();
 			if (isImam != null && isImam)
