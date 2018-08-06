@@ -161,10 +161,13 @@ public class DHISIntegrator {
 		if (isImam != null && isImam) {
 			prepareImamReport(year, month);
 		}
+		System.out.println("isImam==" + isImam);
 		try {
 			prepareImamReport(year, month);
 			submitToDHIS(submission, program, year, month);
 			status = submission.getStatus();
+			if (isImam != null && isImam)
+				databaseDriver.dropImamTable();
 		} catch (DHISIntegratorException | JSONException e) {
 			status = Failure;
 			submission.setException(e);
