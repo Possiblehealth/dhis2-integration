@@ -44,17 +44,17 @@ textarea, select{
     width: 100%;
 }
 .programName{
-    flex: 3.8;
+    flex: 3;
     border-right: 1px #ccc solid;
-    padding: 5px 10px;
+    padding: 5px 8px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
 .monthOption{
-    flex: 1.4;
+    flex: 1.5;
     border-right: 1px #ccc solid;
-    padding: 5px 10px;
+    padding: 5px 8px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,33 +63,45 @@ textarea, select{
 .downloadButton{
     flex: 1.1;
     border-right: 1px #ccc solid;
-    padding: 5px 10px;
+    padding: 5px 8px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .comment{
-    flex: 2.8;
+    flex: 1.8;
     border-right: 1px #ccc solid;
-    padding: 5px 10px;
+    padding: 5px 8px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .submit{
-    flex: 1.4;
+    flex: 1.2;
     border-right: 1px #ccc solid;
-    padding: 5px 10px;
+    padding: 5px 8px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.status{
-    flex: 0.8;
-    padding: 5px 10px;
+.status, .prevstatus{
+    flex: 0.59;
+    border-right: 1px #ccc solid;
+    padding: 2px 8px;
     display: flex;
     justify-content: left;
     align-items: center;
+}
+.prevstatus {
+    flex: 1;
+}
+.pstatus{
+    flex: 1.071;
+    padding: 5px 5px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    /* display: none; */
 }
 
 .btn{
@@ -98,6 +110,21 @@ textarea, select{
     background-color: #88af28;
     border: #779b23 1px solid;
     padding: 6px 20px 7px;
+    display: inline-block;
+    line-height: 1.2em;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 12px;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+}
+.pbtn{
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #A1D030, #88af28);
+    background-color: #88af28;
+    border: #779b23 1px solid;
+    padding: 5px 10px 5px;
     display: inline-block;
     line-height: 1.2em;
     cursor: pointer;
@@ -159,7 +186,7 @@ textarea, select{
 }
 a.header-link {
     display: inline-block!important;
-    padding: 10px 15px 9px 15px;
+    padding: 10px 10px 9px 15px;
     border: 1px solid #476b6b;
     background: linear-gradient(to bottom, #669999, #527a7a);
     text-decoration: none;

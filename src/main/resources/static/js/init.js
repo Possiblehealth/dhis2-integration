@@ -3,6 +3,7 @@ var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
 var submitUrl = '/dhis-integration/submit-to-dhis';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr'
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
+var logUrl = '/dhis-integration/log';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
@@ -131,6 +132,26 @@ function confirmAndSubmit(index, attribute) {
     if (confirm("This action cannot be reversed. Are you sure, you want to submit?")) {
         submit(index, attribute);
     }
+}
+
+function getStatus(index) {
+	var programName = element('program-name', index).html();
+	console.log(programName)
+	
+	var parameters = {
+		programName: programName
+	};
+	
+	 $.get(logUrl, parameters).done(function (data) {
+	        putStatus(JSON.parse(data), index);
+	    }).fail(function (response) {
+	        if(response.status == 403){
+	            putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
+	        }
+	        putStatus({status:'Failure', exception: response}, index);
+	    }).always(function () {
+	        enableBtn(element('pstatus', index));
+	    });
 }
 function element(name,index){
     var id = name +'-' + index;

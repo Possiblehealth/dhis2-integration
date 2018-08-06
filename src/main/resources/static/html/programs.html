@@ -1,33 +1,39 @@
 {{#programs}}
 <div id="program-{{index}}" class="dhisContent">
-    <div id="program-name-{{index}}" class="programName">{{name}}</div>
-    <div class="monthOption">
-        <div class="select-style">
-            <select id="month-{{index}}">
-                {{#months}}
-                <option value="{{number}}">{{name}}</option>
-                {{/months}}
-            </select>
-        </div>
-        <div class="select-style">
-            <select id="year-{{index}}">
-                {{#years}}
-                <option value="{{.}}">{{.}}</option>
-                {{/years}}
-            </select>
-        </div>
-    </div>
-    <div class="downloadButton">
-        <input type="button" class="btn" onclick="download({{index}})" value="Download">
-    </div>
-    <div class="comment">
-        <textarea id="comment-{{index}}" index="{{index}}"></textarea>
-    </div>
-    <div class="submit">
-        <input id="submit-{{index}}" type="button" class="btn" onclick="confirmAndSubmit({{index}},{{attribute}})"
-               value="Submit to HMIS">
-    </div>
-    <div class="status" id="status-{{index}}" index="{{index}}">
-    </div>
+	<div id="program-name-{{index}}" class="programName">{{name}}</div>
+	<div class="monthOption">
+		<div class="select-style">
+			<select id="month-{{index}}"> {{#months}}
+				<option value="{{number}}">{{name}}</option> {{/months}}
+			</select>
+		</div>
+		<div class="select-style">
+			<select id="year-{{index}}"> {{#years}}
+				<option value="{{.}}">{{.}}</option> {{/years}}
+			</select>
+		</div>
+	</div>
+	<div class="downloadButton">
+		<input type="button" class="btn" onclick="download({{index}})"
+			value="Download">
+	</div>
+	<div class="comment">
+		<textarea id="comment-{{index}}" index="{{index}}"></textarea>
+	</div>
+	<div class="submit">
+		<input id="submit-{{index}}" type="button" class="btn"
+			onclick="confirmAndSubmit({{index}},{{attribute}})"
+			value="Submit to HMIS">
+	</div>
+
+	<div class="status" id="status-{{index}}" index="{{index}}"></div>
+	<!-- <div class="pstatus">
+		<input type="button" class="pbtn" onclick="getStatus({{index}})"
+			value="pstatus"> -->
+	<div class="pstatus" id="getStatus({{index}})" index="getStatus({{index}})"></div>
+
+	</div>
+</div>
+
 </div>
 {{/programs}}
