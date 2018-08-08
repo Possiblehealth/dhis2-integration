@@ -165,9 +165,13 @@ function getStatus(index) {
 	
 	 $.get(logUrl, parameters).done(function (data) {
 		 	data = JSON.parse(data);
-			 if (!$.isEmptyObject(data)) {
+			 if ($.isEmptyObject(data)) {
+				 console.log(element)
+				 element('comment', index).html('');
+				 element('status', index).html('');
+			 } else {
 				 putStatus(data, index);
-			 } 
+			 }
 	    }).fail(function (response) {
 	    	 console.log("failure response");
 	        if(response.status == 403){

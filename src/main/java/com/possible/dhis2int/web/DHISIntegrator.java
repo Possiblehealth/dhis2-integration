@@ -101,9 +101,17 @@ public class DHISIntegrator {
 		JSONObject dhisConfig = (JSONObject) getDHISConfig(IMAM_PROGRAM_NAME);
 		String orgUnit = (String) dhisConfig.get("orgUnit");
 
+		Integer prevMonth;
+		if (month == 1) {
+			year -= 1;
+			prevMonth = 12;
+		} else {
+			prevMonth = month - 1;
+		}
+
 		StringBuilder dhisRequestUrl = new StringBuilder(DHIS_GET_URL);
 		dhisRequestUrl.append("?dataSetId=").append(imamDataSetId).append("&organisationUnitId=").append(orgUnit)
-				.append("&multiOrganisationUnit=false").append("periodId=").append(year).append(month);
+				.append("&multiOrganisationUnit=false&").append("periodId=").append(year).append(prevMonth);
 
 		ResponseEntity<String> response = dHISClient.get(dhisRequestUrl.toString());
 		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
@@ -149,12 +157,12 @@ public class DHISIntegrator {
 		Integer numberOfFemalesMoreThanSix = valuesFromDhis.get("numberOfFemalesMoreThanSix") != null
 				? valuesFromDhis.get("numberOfFemalesMoreThanSix")
 				: 0;
-
+			
 		databaseDriver.createTempTable(numberOfMaleLessThanSix, numberOfFemalesLessThanSix, numberOfMalesMoreThanSix,
 				numberOfFemalesMoreThanSix);
 
 	}
-
+	
 	@RequestMapping(path = "/submit-to-dhis")
 	public String submitToDHIS(@RequestParam("name") String program, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("comment") String comment,
@@ -431,7 +439,6 @@ public class DHISIntegrator {
 		String sqlPath = report.getJSONObject("config").getString("sqlPath");
 		String type = report.getString("type");
 		Results results = getResult(getContent(sqlPath), type, dateRange);
-
 		for (Object dataValue_ : jsonArrayToList(dataValues)) {
 			JSONObject dataValue = (JSONObject) dataValue_;
 			updateDataElements(results, dataValue);
