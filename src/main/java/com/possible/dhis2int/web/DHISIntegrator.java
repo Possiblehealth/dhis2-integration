@@ -213,7 +213,7 @@ public class DHISIntegrator {
 			logger.error(DHIS_SUBMISSION_FAILED, e);
 		}
 		submittedDataStore.write(submission);
-
+		
 		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
 		return submission.getInfo();
 	}
@@ -221,7 +221,13 @@ public class DHISIntegrator {
 	private String recordLog(String userName, String program, Integer year, Integer month, String log, Status status,
 			String comment) throws IOException, JSONException {
 		Date date = new Date();
-		Recordlog recordLog = new Recordlog(program, date, userName, log, status, comment);
+		Status submissionStatus = status;
+		if (status == Status.Failure) {
+			submissionStatus = Status.Incomplete;
+		} else if (status == Status.Success) {
+			submissionStatus = Status.Complete;
+		}
+		Recordlog recordLog = new Recordlog(program, date, userName, log, submissionStatus, comment);
 		databaseDriver.recordQueryLog(recordLog, month, year);
 		return "Saved";
 	}

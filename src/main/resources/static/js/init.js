@@ -86,8 +86,11 @@ function getDHISPrograms() {
 
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
-    if (data.status == 'Success') {
-        return element('status', index).html($('#success-status-template').html());
+    if (data.status == 'Success' || data.status == 'Complete') {
+    	var template = $('#success-status-template').html();
+        Mustache.parse(template);
+        element('status', index).html(Mustache.render(template, data));
+        return;
     }
     var template = $('#failure-status-template').html();
     Mustache.parse(template);

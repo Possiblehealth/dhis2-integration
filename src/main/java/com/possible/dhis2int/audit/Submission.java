@@ -106,6 +106,8 @@ public class Submission {
 	
 	public enum Status {
 		Success,
-		Failure
+		Failure,
+		Complete,
+		Incomplete
 	}
 }

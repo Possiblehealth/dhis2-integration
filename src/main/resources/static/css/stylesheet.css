@@ -85,7 +85,7 @@ textarea, select{
     align-items: center;
 }
 .status, .prevstatus{
-    flex: 0.59;
+    flex: 1;
     border-right: 1px #ccc solid;
     padding: 2px 8px;
     display: flex;
