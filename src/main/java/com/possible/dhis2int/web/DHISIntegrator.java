@@ -108,10 +108,10 @@ public class DHISIntegrator {
 		} else {
 			prevMonth = month - 1;
 		}
-
+		String previousMonth = prevMonth < 10 ? String.format("%02d", prevMonth) : String.format("%2d", prevMonth);
 		StringBuilder dhisRequestUrl = new StringBuilder(DHIS_GET_URL);
 		dhisRequestUrl.append("?dataSetId=").append(imamDataSetId).append("&organisationUnitId=").append(orgUnit)
-				.append("&multiOrganisationUnit=false&").append("periodId=").append(year).append(prevMonth);
+				.append("&multiOrganisationUnit=false&").append("periodId=").append(year).append(previousMonth);
 
 		ResponseEntity<String> response = dHISClient.get(dhisRequestUrl.toString());
 		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
