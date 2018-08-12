@@ -172,10 +172,10 @@ public class DHISIntegrator {
 		Submission submission = new Submission();
 		String filePath = submittedDataStore.getAbsolutePath(submission);
 		Status status;
-		if (isImam != null && isImam) {
-			prepareImamReport(year, month);
-		}
 		try {
+			if (isImam != null && isImam) {
+				prepareImamReport(year, month);
+			}
 			submitToDHIS(submission, program, year, month);
 			status = submission.getStatus();
 			if (isImam != null && isImam)
@@ -194,27 +194,6 @@ public class DHISIntegrator {
 		submissionLog.log(program, userName, comment, status, filePath);
 		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
 
-		return submission.getInfo();
-	}
-
-	@RequestMapping(path = "/submit-to-dhis_report_status")
-	public String submitToDHISLOG(@RequestParam("name") String program, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month, @RequestParam("comment") String comment, HttpServletRequest clientReq,
-			HttpServletResponse clientRes) throws IOException, JSONException {
-		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
-		Submission submission = new Submission();
-		Status status;
-		try {
-			submitToDHIS(submission, program, year, month);
-			status = submission.getStatus();
-		} catch (DHISIntegratorException | JSONException e) {
-			status = Failure;
-			submission.setException(e);
-			logger.error(DHIS_SUBMISSION_FAILED, e);
-		}
-		submittedDataStore.write(submission);
-		
-		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
 		return submission.getInfo();
 	}
 
@@ -275,6 +254,7 @@ public class DHISIntegrator {
 			}
 			logger.error(e.getMessage(), e);
 			headSubmission.setException(e);
+			
 		} finally {
 			Status status = Status.Failure;
 			String filePathData = "No Data sent";

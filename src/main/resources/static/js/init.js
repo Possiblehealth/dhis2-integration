@@ -8,6 +8,7 @@ var logUrl = '/dhis-integration/log';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
+var spinner = spinner || {};
 
 var months = [
     {number: 12, name: "Chaitra"},
@@ -36,14 +37,17 @@ $(document).ready(function () {
 });
 
 function isAuthenticated() {
+//	spinner.show();
     return $.get("is-logged-in").then(function(response){
         if(response!='Logged in'){
             window.location.href = loginRedirectUrl + window.location.href;
         }
+//        spinner.hide();
     }).fail(function(response){
         if(response && response.status != 200){
             window.location.href = loginRedirectUrl;
         }
+//        spinner.hide();
     });
 }
 
@@ -54,7 +58,16 @@ function range(start, end) {
 }
 
 function selectApproxLatestNepaliYear() {
-    $('[id^="year-"]').val(approximateNepaliYear);
+	var date = new Date();
+	var bsDate = calendarFunctions.getBsDateByAdDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+	if (bsDate.bsMonth == 1) {
+		bsDate.bsYear = bsDate.bsYear - 1;
+		bsDate.bsMonth = 12;
+	} else {
+		bsDate.bsMonth = bsDate.bsMonth - 1;
+	}
+    $('[id^="year-"]').val(bsDate.bsYear);
+    $('[id^="month-"]').val(bsDate.bsMonth);
 }
 
 function renderPrograms() {
@@ -116,6 +129,7 @@ function download(index) {
 }
 
 function submit(index, attribute) {
+	spinner.show();
     var year = element('year', index).val();
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
@@ -146,6 +160,7 @@ function submit(index, attribute) {
         putStatus({status:'Failure', exception: response}, index);
     }).always(function () {
         enableBtn(element('submit', index));
+        spinner.hide();
     });
 }
 
@@ -165,23 +180,24 @@ function getStatus(index) {
 		month: month,
 		year: year
 	};
-	
-	 $.get(logUrl, parameters).done(function (data) {
-		 	data = JSON.parse(data);
-			 if ($.isEmptyObject(data)) {
-				 console.log(element)
-				 element('comment', index).html('');
-				 element('status', index).html('');
-			 } else {
-				 putStatus(data, index);
-			 }
-	    }).fail(function (response) {
-	    	 console.log("failure response");
-	        if(response.status == 403){
-	            putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
-	        }
-	        putStatus({status:'Failure', exception: response}, index);
-	    });
+	spinner.show();
+	$.get(logUrl, parameters).done(function (data) {
+		data = JSON.parse(data);
+		if ($.isEmptyObject(data)) {
+			element('comment', index).html('');
+			element('status', index).html('');
+		} else {
+			putStatus(data, index);
+		}
+	 }).fail(function (response) {
+		 console.log("failure response");
+	     if(response.status == 403){
+	    	 putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
+	     }
+	     putStatus({status:'Failure', exception: response}, index);
+	 }).always(function(){
+		 spinner.hide();
+	 })
 }
 
 function element(name,index){
@@ -213,8 +229,8 @@ function registerOnchangeOnComment(){
     });
 }
 
-function getLogStatus(){
+function getLogStatus() {
 	$('.month-selector').each(function(index) {
 		getStatus(index);
-   });
+	});
 }
