@@ -1,35 +1,64 @@
 {{#programs}}
 <div id="program-{{index}}" class="dhisContent">
 	<div id="program-name-{{index}}" class="programName">{{name}}</div>
+	
 	<div class="monthOption">
+		{{^isYearlyReport}}
+			<div class="select-style">
+				<select class="month-selector" id="month-{{index}}"
+					onchange="getStatus({{index}})"> 
+					{{#months}}
+						<option value="{{number}}">{{name}}</option> 
+					{{/months}}
+				</select>
+			</div>
+		
 		<div class="select-style">
-			<select class="month-selector" id="month-{{index}}" onchange="getStatus({{index}})"> {{#months}}
-				<option value="{{number}}">{{name}}</option> {{/months}}
+			<select class="year-selector" id="year-{{index}}"
+				onchange="getStatus({{index}})"> 
+				{{#years}}
+					<option value="{{.}}">{{.}}</option> 
+				{{/years}}
 			</select>
 		</div>
-		<div class="select-style">
-			<select class="year-selector" id="year-{{index}}" onchange="getStatus({{index}})"> {{#years}}
-				<option value="{{.}}">{{.}}</option> {{/years}}
+		{{/isYearlyReport}}
+		
+		{{#isYearlyReport}}
+			<div class="select-style">
+			<select class="year-selector" id="fiscal-year-{{index}}"> 
+				{{#years}}
+					<option value="{{.}}">{{.}}</option> 
+				{{/years}}
 			</select>
 		</div>
+		{{/isYearlyReport}}
+		
 	</div>
-	<div class="downloadButton">
-		<input type="button" class="btn" onclick="download({{index}})"
-			value="Download">
-	</div>
-	<div class="comment">
-		<textarea id="comment-{{index}}" index="{{index}}"></textarea>
-	</div>
-	<div class="submit">
-		<input id="submit-{{index}}" type="button" class="btn"
-			onclick="confirmAndSubmit({{index}},{{attribute}})"
-			value="Submit to HMIS">
-	</div>
-
-	<div class="status" id="status-{{index}}" index="{{index}}"></div>
-
-	</div>
-</div>
-
+	
+		{{^isYearlyReport}}
+		<div class="downloadButton">
+			<input type="button" class="btn" onclick="download({{index}})"
+				value="Download">
+		</div>
+		<div class="comment">
+			<textarea id="comment-{{index}}" index="{{index}}"></textarea>
+		</div>
+		
+		<div class="submit">
+			<input id="submit-{{index}}" type="button" class="btn"
+					onclick="confirmAndSubmit({{index}},{{attribute}})"
+					value="Submit to HMIS">
+		</div>
+		
+		<div class="status" id="status-{{index}}" index="{{index}}"></div>
+		{{/isYearlyReport}}
+	
+		{{#isYearlyReport}}
+		<div class="downloadButton">
+			<input type="button" class="btn" onclick="downloadFiscalYearReport({{index}})"
+				value="Download">
+		</div>
+		{{/isYearlyReport}}
+	
 </div>
 {{/programs}}

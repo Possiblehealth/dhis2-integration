@@ -1,64 +1,85 @@
 <html>
 <head>
-    <title>Dhis Integration</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
-    <link rel="stylesheet" href="css/stylesheet.css">
-    <link rel="stylesheet" href="bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
+<title>Dhis Integration</title>
+<link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
+<link rel="stylesheet"
+	href="bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
+<link rel="stylesheet"
+	href="bower_components/jquery-ui/themes/base/jquery-ui.min.css">
+<link rel="stylesheet" href="css/stylesheet.css">
+<script src="bower_components/jquery.min/index.js"></script>
+<script src="bower_components/mustache.min/index.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!-- <script>
+	$(function() {
+		$("#tabs").tabs();
+	});
+</script> -->
 </head>
 <body>
 
-<div class="header">
-    <div class="dhisTitleWrapper">
-        <div class="home">
-            <a href="/bahmni/home" class="btn header-link">Home</a>
-        </div>
-        <div class="log">
-            <a href="/dhis-integration/submission-log/download" class="btn header-link">Download log</a>
-        </div>
-    </div>
-</div>
+	<div class="header">
+		<div class="dhisTitleWrapper">
+			<div class="home">
+				<a href="/bahmni/home" class="btn header-link">Home</a>
+			</div>
+			<div class="log">
+				<a href="/dhis-integration/submission-log/download"
+					class="btn header-link">Download log</a>
+			</div>
+		</div>
+	</div>
 
-<div class="dhisWrapper">
-    <div class="section-title">
-        <span>Programs</span>
-    </div>
+	<div class="dhisWrapper">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tab-monthly">Monthly</a></li>
+				<li><a href="#tab-yearly">Yearly</a></li>
+			</ul>
+			<div id="tab-monthly">
+				<div class="section-title">
+					<span>Programs</span>
+				</div>
 
-    <div class="dhisContent dhisContentHeader">
-        <div class="programName">Name</div>
-        <div class="monthOption">
-            Nepali Month
-        </div>
-        <div class="downloadButton">
+				<div class="dhisContent dhisContentHeader">
+					<div class="programName">Name</div>
+					<div class="fiscal-year-option">Nepali Month</div>
+					<div class="downloadButton"></div>
+					<div class="comment">
+						Comments (<span class="mandate-comment" />)
+					</div>
+					<div class="submit"></div>
+					<div class="status">Status</div>
+				</div>
 
-        </div>
-        <div class="comment">
-            Comments (<span class="mandate-comment"/>)
-        </div>
-        <div class="submit">
 
-        </div>
-        <div class="status">
-            Status
-        </div>
-    </div>
-	 
+				<div id="programs"></div>
+			</div>
+			<div id="tab-yearly" class="tab-yearly">
+				<div class="section-title">
+					<span>Programs</span>
+				</div>
+				<div class="dhisContent dhisContentHeader">
+					<div class="programName">Name</div>
+					<div class="fiscalYearOption">Fiscal Year</div>
+					<div class="downloadButton"></div>
+				</div>
+				<div id="programs-yearly"></div>
+			</div>
+		</div>
 
-    <div id="programs">
-    </div>
-</div>
-
-<script src="bower_components/jquery.min/index.js"></script>
-<script src="bower_components/mustache.min/index.js"></script>
-<script id="failure-status-template" type="x-tmpl-mustache">
-    <u class="status-failure">
-        <b>{{status}}</b>
-    </u>
-</script>
-<script id="success-status-template" type="x-tmpl-mustache">
-    <b class="status-success">{{status}}</b>
-</script>
-<script src="js/spinner.js"></script>
-<script src="js/init.js"></script>
-<script src="bower_components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
+	</div>
+	<script id="failure-status-template" type="x-tmpl-mustache">
+    	<u class="status-failure">
+        	<b>{{status}}</b>
+   		</u>
+	</script>
+	<script id="success-status-template" type="x-tmpl-mustache">
+    	<b class="status-success">{{status}}</b>
+	</script>
+	<script src="js/spinner.js"></script>
+	<script src="js/init.js"></script>
+	<script
+		src="bower_components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
 </body>
 </html>

@@ -44,15 +44,27 @@ textarea, select{
     width: 100%;
 }
 .programName{
-    flex: 3;
+    flex: 2.5;
     border-right: 1px #ccc solid;
     padding: 5px 8px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
+.tab-yearly .programName {
+	flex: 3;
+}
 .monthOption{
-    flex: 1.5;
+    flex: 1.4;
+    border-right: 1px #ccc solid;
+    padding: 5px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fiscal-year-option {
+	flex: 1.4;
     border-right: 1px #ccc solid;
     padding: 5px 8px;
     display: flex;
@@ -232,4 +244,9 @@ a.header-link:hover {
 #overlay div {
 	width:100%;
     height: 100%;
+}
+
+#tabs ul li.ui-state-active {
+    background: #669999; 
+    border: 1px solid #669999;
 }

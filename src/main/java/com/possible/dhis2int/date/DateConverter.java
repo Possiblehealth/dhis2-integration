@@ -150,6 +150,13 @@ public class DateConverter {
 		return new ReportDateRange(startDate, endDate);
 	}
 	
+	public ReportDateRange getDateRangeForFiscalYear(Integer startYear, Integer startMonth, Integer endYear, Integer endMonth) {
+		int lastDay = daysInMonthMap.get(endYear)[endMonth];
+		DateTime startDate = getEnglishDate(startYear, startMonth, 1);
+		DateTime endDate = getEnglishDate(endYear, endMonth, lastDay);
+		return new ReportDateRange(startDate, endDate);
+	}
+	
 	/*convert nepali date into english date*/
 	public DateTime getEnglishDate(int nepYY, int nepMM, int nepDD) {
 		

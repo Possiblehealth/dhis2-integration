@@ -21,4 +21,10 @@ public class ReportDateRange {
 	public String getEndDate() {
 		return DateTimeFormat.forPattern("yyyy-MM-dd").print(endDate);
 	}
+
+	@Override
+	public String toString() {
+		return "ReportDateRange [startDate=" + startDate + ", endDate=" + endDate + "]";
+	}
+	
 }
