@@ -78,6 +78,8 @@ function selectApproxLatestNepaliYear() {
 	}
     $('[id^="year-"]').val(bsDate.bsYear);
     $('[id^="month-"]').val(bsDate.bsMonth);
+    
+    $('[id^="fiscal-year-"]').val((bsDate.bsYear - 1) + '-' + bsDate.bsYear);
 }
 
 function renderPrograms() {
