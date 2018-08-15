@@ -54,17 +54,8 @@ textarea, select{
 .tab-yearly .programName {
 	flex: 3;
 }
-.monthOption{
+.monthOption, .fiscal-year-option {
     flex: 1.4;
-    border-right: 1px #ccc solid;
-    padding: 5px 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.fiscal-year-option {
-	flex: 1.4;
     border-right: 1px #ccc solid;
     padding: 5px 8px;
     display: flex;
