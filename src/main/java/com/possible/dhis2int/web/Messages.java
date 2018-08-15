@@ -9,4 +9,5 @@ public class Messages {
 	public static final String FILE_READING_EXCEPTION = "Unable to read file:%s";
 	public static final String SQL_OUTPUT_MAPPING_EXCEPTION = "Unable to locate row:%d, column:%d in %s file";
 	public static final String JSON_EXECUTION_EXCEPTION = "Unable to fetch json";
+	public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
 }

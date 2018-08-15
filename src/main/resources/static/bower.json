@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "jquery.min": "https://raw.githubusercontent.com/jquery/jquery-dist/master/dist/jquery.min.js",
-    "mustache.min": "https://raw.githubusercontent.com/janl/mustache.js/v2.3.0/mustache.min.js"
+    "mustache.min": "https://raw.githubusercontent.com/janl/mustache.js/v2.3.0/mustache.min.js",
+    "nepali-date-picker": "^2.0.0"
   }
 }

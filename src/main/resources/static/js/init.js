@@ -1,12 +1,14 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
-var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH';
+var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM';
 var submitUrl = '/dhis-integration/submit-to-dhis';
-var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr'
+var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
+var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
 var logUrl = '/dhis-integration/log';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
+var spinner = spinner || {};
 
 var months = [
     {number: 12, name: "Chaitra"},
@@ -29,27 +31,43 @@ $(document).ready(function () {
     isAuthenticated()
         .then(renderPrograms)
         .then(selectApproxLatestNepaliYear)
-        .then(registerOnchangeOnComment);
+        .then(registerOnchangeOnComment)
+        .then(getLogStatus);
+    
 });
 
 function isAuthenticated() {
+//	spinner.show();
     return $.get("is-logged-in").then(function(response){
         if(response!='Logged in'){
             window.location.href = loginRedirectUrl + window.location.href;
         }
+//        spinner.hide();
     }).fail(function(response){
         if(response && response.status != 200){
             window.location.href = loginRedirectUrl;
         }
+//        spinner.hide();
     });
 }
+
 function range(start, end) {
     return Array.apply(null, new Array(start - end + 1)).map(function (ignore, index) {
         return start - index;
     });
 }
+
 function selectApproxLatestNepaliYear() {
-    $('[id^="year-"]').val(approximateNepaliYear);
+	var date = new Date();
+	var bsDate = calendarFunctions.getBsDateByAdDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+	if (bsDate.bsMonth == 1) {
+		bsDate.bsYear = bsDate.bsYear - 1;
+		bsDate.bsMonth = 12;
+	} else {
+		bsDate.bsMonth = bsDate.bsMonth - 1;
+	}
+    $('[id^="year-"]').val(bsDate.bsYear);
+    $('[id^="month-"]').val(bsDate.bsMonth);
 }
 
 function renderPrograms() {
@@ -59,11 +77,13 @@ function renderPrograms() {
         });
     });
 }
+
 function getContent() {
     return getDHISPrograms().then(function (programs) {
         return {months: months, years: years, programs: programs};
     });
 }
+
 function getDHISPrograms() {
     return $.getJSON(reportConfigUrl).then(function (reportConfigs) {
         var DHISPrograms = [];
@@ -76,9 +96,14 @@ function getDHISPrograms() {
         return DHISPrograms;
     });
 }
+
 function putStatus(data, index) {
-    if (data.status == 'Success') {
-        return element('status', index).html($('#success-status-template').html());
+	element('comment', index).html(data.comment).html();
+    if (data.status == 'Success' || data.status == 'Complete') {
+    	var template = $('#success-status-template').html();
+        Mustache.parse(template);
+        element('status', index).html(Mustache.render(template, data));
+        return;
     }
     var template = $('#failure-status-template').html();
     Mustache.parse(template);
@@ -89,27 +114,33 @@ function putStatus(data, index) {
         console.log(data.message);
     });
 }
+
 function download(index) {
     var year = element('year', index).val();
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
-    var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month);
+    var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
+    var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month).replace('IS_IMAM', isImam);
     var a = document.createElement('a');
     a.href = url;
     a.target = '_blank';
     a.click();
     return false;
 }
+
 function submit(index, attribute) {
+	spinner.show();
     var year = element('year', index).val();
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
     var comment = element('comment', index).val();
+    var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
     var parameters = {
         year: year,
         month: month,
         name: programName,
-        comment: comment
+        comment: comment,
+        isImam: isImam
     };
 
     disableBtn(element('submit', index));
@@ -118,7 +149,10 @@ function submit(index, attribute) {
     	submitTo = submitUrlAtr;
     }
     $.get(submitTo, parameters).done(function (data) {
-        putStatus(JSON.parse(data), index);
+    	data = JSON.parse(data)
+    	if (!$.isEmptyObject(data)) {
+    		putStatus(data, index);
+    	}
     }).fail(function (response) {
         if(response.status == 403){
             putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
@@ -126,8 +160,10 @@ function submit(index, attribute) {
         putStatus({status:'Failure', exception: response}, index);
     }).always(function () {
         enableBtn(element('submit', index));
+        spinner.hide();
     });
 }
+
 function confirmAndSubmit(index, attribute) {
     if (confirm("This action cannot be reversed. Are you sure, you want to submit?")) {
         submit(index, attribute);
@@ -136,36 +172,51 @@ function confirmAndSubmit(index, attribute) {
 
 function getStatus(index) {
 	var programName = element('program-name', index).html();
-	console.log(programName)
+    var year = element('year', index).val();
+    var month = element('month', index).val();
 	
 	var parameters = {
-		programName: programName
+		programName: programName, 
+		month: month,
+		year: year
 	};
-	
-	 $.get(logUrl, parameters).done(function (data) {
-	        putStatus(JSON.parse(data), index);
-	    }).fail(function (response) {
-	        if(response.status == 403){
-	            putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
-	        }
-	        putStatus({status:'Failure', exception: response}, index);
-	    }).always(function () {
-	        enableBtn(element('pstatus', index));
-	    });
+	spinner.show();
+	$.get(logUrl, parameters).done(function (data) {
+		data = JSON.parse(data);
+		if ($.isEmptyObject(data)) {
+			element('comment', index).html('');
+			element('status', index).html('');
+		} else {
+			putStatus(data, index);
+		}
+	 }).fail(function (response) {
+		 console.log("failure response");
+	     if(response.status == 403){
+	    	 putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
+	     }
+	     putStatus({status:'Failure', exception: response}, index);
+	 }).always(function(){
+		 spinner.hide();
+	 })
 }
+
 function element(name,index){
     var id = name +'-' + index;
     return $('[id="'+id+'"]');
 }
+
 function enableBtn(btn){
     return btn.attr('disabled', false).removeClass('btn-disabled');
 }
+
 function disableBtn(btn){
     return btn.attr('disabled', true).addClass('btn-disabled');
 }
+
 function disableAllSubmitBtns(){
     disableBtn($("[id*='submit-']"));
 }
+
 function registerOnchangeOnComment(){
     disableAllSubmitBtns();
     $("[id*='comment-']").on('change keyup paste',function(event){
@@ -176,4 +227,10 @@ function registerOnchangeOnComment(){
             disableBtn(element('submit',index));
         }
     });
+}
+
+function getLogStatus() {
+	$('.month-selector').each(function(index) {
+		getStatus(index);
+	});
 }

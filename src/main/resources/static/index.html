@@ -3,6 +3,7 @@
     <title>Dhis Integration</title>
     <link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
     <link rel="stylesheet" href="css/stylesheet.css">
+    <link rel="stylesheet" href="bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
 </head>
 <body>
 
@@ -39,8 +40,6 @@
         <div class="status">
             Status
         </div>
-             <div class="prevstatus">Pstatus</div>
-       
     </div>
 	 
 
@@ -52,12 +51,14 @@
 <script src="bower_components/mustache.min/index.js"></script>
 <script id="failure-status-template" type="x-tmpl-mustache">
     <u class="status-failure">
-        <b>Failure</b>
+        <b>{{status}}</b>
     </u>
 </script>
 <script id="success-status-template" type="x-tmpl-mustache">
-    <b class="status-success">Success</b>
+    <b class="status-success">{{status}}</b>
 </script>
+<script src="js/spinner.js"></script>
 <script src="js/init.js"></script>
+<script src="bower_components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
 </body>
 </html>
