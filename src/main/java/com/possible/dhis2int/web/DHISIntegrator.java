@@ -311,7 +311,7 @@ public class DHISIntegrator {
 	@RequestMapping(path = "/download")
 	public void downloadReport(@RequestParam("name") String name, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("isImam") Boolean isImam, HttpServletResponse response)
-			throws JSONException {
+			throws JSONException, IOException {
 		ReportDateRange reportDateRange = new DateConverter().getDateRange(year, month);
 		if (isImam != null && isImam) {
 			prepareImamReport(year, month);
@@ -322,7 +322,8 @@ public class DHISIntegrator {
 					.queryParam("startDate", reportDateRange.getStartDate())
 					.queryParam("endDate", reportDateRange.getEndDate()).toUriString();
 			response.sendRedirect(redirectUri);
-		} catch (IOException e) {
+			
+		} catch (Exception e) {
 			logger.error(format(REPORT_DOWNLOAD_FAILED, name), e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
@@ -444,7 +445,7 @@ public class DHISIntegrator {
 	}
 
 	private void updateDataElementsAtrOptCombo(List<String> row, JSONObject dataElement) throws JSONException {
-		String value = row.get(dataElement.getInt("column") + 1); // TODO: +1 column size
+		String value = row.get(dataElement.getInt("column")); 
 		dataElement.put("value", value);
 	}
 
