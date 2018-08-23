@@ -445,7 +445,7 @@ public class DHISIntegrator {
 	}
 
 	private void updateDataElementsAtrOptCombo(List<String> row, JSONObject dataElement) throws JSONException {
-		String value = row.get(dataElement.getInt("column")); 
+		String value = row.get(dataElement.getInt("column") - 1); 
 		dataElement.put("value", value);
 	}
 
