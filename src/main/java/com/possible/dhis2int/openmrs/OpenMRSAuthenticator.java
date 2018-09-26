@@ -35,6 +35,22 @@ public class OpenMRSAuthenticator {
 
         return AuthenticationResponse.NOT_AUTHENTICATED;
     }
+    
+    public AuthenticationResponse authenticateReportSubmitingPrivilege(String sessionId) {
+    	if(sessionId == null){
+            return AuthenticationResponse.NOT_AUTHENTICATED;
+        }
+        ResponseEntity<Privileges> response = openmrsClient.get(sessionId, WHOAMI_URL, Privileges.class);
+        HttpStatus status = response.getStatusCode();
+
+        if (status.series() == HttpStatus.Series.SUCCESSFUL && response.getBody().hasReportingPrivilege()) {
+            return response.getBody().hasReportSubmitingPrivilege()?
+                    AuthenticationResponse.SUBMIT_AUTHORIZED:
+                    AuthenticationResponse.SUBMIT_UNAUTHORIZED;
+        }
+        return AuthenticationResponse.NOT_AUTHENTICATED;
+    }
+    
 
     private static class Privileges extends ArrayList<Privilege> {
         boolean hasReportingPrivilege() {
@@ -43,10 +59,17 @@ public class OpenMRSAuthenticator {
             }
             return false;
         }
+        boolean hasReportSubmitingPrivilege() {
+            for (Privilege privilege : this) {
+                if (privilege.isReportSubmitingPrivilege()) return true;
+            }
+            return false;
+        }
     }
 
     private static class Privilege {
         static final String VIEW_REPORTS_PRIVILEGE = "app:reports";
+        static final String REPORT_SUBMIT_PRIVILEGE = "Submit DHIS Report";
         private String name;
         private void setName(String name) {
             this.name = name;
@@ -54,6 +77,10 @@ public class OpenMRSAuthenticator {
 
         boolean isReportingPrivilege() {
             return name.equals(VIEW_REPORTS_PRIVILEGE);
+        }
+        
+        boolean isReportSubmitingPrivilege() {
+            return name.equals(REPORT_SUBMIT_PRIVILEGE);
         }
     }
 }

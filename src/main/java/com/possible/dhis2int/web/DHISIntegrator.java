@@ -93,6 +93,11 @@ public class DHISIntegrator {
 		logger.info("Inside isLoggedIn");
 		return "Logged in";
 	}
+	
+	@RequestMapping(path = "/hasReportingPrivilege")
+	public Boolean hasReportSubmissionPrivilege(HttpServletRequest request, HttpServletResponse response) {
+    	return dHISClient.hasDhisSubmitPrivilege(request, response);
+    }
 
 	public void prepareImamReport(Integer year, Integer month) throws JSONException {
 		logger.info("Inside prepareImamReport method");

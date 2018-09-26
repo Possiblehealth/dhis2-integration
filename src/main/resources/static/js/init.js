@@ -28,9 +28,11 @@ var months = [
 
 var years = range(supportedStartDate, supportedEndDate);
 var fiscalYears = fiscalYearRange(supportedStartDate, supportedEndDate);
+var hasReportingPrivilege = false;
 
 $(document).ready(function () {
     isAuthenticated()
+    	.then(isSubmitAuthorized)
     	.then(initTabs)
         .then(renderPrograms)
         .then(renderYearlyReport)
@@ -48,6 +50,15 @@ function isAuthenticated() {
         if(response && response.status != 200){
             window.location.href = loginRedirectUrl;
         }
+    });
+}
+
+function isSubmitAuthorized() {
+    return $.get("hasReportingPrivilege").then(function(response){
+    	hasReportingPrivilege = response;
+    	if (!hasReportingPrivilege) {
+    		$(".submit").remove();
+    	}
     });
 }
 
@@ -85,7 +96,8 @@ function selectApproxLatestNepaliYear() {
 function renderPrograms() {
 	return $.get('html/programs.html').then(function (template) {
 		var isYearlyReport= false;
-        return getContent(isYearlyReport).then(function (content) {
+		var canSubmitReport = hasReportingPrivilege;
+        return getContent(isYearlyReport, canSubmitReport).then(function (content) {
             $("#programs").html(Mustache.render(template, content));
         });
     });
@@ -100,12 +112,12 @@ function renderYearlyReport() {
     });
 }
 
-function getContent(isYearlyReport) {
+function getContent(isYearlyReport, canSubmitReport) {
     return getDHISPrograms().then(function (programs) {
     	if(isYearlyReport) {
-    		return {years: fiscalYears, programs: programs, isYearlyReport: isYearlyReport};
+    		return {years: fiscalYears, programs: programs, isYearlyReport: isYearlyReport, canSubmitReport: canSubmitReport};
     	} else {
-    		return {months: months, years: years, programs: programs, isYearlyReport: isYearlyReport};
+    		return {months: months, years: years, programs: programs, isYearlyReport: isYearlyReport, canSubmitReport: canSubmitReport};
     	}
     });
 }
@@ -152,9 +164,7 @@ function download(index) {
 
 function downloadFiscalYearReport(index) {
 	var yearRange = element('fiscal-year', index).val();
-	console.log("yearRange="+yearRange)
 	var years = yearRange.split('-');
-	console.log(years)
 	var startYear = years[0];
 	var startMonth = 4; //Shrawan
 	var endYear = years[1];
@@ -235,7 +245,6 @@ function getStatus(index) {
 			putStatus(data, index);
 		}
 	 }).fail(function (response) {
-		 console.log("failure response");
 	     if(response.status == 403){
 	    	 putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
 	     }
