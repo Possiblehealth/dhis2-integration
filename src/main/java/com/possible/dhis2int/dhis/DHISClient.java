@@ -1,5 +1,7 @@
 package com.possible.dhis2int.dhis;
 
+import java.io.Console;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,7 +44,7 @@ public class DHISClient {
         Cookies cookies = new Cookies(request);
         String cookie = cookies.getValue(Cookies.DHIS_INTEGRATION_COOKIE_NAME);
         
-        AuthenticationResponse authenticationResponse = request.getRequestURI().contains("submit") ? authenticator.authenticateReportSubmitingPrivilege(cookie) : authenticator.authenticate(cookie);
+        AuthenticationResponse authenticationResponse = authenticator.authenticateReportSubmitingPrivilege(cookie);
         switch (authenticationResponse) {
             case SUBMIT_AUTHORIZED:
             	return true;
