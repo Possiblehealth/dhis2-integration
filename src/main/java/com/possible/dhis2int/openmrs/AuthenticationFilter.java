@@ -57,11 +57,6 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
                 return redirectToLogin(request, response);
         }
     }
-    
-    private boolean verifySubmitPrivilege() {
-    	
-    	return false;
-    }
 
     private boolean redirectToLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
         httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
