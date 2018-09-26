@@ -52,6 +52,7 @@ import com.possible.dhis2int.date.ReportDateRange;
 import com.possible.dhis2int.db.DatabaseDriver;
 import com.possible.dhis2int.db.Results;
 import com.possible.dhis2int.dhis.DHISClient;
+import com.possible.dhis2int.exception.NotAvailableException;
 
 @RestController
 public class DHISIntegrator {
@@ -324,6 +325,30 @@ public class DHISIntegrator {
 			response.sendRedirect(redirectUri);
 			
 		} catch (Exception e) {
+			logger.error(format(REPORT_DOWNLOAD_FAILED, name), e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@RequestMapping(path = "/download/fiscal-year-report")
+	public void downloadFiscalYearReport(@RequestParam("name") String name, @RequestParam("startYear") Integer startYear,
+			@RequestParam("startMonth") Integer startMonth, @RequestParam("endYear") Integer endYear,
+			@RequestParam("endMonth") Integer endMonth, @RequestParam("isImam") Boolean isImam, HttpServletResponse response)
+			throws JSONException, NotAvailableException {
+		logger.info("Inside downloadFiscalYearReport");
+		ReportDateRange reportDateRange = new DateConverter().getDateRangeForFiscalYear(startYear, startMonth, endYear, endMonth);
+		logger.info(reportDateRange);
+		if (isImam != null && isImam) {
+//			prepareImamReport(startYear, startMonth);
+			throw new NotAvailableException("Imam report is not available for fiscal year");
+		}
+		try {
+			String redirectUri = UriComponentsBuilder.fromHttpUrl(properties.reportsUrl)
+					.queryParam("responseType", DOWNLOAD_FORMAT).queryParam("name", name)
+					.queryParam("startDate", reportDateRange.getStartDate())
+					.queryParam("endDate", reportDateRange.getEndDate()).toUriString();
+			response.sendRedirect(redirectUri);
+		} catch (IOException e) {
 			logger.error(format(REPORT_DOWNLOAD_FAILED, name), e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}

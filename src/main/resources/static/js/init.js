@@ -5,6 +5,7 @@ var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
 var logUrl = '/dhis-integration/log';
+var fiscalYearReportUrl = '/dhis-integration/download/fiscal-year-report?name=NAME&startYear=START_YEAR&startMonth=START_MONTH&endYear=END_YEAR&endMonth=END_MONTH&isImam=IS_IMAM';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
@@ -26,34 +27,43 @@ var months = [
 ];
 
 var years = range(supportedStartDate, supportedEndDate);
+var fiscalYears = fiscalYearRange(supportedStartDate, supportedEndDate);
 
 $(document).ready(function () {
     isAuthenticated()
+    	.then(initTabs)
         .then(renderPrograms)
+        .then(renderYearlyReport)
         .then(selectApproxLatestNepaliYear)
         .then(registerOnchangeOnComment)
         .then(getLogStatus);
-    
 });
 
 function isAuthenticated() {
-//	spinner.show();
     return $.get("is-logged-in").then(function(response){
         if(response!='Logged in'){
             window.location.href = loginRedirectUrl + window.location.href;
         }
-//        spinner.hide();
     }).fail(function(response){
         if(response && response.status != 200){
             window.location.href = loginRedirectUrl;
         }
-//        spinner.hide();
     });
+}
+
+function initTabs() {
+	$("#tabs").tabs();
 }
 
 function range(start, end) {
     return Array.apply(null, new Array(start - end + 1)).map(function (ignore, index) {
         return start - index;
+    });
+}
+
+function fiscalYearRange(start, end) {
+    return Array.apply(null, new Array(start - end + 1)).map(function (ignore, index) {
+        return (start - index -1) + '-' + (start - index);
     });
 }
 
@@ -68,19 +78,35 @@ function selectApproxLatestNepaliYear() {
 	}
     $('[id^="year-"]').val(bsDate.bsYear);
     $('[id^="month-"]').val(bsDate.bsMonth);
+    
+    $('[id^="fiscal-year-"]').val((bsDate.bsYear - 1) + '-' + bsDate.bsYear);
 }
 
 function renderPrograms() {
-    return $.get('html/programs.html').then(function (template) {
-        return getContent().then(function (content) {
+	return $.get('html/programs.html').then(function (template) {
+		var isYearlyReport= false;
+        return getContent(isYearlyReport).then(function (content) {
             $("#programs").html(Mustache.render(template, content));
         });
     });
 }
 
-function getContent() {
+function renderYearlyReport() {
+	return $.get('html/programs.html').then(function (template) {
+		var isYearlyReport = true;
+        return getContent(isYearlyReport).then(function (content) {
+            $("#programs-yearly").html(Mustache.render(template, content));
+        });
+    });
+}
+
+function getContent(isYearlyReport) {
     return getDHISPrograms().then(function (programs) {
-        return {months: months, years: years, programs: programs};
+    	if(isYearlyReport) {
+    		return {years: fiscalYears, programs: programs, isYearlyReport: isYearlyReport};
+    	} else {
+    		return {months: months, years: years, programs: programs, isYearlyReport: isYearlyReport};
+    	}
     });
 }
 
@@ -121,7 +147,26 @@ function download(index) {
     var programName = element('program-name', index).html();
     var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
     var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month).replace('IS_IMAM', isImam);
-    var a = document.createElement('a');
+    downloadCommon(url);
+}
+
+function downloadFiscalYearReport(index) {
+	var yearRange = element('fiscal-year', index).val();
+	console.log("yearRange="+yearRange)
+	var years = yearRange.split('-');
+	console.log(years)
+	var startYear = years[0];
+	var startMonth = 4; //Shrawan
+	var endYear = years[1];
+	var endMonth = 3; //Ashadh
+	var programName = element('program-name', index).html();
+    var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
+    var url = fiscalYearReportUrl.replace('NAME', programName).replace('START_YEAR', startYear).replace('START_MONTH', startMonth).replace('END_YEAR', endYear).replace('END_MONTH', endMonth).replace('IS_IMAM', isImam);
+    downloadCommon(url);
+}
+
+function downloadCommon(url) {
+	var a = document.createElement('a');
     a.href = url;
     a.target = '_blank';
     a.click();
@@ -230,7 +275,7 @@ function registerOnchangeOnComment(){
 }
 
 function getLogStatus() {
-	$('.month-selector').each(function(index) {
+	$('#programs-monthly .month-selector').each(function(index) {
 		getStatus(index);
 	});
 }
