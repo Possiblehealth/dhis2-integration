@@ -275,7 +275,7 @@ function registerOnchangeOnComment(){
 }
 
 function getLogStatus() {
-	$('#programs-monthly .month-selector').each(function(index) {
+	$('#programs .month-selector').each(function(index) {
 		getStatus(index);
 	});
 }
