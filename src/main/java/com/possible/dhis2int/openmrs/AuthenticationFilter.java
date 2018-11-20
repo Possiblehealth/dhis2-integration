@@ -37,8 +37,8 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
 
         Cookies cookies = new Cookies(request);
         String cookie = cookies.getValue(Cookies.DHIS_INTEGRATION_COOKIE_NAME);
-
-        AuthenticationResponse authenticationResponse = authenticator.authenticate(cookie);
+        
+        AuthenticationResponse authenticationResponse = request.getRequestURI().contains("submit") ? authenticator.authenticateReportSubmitingPrivilege(cookie) : authenticator.authenticate(cookie);
 
         switch (authenticationResponse) {
             case AUTHORIZED:
@@ -47,6 +47,12 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN,
                         "Privileges is required to access reports");
                 return false;
+            case SUBMIT_AUTHORIZED:
+            	return true;
+            case SUBMIT_UNAUTHORIZED:
+            	response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                        "Privileges is required to submit this report");
+            	return false;
             default:
                 return redirectToLogin(request, response);
         }
