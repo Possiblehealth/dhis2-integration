@@ -1,9 +1,10 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
-var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM';
+var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM&isFamily=IS_FAMILYPLANNING';
 var submitUrl = '/dhis-integration/submit-to-dhis';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
+var FAMILYPLANNING_PROGRAM = '07 Family Planning Program';
 var logUrl = '/dhis-integration/log';
 var fiscalYearReportUrl = '/dhis-integration/download/fiscal-year-report?name=NAME&startYear=START_YEAR&startMonth=START_MONTH&endYear=END_YEAR&endMonth=END_MONTH&isImam=IS_IMAM';
 var supportedStartDate = 2090;
@@ -28,12 +29,10 @@ var months = [
 
 var years = range(supportedStartDate, supportedEndDate);
 var fiscalYears = fiscalYearRange(supportedStartDate, supportedEndDate);
-var hasReportingPrivilege = false;
 
 $(document).ready(function () {
     isAuthenticated()
-    	.then(isSubmitAuthorized)
-    	.then(initTabs)
+        .then(initTabs)
         .then(renderPrograms)
         .then(renderYearlyReport)
         .then(selectApproxLatestNepaliYear)
@@ -53,17 +52,8 @@ function isAuthenticated() {
     });
 }
 
-function isSubmitAuthorized() {
-    return $.get("hasReportingPrivilege").then(function(response){
-    	hasReportingPrivilege = response;
-    	if (!hasReportingPrivilege) {
-    		$(".submit").remove();
-    	}
-    });
-}
-
 function initTabs() {
-	$("#tabs").tabs();
+    $("#tabs").tabs();
 }
 
 function range(start, end) {
@@ -79,46 +69,45 @@ function fiscalYearRange(start, end) {
 }
 
 function selectApproxLatestNepaliYear() {
-	var date = new Date();
-	var bsDate = calendarFunctions.getBsDateByAdDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
-	if (bsDate.bsMonth == 1) {
-		bsDate.bsYear = bsDate.bsYear - 1;
-		bsDate.bsMonth = 12;
-	} else {
-		bsDate.bsMonth = bsDate.bsMonth - 1;
-	}
+    var date = new Date();
+    var bsDate = calendarFunctions.getBsDateByAdDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    if (bsDate.bsMonth == 1) {
+        bsDate.bsYear = bsDate.bsYear - 1;
+        bsDate.bsMonth = 12;
+    } else {
+        bsDate.bsMonth = bsDate.bsMonth - 1;
+    }
     $('[id^="year-"]').val(bsDate.bsYear);
     $('[id^="month-"]').val(bsDate.bsMonth);
-    
+
     $('[id^="fiscal-year-"]').val((bsDate.bsYear - 1) + '-' + bsDate.bsYear);
 }
 
 function renderPrograms() {
-	return $.get('html/programs.html').then(function (template) {
-		var isYearlyReport= false;
-		var canSubmitReport = hasReportingPrivilege;
-        return getContent(isYearlyReport, canSubmitReport).then(function (content) {
+    return $.get('html/programs.html').then(function (template) {
+        var isYearlyReport= false;
+        return getContent(isYearlyReport).then(function (content) {
             $("#programs").html(Mustache.render(template, content));
         });
     });
 }
 
 function renderYearlyReport() {
-	return $.get('html/programs.html').then(function (template) {
-		var isYearlyReport = true;
+    return $.get('html/programs.html').then(function (template) {
+        var isYearlyReport = true;
         return getContent(isYearlyReport).then(function (content) {
             $("#programs-yearly").html(Mustache.render(template, content));
         });
     });
 }
 
-function getContent(isYearlyReport, canSubmitReport) {
+function getContent(isYearlyReport) {
     return getDHISPrograms().then(function (programs) {
-    	if(isYearlyReport) {
-    		return {years: fiscalYears, programs: programs, isYearlyReport: isYearlyReport, canSubmitReport: canSubmitReport};
-    	} else {
-    		return {months: months, years: years, programs: programs, isYearlyReport: isYearlyReport, canSubmitReport: canSubmitReport};
-    	}
+        if(isYearlyReport) {
+            return {years: fiscalYears, programs: programs, isYearlyReport: isYearlyReport};
+        } else {
+            return {months: months, years: years, programs: programs, isYearlyReport: isYearlyReport};
+        }
     });
 }
 
@@ -136,9 +125,9 @@ function getDHISPrograms() {
 }
 
 function putStatus(data, index) {
-	element('comment', index).html(data.comment).html();
+    element('comment', index).html(data.comment).html();
     if (data.status == 'Success' || data.status == 'Complete') {
-    	var template = $('#success-status-template').html();
+        var template = $('#success-status-template').html();
         Mustache.parse(template);
         element('status', index).html(Mustache.render(template, data));
         return;
@@ -158,56 +147,72 @@ function download(index) {
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
     var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
-    var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month).replace('IS_IMAM', isImam);
+    var isFamily = programName.toLowerCase() === FAMILYPLANNING_PROGRAM.toLowerCase();
+    var url = downloadUrl.replace('NAME', programName).replace('YEAR', year).replace('MONTH', month).replace('IS_IMAM', isImam).replace('IS_FAMILYPLANNING', isFamily);
     downloadCommon(url);
 }
 
+
 function downloadFiscalYearReport(index) {
-	var yearRange = element('fiscal-year', index).val();
-	var years = yearRange.split('-');
-	var startYear = years[0];
-	var startMonth = 4; //Shrawan
-	var endYear = years[1];
-	var endMonth = 3; //Ashadh
-	var programName = element('program-name', index).html();
+    var yearRange = element('fiscal-year', index).val();
+    console.log("yearRange="+yearRange)
+    var years = yearRange.split('-');
+    console.log(years)
+    var startYear = years[0];
+    var startMonth = 4; //Shrawan
+    var endYear = years[1];
+    var endMonth = 3; //Ashadh
+    var programName = element('program-name', index).html();
     var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
     var url = fiscalYearReportUrl.replace('NAME', programName).replace('START_YEAR', startYear).replace('START_MONTH', startMonth).replace('END_YEAR', endYear).replace('END_MONTH', endMonth).replace('IS_IMAM', isImam);
     downloadCommon(url);
 }
 
+
 function downloadCommon(url) {
-	var a = document.createElement('a');
+    var a = document.createElement('a');
     a.href = url;
+    a.target = '_blank';
+    a.click();
+    return false;
+}
+function downloadCommon(urls) {
+    var a = document.createElement('a');
+    a.href = urls;
     a.target = '_blank';
     a.click();
     return false;
 }
 
 function submit(index, attribute) {
-	spinner.show();
+    spinner.show();
     var year = element('year', index).val();
     var month = element('month', index).val();
     var programName = element('program-name', index).html();
     var comment = element('comment', index).val();
     var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
+    var isFamilyplanning = programName.toLowerCase() === FAMILYPLANNING_PROGRAM.toLowerCase();
+
     var parameters = {
         year: year,
         month: month,
         name: programName,
         comment: comment,
-        isImam: isImam
+        isImam: isImam,
+        isFamily:isFamily
     };
+
 
     disableBtn(element('submit', index));
     var submitTo = submitUrl;
     if(attribute == true){
-    	submitTo = submitUrlAtr;
+        submitTo = submitUrlAtr;
     }
     $.get(submitTo, parameters).done(function (data) {
-    	data = JSON.parse(data)
-    	if (!$.isEmptyObject(data)) {
-    		putStatus(data, index);
-    	}
+        data = JSON.parse(data)
+        if (!$.isEmptyObject(data)) {
+            putStatus(data, index);
+        }
     }).fail(function (response) {
         if(response.status == 403){
             putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
@@ -226,32 +231,33 @@ function confirmAndSubmit(index, attribute) {
 }
 
 function getStatus(index) {
-	var programName = element('program-name', index).html();
+    var programName = element('program-name', index).html();
     var year = element('year', index).val();
     var month = element('month', index).val();
-	
-	var parameters = {
-		programName: programName, 
-		month: month,
-		year: year
-	};
-	spinner.show();
-	$.get(logUrl, parameters).done(function (data) {
-		data = JSON.parse(data);
-		if ($.isEmptyObject(data)) {
-			element('comment', index).html('');
-			element('status', index).html('');
-		} else {
-			putStatus(data, index);
-		}
-	 }).fail(function (response) {
-	     if(response.status == 403){
-	    	 putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
-	     }
-	     putStatus({status:'Failure', exception: response}, index);
-	 }).always(function(){
-		 spinner.hide();
-	 })
+
+    var parameters = {
+        programName: programName,
+        month: month,
+        year: year
+    };
+    spinner.show();
+    $.get(logUrl, parameters).done(function (data) {
+        data = JSON.parse(data);
+        if ($.isEmptyObject(data)) {
+            element('comment', index).html('');
+            element('status', index).html('');
+        } else {
+            putStatus(data, index);
+        }
+    }).fail(function (response) {
+        console.log("failure response");
+        if(response.status == 403){
+            putStatus({status:'Failure', exception: 'Not Authenticated'}, index);
+        }
+        putStatus({status:'Failure', exception: response}, index);
+    }).always(function(){
+        spinner.hide();
+    })
 }
 
 function element(name,index){
@@ -284,7 +290,7 @@ function registerOnchangeOnComment(){
 }
 
 function getLogStatus() {
-	$('#programs .month-selector').each(function(index) {
-		getStatus(index);
-	});
+    $('#programs .month-selector').each(function(index) {
+        getStatus(index);
+    });
 }

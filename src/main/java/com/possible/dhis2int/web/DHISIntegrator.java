@@ -78,9 +78,12 @@ public class DHISIntegrator {
 	private final String IMAM_PROGRAM_NAME = "03-2_Nutrition_Acute_Malnutrition";
 	private final String IMAM = "Integrated Management of Acute Malnutrition (IMAM) Program";
 
+	private final String FamilyPlanning_PROGRAM_NAME = "07-Family_Planning_Program";
+	private final String FamilyPlanning = "Family Planning Program all";
+
 	@Autowired
 	public DHISIntegrator(DHISClient dHISClient, DatabaseDriver databaseDriver, Properties properties,
-			SubmissionLog submissionLog, SubmittedDataStore submittedDataStore) {
+						  SubmissionLog submissionLog, SubmittedDataStore submittedDataStore) {
 		this.dHISClient = dHISClient;
 		this.databaseDriver = databaseDriver;
 		this.properties = properties;
@@ -93,11 +96,6 @@ public class DHISIntegrator {
 		logger.info("Inside isLoggedIn");
 		return "Logged in";
 	}
-	
-	@RequestMapping(path = "/hasReportingPrivilege")
-	public Boolean hasReportSubmissionPrivilege(HttpServletRequest request, HttpServletResponse response) {
-    	return dHISClient.hasDhisSubmitPrivilege(request, response);
-    }
 
 	public void prepareImamReport(Integer year, Integer month) throws JSONException {
 		logger.info("Inside prepareImamReport method");
@@ -163,16 +161,16 @@ public class DHISIntegrator {
 		Integer numberOfFemalesMoreThanSix = valuesFromDhis.get("numberOfFemalesMoreThanSix") != null
 				? valuesFromDhis.get("numberOfFemalesMoreThanSix")
 				: 0;
-			
+
 		databaseDriver.createTempTable(numberOfMaleLessThanSix, numberOfFemalesLessThanSix, numberOfMalesMoreThanSix,
 				numberOfFemalesMoreThanSix);
 
 	}
-	
+
 	@RequestMapping(path = "/submit-to-dhis")
 	public String submitToDHIS(@RequestParam("name") String program, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month, @RequestParam("comment") String comment,
-			@RequestParam("isImam") Boolean isImam, HttpServletRequest clientReq, HttpServletResponse clientRes)
+							   @RequestParam("month") Integer month, @RequestParam("comment") String comment,
+							   @RequestParam("isImam") Boolean isImam,@RequestParam("isFamily") Boolean isFamily, HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		Submission submission = new Submission();
@@ -186,6 +184,15 @@ public class DHISIntegrator {
 			status = submission.getStatus();
 			if (isImam != null && isImam)
 				databaseDriver.dropImamTable();
+
+
+			if (isFamily != null && isFamily) {
+				prepareFamilyPlanningReport(year, month);
+			}
+			submitToDHIS(submission, program, year, month);
+			status = submission.getStatus();
+
+
 		} catch (DHISIntegratorException | JSONException e) {
 			status = Failure;
 			submission.setException(e);
@@ -196,6 +203,7 @@ public class DHISIntegrator {
 			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		}
 
+
 		submittedDataStore.write(submission);
 		submissionLog.log(program, userName, comment, status, filePath);
 		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
@@ -203,8 +211,10 @@ public class DHISIntegrator {
 		return submission.getInfo();
 	}
 
+
+
 	private String recordLog(String userName, String program, Integer year, Integer month, String log, Status status,
-			String comment) throws IOException, JSONException {
+							 String comment) throws IOException, JSONException {
 		Date date = new Date();
 		Status submissionStatus = status;
 		if (status == Status.Failure) {
@@ -219,15 +229,15 @@ public class DHISIntegrator {
 
 	@RequestMapping(path = "/log")
 	public String getLog(@RequestParam String programName, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month) throws SQLException {
+						 @RequestParam("month") Integer month) throws SQLException {
 		logger.info("Inside getLog method");
 		return databaseDriver.getQuerylog(programName, month, year);
 	}
 
 	@RequestMapping(path = "/submit-to-dhis-atr")
 	public String submitToDhisAtrOptCombo(@RequestParam("name") String program, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month, @RequestParam("comment") String comment, HttpServletRequest clientReq,
-			HttpServletResponse clientRes) throws IOException, JSONException {
+										  @RequestParam("month") Integer month, @RequestParam("comment") String comment, HttpServletRequest clientReq,
+										  HttpServletResponse clientRes) throws IOException, JSONException {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		Submission headSubmission = new Submission();
 		String filePath = submittedDataStore.getAbsolutePath(headSubmission);
@@ -260,7 +270,7 @@ public class DHISIntegrator {
 			}
 			logger.error(e.getMessage(), e);
 			headSubmission.setException(e);
-			
+
 		} finally {
 			Status status = Status.Failure;
 			String filePathData = "No Data sent";
@@ -284,7 +294,7 @@ public class DHISIntegrator {
 	}
 
 	private Submission submitToDhisAtrOptCombo(List<String> row, Submission submission, String name, Integer year,
-			Integer month) throws DHISIntegratorException, JSONException, SQLException {
+											   Integer month) throws DHISIntegratorException, JSONException, SQLException {
 		JSONObject reportConfig = getConfig(properties.reportsJson);
 
 		JSONObject childReport = reportConfig.getJSONObject(name).getJSONObject("config").getJSONArray("reports")
@@ -316,11 +326,11 @@ public class DHISIntegrator {
 
 	@RequestMapping(path = "/download")
 	public void downloadReport(@RequestParam("name") String name, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month, @RequestParam("isImam") Boolean isImam, HttpServletResponse response)
+							   @RequestParam("month") Integer month, @RequestParam("isImam") Boolean isImam,@RequestParam("isFamily") Boolean isFamily, HttpServletResponse response)
 			throws JSONException, IOException {
 		ReportDateRange reportDateRange = new DateConverter().getDateRange(year, month);
-		if (isImam != null && isImam) {
-			prepareImamReport(year, month);
+		if (isFamily != null && isFamily) {
+			prepareFamilyPlanningReport(year, month);
 		}
 		try {
 			String redirectUri = UriComponentsBuilder.fromHttpUrl(properties.reportsUrl)
@@ -328,17 +338,17 @@ public class DHISIntegrator {
 					.queryParam("startDate", reportDateRange.getStartDate())
 					.queryParam("endDate", reportDateRange.getEndDate()).toUriString();
 			response.sendRedirect(redirectUri);
-			
+
 		} catch (Exception e) {
 			logger.error(format(REPORT_DOWNLOAD_FAILED, name), e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(path = "/download/fiscal-year-report")
 	public void downloadFiscalYearReport(@RequestParam("name") String name, @RequestParam("startYear") Integer startYear,
-			@RequestParam("startMonth") Integer startMonth, @RequestParam("endYear") Integer endYear,
-			@RequestParam("endMonth") Integer endMonth, @RequestParam("isImam") Boolean isImam, HttpServletResponse response)
+										 @RequestParam("startMonth") Integer startMonth, @RequestParam("endYear") Integer endYear,
+										 @RequestParam("endMonth") Integer endMonth, @RequestParam("isImam") Boolean isImam, HttpServletResponse response)
 			throws JSONException, NotAvailableException {
 		logger.info("Inside downloadFiscalYearReport");
 		ReportDateRange reportDateRange = new DateConverter().getDateRangeForFiscalYear(startYear, startMonth, endYear, endMonth);
@@ -420,7 +430,7 @@ public class DHISIntegrator {
 	}
 
 	private List<Object> getProgramDataValues(List<JSONObject> reportSqlConfigs, JSONObject reportDHISConfigs,
-			ReportDateRange dateRange) throws DHISIntegratorException, JSONException, IOException {
+											  ReportDateRange dateRange) throws DHISIntegratorException, JSONException, IOException {
 		ArrayList<Object> programDataValues = new ArrayList<>();
 
 		for (JSONObject report : reportSqlConfigs) {
@@ -431,7 +441,7 @@ public class DHISIntegrator {
 	}
 
 	private List<Object> getProgramDataValuesAttrOptCombo(List<String> row, JSONObject childReport,
-			JSONObject reportDHISConfigs, ReportDateRange dateRange)
+														  JSONObject reportDHISConfigs, ReportDateRange dateRange)
 			throws DHISIntegratorException, JSONException, SQLException {
 
 		ArrayList<Object> programDataValues = new ArrayList<>();
@@ -475,7 +485,7 @@ public class DHISIntegrator {
 	}
 
 	private void updateDataElementsAtrOptCombo(List<String> row, JSONObject dataElement) throws JSONException {
-		String value = row.get(dataElement.getInt("column") - 1); 
+		String value = row.get(dataElement.getInt("column") - 1);
 		dataElement.put("value", value);
 	}
 
@@ -483,4 +493,92 @@ public class DHISIntegrator {
 		String DHISConfigFile = properties.dhisConfigDirectory + programName.replaceAll(" ", "_") + ".json";
 		return getConfig(DHISConfigFile);
 	}
+
+	public void prepareFamilyPlanningReport(Integer year, Integer month) throws JSONException {
+		logger.info("Inside prepareFamilyPlanningReport method");
+
+		String familyPlanningDataSetId = properties.dhisFamilyPlanningDataSetId;
+
+		JSONObject dhisConfig = (JSONObject) getDHISConfig(FamilyPlanning_PROGRAM_NAME);
+		String orgUnit = (String) dhisConfig.get("orgUnit");
+
+		Integer prevMonth;
+		if (month == 1) {
+			year -= 1;
+			prevMonth = 12;
+		} else {
+			prevMonth = month - 1;
+		}
+		Integer checkdigit = 10;
+		String previousMonth = prevMonth < checkdigit ? String.format("%02d", prevMonth) : String.format("%2d", prevMonth);
+		StringBuilder dhisRequestUrl = new StringBuilder(DHIS_GET_URL);
+		dhisRequestUrl.append("?dataSetId=").append(familyPlanningDataSetId).append("&organisationUnitId=").append(orgUnit)
+				.append("&multiOrganisationUnit=false&").append("periodId=").append(year).append(previousMonth);
+
+		ResponseEntity<String> response = dHISClient.get(dhisRequestUrl.toString());
+		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
+		dhisConfig = (JSONObject) dhisConfig.get("reports");
+		JSONArray dataValues = new JSONArray();
+		dataValues = dhisConfig.getJSONObject(FamilyPlanning).getJSONArray("dataValues");
+		JSONArray fieldsFromDhis = new JSONArray();
+		JSONArray dhisDataSet = jsonResponse.getJSONArray("dataValues");
+		Map<String, Integer> valuesFromDhis = new HashMap<>();
+
+		for (Object dataValue_ : jsonArrayToList(dataValues)) {
+			JSONObject dataValue = (JSONObject) dataValue_;
+			if (dataValue.has("getElementBack") && dataValue.get("getElementBack") != null
+					&& (Boolean) dataValue.get("getElementBack")) {
+				String id = new StringBuilder().append(dataValue.get("dataElement")).append("-")
+						.append(dataValue.get("categoryOptionCombo")).toString();
+
+				for (Object dataVa_ : jsonArrayToList(dhisDataSet)) {
+					JSONObject dataVal = (JSONObject) dataVa_;
+					if (id.equals(dataVal.get("id"))) {
+						dataValue.put("value", dataVal.get("val"));
+						fieldsFromDhis.put(dataValue);
+						valuesFromDhis.put(dataValue.getString("fieldValue"),
+								Integer.parseInt((String) dataVal.get("val")));
+
+
+
+					}
+				}
+
+			}
+		}
+
+		Integer numberOfVasectomyUser = valuesFromDhis.get("numberOfVasectomyUser") != null
+				? valuesFromDhis.get("numberOfVasectomyUser")
+				: 0;
+		Integer numberOfPillsUser = valuesFromDhis.get("numberOfPillsUser") != null
+				? valuesFromDhis.get("numberOfPillsUser")
+				: 0;
+		Integer numberOfOtherUser = valuesFromDhis.get("numberOfOtherUser") != null
+				? valuesFromDhis.get("numberOfOtherUser")
+				: 0;
+		Integer numberOfMinilipUser = valuesFromDhis.get("numberOfMinilipUser") != null
+				? valuesFromDhis.get("numberOfMinilipUser")
+				: 0;
+		Integer numberOfIUCDUser = valuesFromDhis.get("numberOfIUCDUser") != null
+				? valuesFromDhis.get("numberOfIUCDUser")
+				: 0;
+		Integer numberOfImplantUser = valuesFromDhis.get("numberOfImplantUser") != null
+				? valuesFromDhis.get("numberOfImplantUser")
+				: 0;
+		Integer numberOfDepoUser = valuesFromDhis.get("numberOfDepoUser") != null
+				? valuesFromDhis.get("numberOfDepoUser")
+				: 0;
+		Integer numberOfCondomsUser = valuesFromDhis.get("numberOfCondomsUser") != null
+				? valuesFromDhis.get("numberOfCondomsUser")
+				: 0;
+
+		databaseDriver.createTempFamilyTable(numberOfVasectomyUser,numberOfPillsUser,numberOfOtherUser,numberOfMinilipUser,
+				numberOfIUCDUser,numberOfImplantUser, numberOfDepoUser, numberOfCondomsUser
+		);
+
+
+	}
+
+
+
 }
