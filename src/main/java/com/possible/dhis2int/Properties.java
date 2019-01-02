@@ -44,4 +44,7 @@ public class Properties {
 	
 	@Value("${dhis.imam.dataset.id}")
 	public String dhisImamDataSetId;
+	
+	@Value("${dhis.familyPlanning.dataset.id}")
+	public String dhisFamilyPlanningDataSetId;
 }
