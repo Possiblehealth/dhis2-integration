@@ -96,7 +96,6 @@ public class DatabaseDriver {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
 			PreparedStatement ps = connection.prepareStatement(
 
-
 					"SELECT * FROM  dhis2_log WHERE report_name = ? AND report_month = ? AND report_year = ? ORDER BY submitted_date DESC LIMIT 1");
 			ps.setString(1, programName);
 			ps.setInt(2, month);
@@ -126,7 +125,7 @@ public class DatabaseDriver {
 	}
 
 	public void createTempTable(Integer numberOfMaleLessThanSix, Integer numberOfFemalesLessThanSix,
-								Integer numberOfMalesMoreThanSix, Integer numberOfFemalesMoreThanSix) throws DHISIntegratorException {
+			Integer numberOfMalesMoreThanSix, Integer numberOfFemalesMoreThanSix) throws DHISIntegratorException {
 		logger.info("Inside create temp table method.");
 
 		Connection connection = null;
@@ -138,9 +137,9 @@ public class DatabaseDriver {
 					"CREATE TABLE imam(male_less_than_six int, female_less_than_six int, male_more_than_six int, female_more_than_six int)");
 			String insertImamData = new StringBuffer(
 					"INSERT INTO imam(male_less_than_six , female_less_than_six , male_more_than_six , female_more_than_six) SELECT ")
-					.append(numberOfMaleLessThanSix).append(", ").append(numberOfFemalesLessThanSix)
-					.append(", ").append(numberOfMalesMoreThanSix).append(", ")
-					.append(numberOfFemalesMoreThanSix).toString();
+							.append(numberOfMaleLessThanSix).append(", ").append(numberOfFemalesLessThanSix)
+							.append(", ").append(numberOfMalesMoreThanSix).append(", ")
+							.append(numberOfFemalesMoreThanSix).toString();
 			statement.executeUpdate(insertImamData);
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format("Failed to create table imam"), e);
@@ -173,9 +172,10 @@ public class DatabaseDriver {
 		}
 	}
 
-	public void createTempFamilyTable(Integer numberOfVasectomyUser, Integer numberOfPillsUser, Integer numberOfOtherUser, Integer numberOfMinilipUser,
-									  Integer numberOfIUCDUser,Integer numberOfImplantUser,Integer numberOfDepoUser,Integer numberOfCondomsUser
-	) throws DHISIntegratorException {
+	public void createTempFamilyTable(Integer numberOfVasectomyUser, Integer numberOfPillsUser,
+			Integer numberOfOtherUser, Integer numberOfMinilipUser, Integer numberOfIUCDUser,
+			Integer numberOfImplantUser, Integer numberOfDepoUser, Integer numberOfCondomsUser)
+			throws DHISIntegratorException {
 		logger.info("create family planning temp table method.");
 
 		Connection connection = null;
@@ -188,10 +188,10 @@ public class DatabaseDriver {
 
 			String insertFamilyPlanningData = new StringBuffer(
 					"INSERT INTO familyPlanning(vasectomy_user, pills_user, other_user,  minilap_user, IUCD_user, implant_user, depo_user, condoms_user) SELECT ")
-					.append(numberOfVasectomyUser).append(", ").append(numberOfPillsUser).append(", ")
-					.append(numberOfOtherUser).append(", ").append(numberOfMinilipUser).append(", ")
-					.append(numberOfIUCDUser).append(", ").append(numberOfImplantUser).append(", ")
-					.append(numberOfDepoUser).append(", ").append(numberOfCondomsUser).toString();
+							.append(numberOfVasectomyUser).append(", ").append(numberOfPillsUser).append(", ")
+							.append(numberOfOtherUser).append(", ").append(numberOfMinilipUser).append(", ")
+							.append(numberOfIUCDUser).append(", ").append(numberOfImplantUser).append(", ")
+							.append(numberOfDepoUser).append(", ").append(numberOfCondomsUser).toString();
 			statement.executeUpdate(insertFamilyPlanningData);
 
 		} catch (SQLException e) {
