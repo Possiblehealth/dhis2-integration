@@ -93,14 +93,13 @@ public class DatabaseDriver {
 		Connection connection = null;
 		String log = null;
 		try {
-
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
 			PreparedStatement ps = connection.prepareStatement(
+
 					"SELECT * FROM  dhis2_log WHERE report_name = ? AND report_month = ? AND report_year = ? ORDER BY submitted_date DESC LIMIT 1");
 			ps.setString(1, programName);
 			ps.setInt(2, month);
 			ps.setInt(3, year);
-			
 			resultSet = ps.executeQuery();
 			JSONObject jsonObject = new JSONObject();
 			while (resultSet.next()) {
@@ -166,6 +165,41 @@ public class DatabaseDriver {
 		} finally {
 			if (connection != null) {
 				try {
+					connection.close();
+				} catch (SQLException ignored) {
+				}
+			}
+		}
+	}
+
+	public void createTempFamilyTable(Integer numberOfVasectomyUser, Integer numberOfPillsUser,
+			Integer numberOfOtherUser, Integer numberOfMinilipUser, Integer numberOfIUCDUser,
+			Integer numberOfImplantUser, Integer numberOfDepoUser, Integer numberOfCondomsUser)
+			throws DHISIntegratorException {
+		logger.info("create family planning temp table method.");
+
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			Statement statement = connection.createStatement();
+			statement.executeUpdate("DROP TABLE IF EXISTS familyPlanning");
+			statement.executeUpdate(
+					"CREATE TABLE familyPlanning(vasectomy_user int, pills_user int, other_user int, minilap_user int,IUCD_user int, implant_user int, depo_user int, condoms_user int)");
+
+			String insertFamilyPlanningData = new StringBuffer(
+					"INSERT INTO familyPlanning(vasectomy_user, pills_user, other_user,  minilap_user, IUCD_user, implant_user, depo_user, condoms_user) SELECT ")
+							.append(numberOfVasectomyUser).append(", ").append(numberOfPillsUser).append(", ")
+							.append(numberOfOtherUser).append(", ").append(numberOfMinilipUser).append(", ")
+							.append(numberOfIUCDUser).append(", ").append(numberOfImplantUser).append(", ")
+							.append(numberOfDepoUser).append(", ").append(numberOfCondomsUser).toString();
+			statement.executeUpdate(insertFamilyPlanningData);
+
+		} catch (SQLException e) {
+			throw new DHISIntegratorException(String.format("Failed to create table familyPlanning"), e);
+		} finally {
+			if (connection != null) {
+				try {
+
 					connection.close();
 				} catch (SQLException ignored) {
 				}
