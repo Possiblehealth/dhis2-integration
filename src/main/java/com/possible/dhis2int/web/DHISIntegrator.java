@@ -79,7 +79,7 @@ public class DHISIntegrator {
 	private final String IMAM = "Integrated Management of Acute Malnutrition (IMAM) Program";
 
 	private final String FamilyPlanning_PROGRAM_NAME = "07-Family_Planning_Program";
-	private final String FamilyPlanning = "Family Planning Program all temporary methods";
+	private final String Family = "Family Planning Program all temporary methods";
 
 	@Autowired
 	public DHISIntegrator(DHISClient dHISClient, DatabaseDriver databaseDriver, Properties properties,
@@ -176,8 +176,8 @@ public class DHISIntegrator {
 	@RequestMapping(path = "/submit-to-dhis")
 	public String submitToDHIS(@RequestParam("name") String program, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("comment") String comment,
-			@RequestParam("isImam") Boolean isImam, @RequestParam("isFamily") Boolean isFamily,
-			HttpServletRequest clientReq, HttpServletResponse clientRes) throws IOException, JSONException {
+			@RequestParam("isImam") Boolean isImam,@RequestParam("isFamily") Boolean isFamily,HttpServletRequest clientReq, HttpServletResponse clientRes)
+			throws IOException, JSONException {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		Submission submission = new Submission();
 		String filePath = submittedDataStore.getAbsolutePath(submission);
@@ -186,31 +186,46 @@ public class DHISIntegrator {
 			if (isImam != null && isImam) {
 				prepareImamReport(year, month);
 			}
-			submitToDHIS(submission, program, year, month);
-			status = submission.getStatus();
-			if (isImam != null && isImam)
-				databaseDriver.dropImamTable();
-
 			if (isFamily != null && isFamily) {
 				prepareFamilyPlanningReport(year, month);
 			}
+			
 			submitToDHIS(submission, program, year, month);
 			status = submission.getStatus();
-
+			
+			if (isImam != null && isImam)
+				databaseDriver.dropImamTable();
 		} catch (DHISIntegratorException | JSONException e) {
 			status = Failure;
 			submission.setException(e);
 			logger.error(DHIS_SUBMISSION_FAILED, e);
-		} catch (Exception e) {
-			status = Failure;
-			submission.setException(e);
-			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		}
 
 		submittedDataStore.write(submission);
 		submissionLog.log(program, userName, comment, status, filePath);
 		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
 
+		return submission.getInfo();
+	}
+	
+	@RequestMapping(path = "/submit-to-dhis_report_status")
+	public String submitToDHISLOG(@RequestParam("name") String program, @RequestParam("year") Integer year,
+			@RequestParam("month") Integer month, @RequestParam("comment") String comment, HttpServletRequest clientReq,
+			HttpServletResponse clientRes) throws IOException, JSONException {
+		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
+		Submission submission = new Submission();
+		Status status;
+		try {
+			submitToDHIS(submission, program, year, month);
+			status = submission.getStatus();
+		} catch (DHISIntegratorException | JSONException e) {
+			status = Failure;
+			submission.setException(e);
+			logger.error(DHIS_SUBMISSION_FAILED, e);
+		}
+		submittedDataStore.write(submission);
+
+		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
 		return submission.getInfo();
 	}
 
@@ -530,7 +545,7 @@ public class DHISIntegrator {
 		JSONObject jsonResponse = new JSONObject(response.getBody().toString());
 		dhisConfig = (JSONObject) dhisConfig.get("reports");
 		JSONArray dataValues = new JSONArray();
-		dataValues = dhisConfig.getJSONObject(FamilyPlanning).getJSONArray("dataValues");
+		dataValues = dhisConfig.getJSONObject(Family).getJSONArray("dataValues");
 		JSONArray fieldsFromDhis = new JSONArray();
 		JSONArray dhisDataSet = jsonResponse.getJSONArray("dataValues");
 		Map<String, Integer> valuesFromDhis = new HashMap<>();

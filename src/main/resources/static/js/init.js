@@ -1,12 +1,11 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
-var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM&isFamily=IS_FAMILYPLANNING';
+var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM&isFamily=IS_FAMILY';
 var submitUrl = '/dhis-integration/submit-to-dhis';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
 var FAMILYPLANNING_PROGRAM = '07 Family Planning Program';
 var logUrl = '/dhis-integration/log';
-var fiscalYearReportUrl = '/dhis-integration/download/fiscal-year-report?name=NAME&startYear=START_YEAR&startMonth=START_MONTH&endYear=END_YEAR&endMonth=END_MONTH&isImam=IS_IMAM';
 var fiscalYearReportUrl = '/dhis-integration/download/fiscal-year-report?name=NAME&startYear=START_YEAR&startMonth=START_MONTH&endYear=END_YEAR&endMonth=END_MONTH&isImam=IS_IMAM';
 var supportedStartDate = 2090;
 var supportedEndDate = 2065;
@@ -200,8 +199,7 @@ function download(index) {
 	var isFamily = programName.toLowerCase() === FAMILYPLANNING_PROGRAM
 			.toLowerCase();
 	var url = downloadUrl.replace('NAME', programName).replace('YEAR', year)
-			.replace('MONTH', month).replace('IS_IMAM', isImam).replace(
-					'IS_FAMILYPLANNING', isFamily);
+			.replace('MONTH', month).replace('IS_IMAM', isImam).replace('IS_FAMILY', isFamily);
 	downloadCommon(url);
 }
 
@@ -236,8 +234,7 @@ function submit(index, attribute) {
 	var programName = element('program-name', index).html();
 	var comment = element('comment', index).val();
 	var isImam = programName.toLowerCase() === NUTRITION_PROGRAM.toLowerCase();
-	var isFamilyplanning = programName.toLowerCase() === FAMILYPLANNING_PROGRAM
-			.toLowerCase();
+	var isFamily = programName.toLowerCase() === FAMILYPLANNING_PROGRAM.toLowerCase();
 
 	var parameters = {
 		year : year,
