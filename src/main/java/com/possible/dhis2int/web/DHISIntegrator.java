@@ -199,6 +199,10 @@ public class DHISIntegrator {
 			status = Failure;
 			submission.setException(e);
 			logger.error(DHIS_SUBMISSION_FAILED, e);
+		} catch (Exception e) {
+			status = Failure;
+			submission.setException(e);
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		}
 
 		submittedDataStore.write(submission);
@@ -222,6 +226,10 @@ public class DHISIntegrator {
 			status = Failure;
 			submission.setException(e);
 			logger.error(DHIS_SUBMISSION_FAILED, e);
+		} catch (Exception e) {
+			status = Failure;
+			submission.setException(e);
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		}
 		submittedDataStore.write(submission);
 
@@ -287,6 +295,10 @@ public class DHISIntegrator {
 			logger.error(e.getMessage(), e);
 			headSubmission.setException(e);
 
+		} catch (Exception e) {
+			batchSubmission.get(i).setStatus(Failure);
+			headSubmission.setException(e);
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		} finally {
 			Status status = Status.Failure;
 			String filePathData = "No Data sent";
