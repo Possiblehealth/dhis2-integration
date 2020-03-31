@@ -1,5 +1,5 @@
 {
-  "name": "dhis2Int",
+  "name": "dhis2",
   "homepage": "",
   "authors": [
     "possibleHealth"
@@ -19,6 +19,6 @@
     "jquery.min": "https://raw.githubusercontent.com/jquery/jquery-dist/master/dist/jquery.min.js",
     "mustache.min": "https://raw.githubusercontent.com/janl/mustache.js/v2.3.0/mustache.min.js",
     "nepali-date-picker": "^2.0.0",
-    "jquery-ui.min" :"^1.12.1"
+    "bootstrap-datepicker": "^1.9.0"
   }
 }

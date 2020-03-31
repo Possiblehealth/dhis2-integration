@@ -55,6 +55,16 @@ public class DHISClient {
         }
     }
 	
+	
+	public ResponseEntity<String> postDailyReport(String url, JSONObject jsonObject) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
+		return restTemplateFactory.getRestTemplate().exchange(properties.dhisUrl + url, HttpMethod.POST, entity,
+				String.class);
+	}
+	
+	
 	public ResponseEntity<String> post(String url, JSONObject jsonObject) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
