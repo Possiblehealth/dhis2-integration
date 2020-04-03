@@ -222,9 +222,9 @@ function downloadFiscalYearReport(index) {
 }
 
 function downloadDailyReport() {
-	var date = element('datepicker').val();
-	alert(date);
-	var programName = 'Covid19';
+	var date = $('#datepicker').val();
+	//alert(date);
+	var programName = 'EWARS Plus';
 	var url = dailyReportUrl.replace('NAME', programName).replace(
 			'DATE', date);
 	downloadCommon(url);
@@ -241,16 +241,17 @@ function downloadCommon(url) {
 
 function submitDailyReport() {
 	spinner.show();
-	var date = element('datepicker').val();
-	var programName = 'covid19';
+	var date = $('#datepicker').val();
+	var programName = 'EWARS Plus';
 	var parameters = {
-		date : date,
 		name : programName,
+		date : date
 	};
-
+	//alert(JSON.stringify(parameters));
+	
 	disableBtn(element('submitDailyReport'));
 	var submitTo = submitDailyReportUrl;
-	
+	var index = 1 //TODO: hardcoded index as 1 to get element as status-1
 	$.get(submitTo, parameters).done(function(data) {
 		data = JSON.parse(data)
 		if (!$.isEmptyObject(data)) {
@@ -323,6 +324,7 @@ function confirmAndSubmit(index, attribute) {
 	if (confirm("This action cannot be reversed. Are you sure, you want to submit?")) {
 		submit(index, attribute);
 	}
+	
 }
 
 function confirmAndSubmitDailyReport() {

@@ -201,8 +201,8 @@ public class DHISIntegrator {
 		}
 
 		submittedDataStore.write(submission);
-		submissionLog.log(program, userName, comment, status, filePath);
-		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
+		submissionLog.log(program, userName, "Daily Ewars Report", status, filePath);
+		recordLog(userName, program, 0, 0, submission.getInfo(), status, "Daily Ewars Report"); //TODO: 
 
 		return submission.getInfo();
 	}
@@ -403,7 +403,8 @@ public class DHISIntegrator {
 		}
 		try {
 			String redirectUri = UriComponentsBuilder.fromHttpUrl(properties.reportsUrl)
-					.queryParam("responseType", DOWNLOAD_FORMAT).queryParam("name", name)
+					.queryParam("responseType", DOWNLOAD_FORMAT)
+					.queryParam("name", name)
 					.queryParam("startDate", reportDateRange.getStartDate())
 					.queryParam("endDate", reportDateRange.getEndDate()).toUriString();
 			response.sendRedirect(redirectUri);
@@ -414,15 +415,16 @@ public class DHISIntegrator {
 		}
 	}
 	
-	@RequestMapping(path = "/downloadDailyReport")
-	public void downloadDailyReport(@RequestParam("name") String name, @RequestParam("date") String date, HttpServletResponse response)
+	@RequestMapping(path = "/download/daily-report")
+	public void downloadDailyReport(@RequestParam("name") String name, @RequestParam("date") String dateStr, HttpServletResponse response)
 			throws JSONException, IOException {
 		try {
 			String redirectUri = UriComponentsBuilder.fromHttpUrl(properties.reportsUrl)
-					.queryParam("responseType", DOWNLOAD_FORMAT).queryParam("name", name)
-					.queryParam("date", date).toUriString();
+					.queryParam("responseType", DOWNLOAD_FORMAT)
+					.queryParam("name", name)
+					.queryParam("startDate", dateStr)
+					.queryParam("endDate", dateStr).toUriString();
 			response.sendRedirect(redirectUri);
-
 		} catch (Exception e) {
 			logger.error(format(REPORT_DOWNLOAD_FAILED, name), e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -476,7 +478,7 @@ public class DHISIntegrator {
 		JSONObject programDataValueSet = new JSONObject();
 		programDataValueSet.put("orgUnit", dhisConfig.getString("orgUnit"));
 		programDataValueSet.put("dataValues", programDataValue);
-		programDataValueSet.put("period", dateStr);
+		programDataValueSet.put("period", dateStr.replace("-", ""));
 
 		ResponseEntity<String> responseEntity = dHISClient.postDailyReport(SUBMISSION_ENDPOINT, programDataValueSet);
 		submission.setPostedData(programDataValueSet);

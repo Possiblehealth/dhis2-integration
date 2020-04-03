@@ -22,4 +22,10 @@ public class RestTemplateFactory {
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(properties.dhisUser, properties.dhisPassword));
 		return restTemplate;
 	}
+	
+	public RestTemplate getRestTemplateEwars() {
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(properties.dhisEwarsUser, properties.dhisEwarsPassword));
+		return restTemplate;
+	}
 }

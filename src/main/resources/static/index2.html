@@ -3,6 +3,8 @@
 <title>Dhis Integration</title>
 <link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
 <link rel="stylesheet"	href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
+<link rel="stylesheet"	href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css">
+
 
 <link rel="stylesheet"	href="bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
 <link rel="stylesheet"
@@ -14,31 +16,22 @@
 </head>
 <body>
 
-<input id="datepicker"  type="text" class="form-control" >
-<p>
-    <label>DOB: </label>
-    <input type="text" value="" name="date" class="bod-picker" placeholder="Select Date of Birth">
-    <button id="clear-bth" onclick="">Clear</button>
-</p>
-
+<div class="monthOption">
+						<div class="select-style">
+							    <input type="text" class="year-selector" id="datepicker">
+						</div>
+					</div>
 	
 	<script	src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	
 	<script	src="bower_components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
 	
 	<script>
-	$(".bod-picker").nepaliDatePicker({
-	    dateFormat: "%D, %M %d, %y",
-	    closeOnDateSelect: true
-	});
-
-	$("#clear-bth").on("click", function(event) {
-	    $(".bod-picker").val('');
-	});
+	
 	
 	$('#datepicker').datepicker({
 		autoclose: true,
-		format:"yyyy-mm-dd"
+		format : "yyyymmdd"
 	});
 
 	    

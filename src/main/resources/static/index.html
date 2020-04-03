@@ -4,7 +4,8 @@
 <link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
 <link rel="stylesheet"
 	href="bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
-<link rel="stylesheet"	href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css">
+<link rel="stylesheet"
+	href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css">
 <link rel="stylesheet"
 	href="bower_components/jquery-ui/themes/base/jquery-ui.min.css">
 <link rel="stylesheet" href="css/stylesheet.css">
@@ -32,7 +33,7 @@
 				<li><a href="#tab-monthly">Monthly</a></li>
 				<li><a href="#tab-yearly">Yearly</a></li>
 				<li><a href="#tab-daily">Daily-EWARS</a></li>
-				
+
 			</ul>
 			<div id="tab-monthly">
 				<div class="section-title">
@@ -63,34 +64,36 @@
 				</div>
 				<div id="programs-yearly"></div>
 			</div>
-			
+
 			<div id="tab-daily" class="tab-daily">
 				<div class="section-title">
 					<span>Programs</span>
 				</div>
 				<div class="dhisContent dhisContentHeader">
 					<div class="programName">Name</div>
-					<div class="date">Date</div>
-					<div class="downloadButton">Download</div>
-					<div class="submit"></div>
+					<div class="monthOption">Date</div>
+					<div class="downloadButton"></div>
+					<div class="submit">Submit</div>
 					<div class="status">Status</div>
 				</div>
-				<div id="programs-daily">
-					<div >Covid 19 </div>
-					<div id="datePicker_div">
-						<input id="datepicker"  type="text" class="form-control" >
+				<div id="program" class="dhisContent">
+					<div id="program-name" class="programName">Covid19</div>
+	
+					<div class="monthOption">
+						<div class="select-style">
+							    <input type="text" class="year-selector" id="datepicker">
+						</div>
 					</div>
 					<div class="downloadButton">
 						<input type="button" class="btn" onclick="downloadDailyReport()"
 							value="Download">
 					</div>
 					<div class="submit">
-						<input id="submit-{{index}}" type="button" class="btn"
-								onclick="confirmAndSubmit()"
-								value="Submit to DHIS2">
+						<input id="submits-daily" type="button" class="btn"
+							onclick="confirmAndSubmitDailyReport()" value="Submit to EWARS">
 					</div>
-					<div class="status" id="status-daily" ></div>
-					
+					<div class="status" id="status-1"></div>
+
 				</div>
 			</div>
 		</div>
@@ -108,15 +111,14 @@
 	<script src="js/init.js"></script>
 	<script
 		src="bower_components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
-	<script	src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-	
+	<script
+		src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
 	<script>
 		$('#datepicker').datepicker({
-		autoclose: true,
-		format:"yyyy-mm-dd"
-	});
-
-	    
+			autoclose : true,
+			format : "yyyy-mm-dd"
+		});
 	</script>
 </body>
 </html>

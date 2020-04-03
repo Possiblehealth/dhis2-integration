@@ -23,6 +23,15 @@ public class Properties {
 
 	@Value("${dhis.url}")
 	public String dhisUrl;
+	
+	@Value("${dhis.ewars.url}")
+	public String dhisEwarsUrl;
+	
+	@Value("${dhis.ewars.password}")
+	public String dhisEwarsPassword;
+
+	@Value("${dhis.ewars.user}")
+	public String dhisEwarsUser;
 
 	@Value("${openmrs.db.url}")
 	public String openmrsDBUrl;

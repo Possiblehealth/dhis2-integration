@@ -60,7 +60,7 @@ public class DHISClient {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), headers);
-		return restTemplateFactory.getRestTemplate().exchange(properties.dhisUrl + url, HttpMethod.POST, entity,
+		return restTemplateFactory.getRestTemplateEwars().exchange(properties.dhisEwarsUrl + url, HttpMethod.POST, entity,
 				String.class);
 	}
 	
