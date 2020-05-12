@@ -293,7 +293,7 @@ public class DHISIntegrator {
 	public String getLog(@RequestParam String programName, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("date") String dateStr) throws SQLException, ParseException {
 		logger.info("Inside getLog method"+dateStr);
-		Date date = new Date();
+		Date date = null;
 		if(dateStr != null && dateStr.length() > 0) {
 			date=new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
 		}
