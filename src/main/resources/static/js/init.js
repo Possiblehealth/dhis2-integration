@@ -338,11 +338,14 @@ function getStatus(index) {
 	var programName = element('program-name', index).html();
 	var year = element('year', index).val();
 	var month = element('month', index).val();
+	var date = $('#datepicker').val();
+
 
 	var parameters = {
 		programName : programName,
 		month : month,
-		year : year
+		year : year,
+		date :  date
 	};
 	spinner.show();
 	$.get(logUrl, parameters).done(function(data) {

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -290,9 +291,10 @@ public class DHISIntegrator {
 
 	@RequestMapping(path = "/log")
 	public String getLog(@RequestParam String programName, @RequestParam("year") Integer year,
-			@RequestParam("month") Integer month) throws SQLException {
+			@RequestParam("month") Integer month, @RequestParam("date") String dateStr) throws SQLException, ParseException {
 		logger.info("Inside getLog method");
-		return databaseDriver.getQuerylog(programName, month, year);
+	    Date date=new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);  
+		return databaseDriver.getQuerylog(programName, month, year, date);
 	}
 
 	@RequestMapping(path = "/submit-to-dhis-atr")
@@ -353,7 +355,7 @@ public class DHISIntegrator {
 				}
 			}
 			submissionLog.log(program, userName, comment, status, filePathData);
-			recordLog(userName, program, year, month, comment, status, comment);
+			recordLog(userName, program, year, month, comment, status, comment, new Date());
 		}
 		return headSubmission.getInfo();
 	}
