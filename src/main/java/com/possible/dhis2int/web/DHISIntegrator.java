@@ -468,10 +468,11 @@ public class DHISIntegrator {
 
 		JSONObject dhisConfig = getDHISConfig(name);
 		
-		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 		DateTime date = formatter.parseDateTime(dateStr);
-
+		logger.debug("Input Date : "+dateStr);
 		ReportDateRange dateRange = new ReportDateRange(date, date);
+		logger.debug("Formatted Date : "+dateRange.toString());
 		List<Object> programDataValue = getProgramDataValues(childReports, dhisConfig.getJSONObject("reports"),
 				dateRange);
 
