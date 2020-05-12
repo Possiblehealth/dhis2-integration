@@ -343,6 +343,8 @@ function getStatus(index) {
     
     if (date){
 		programName = 'EWARS Plus';
+		month = "";
+		year = "";
 	}
 	var parameters = {
 		programName : programName,
