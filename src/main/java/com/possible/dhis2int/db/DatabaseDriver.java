@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -88,16 +89,18 @@ public class DatabaseDriver {
 		}
 	}
 
-	public String getQuerylog(String programName, Integer month, Integer year) throws DHISIntegratorException {
+	public String getQuerylog(String programName, Integer month, Integer year, Date date) throws DHISIntegratorException {
 		logger.info("Inside getQueryLog method");
 		ResultSet resultSet = null;
 		Connection connection = null;
 		String log = null;
 		try {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
-			PreparedStatement ps = connection.prepareStatement(
-
-					"SELECT * FROM  dhis2_log WHERE report_name = ? AND report_month = ? AND report_year = ? ORDER BY submitted_date DESC LIMIT 1");
+			String retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ? AND report_month = ? AND report_year = ? ORDER BY submitted_date DESC LIMIT 1";
+			if (date != null) {
+				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ?  date = ? ORDER BY submitted_date DESC LIMIT 1";
+			}
+			PreparedStatement ps = connection.prepareStatement(retrieveQuery);
 			ps.setString(1, programName);
 			ps.setInt(2, month);
 			ps.setInt(3, year);

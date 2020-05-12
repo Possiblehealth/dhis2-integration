@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -179,16 +180,16 @@ public class DHISIntegrator {
 	}
 
 	@RequestMapping(path = "/submit-to-dhis-daily")
-	public String submitToDHISDaily(@RequestParam("name") String program, @RequestParam("date") String date
+	public String submitToDHISDaily(@RequestParam("name") String program, @RequestParam("date") String dateStr
 			,HttpServletRequest clientReq, HttpServletResponse clientRes)
-			throws IOException, JSONException {
+			throws IOException, JSONException, ParseException {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		Submission submission = new Submission();
 		String filePath = submittedDataStore.getAbsolutePath(submission);
 		Status status;
 		try {
 			
-			submitToDHISDaily(submission, program, date);
+			submitToDHISDaily(submission, program, dateStr);
 			status = submission.getStatus();
 		} catch (DHISIntegratorException | JSONException e) {
 			status = Failure;
@@ -202,8 +203,8 @@ public class DHISIntegrator {
 
 		submittedDataStore.write(submission);
 		submissionLog.log(program, userName, "Daily Ewars Report", status, filePath);
-		recordLog(userName, program, 0, 0, submission.getInfo(), status, "Daily Ewars Report"); //TODO: 
-
+	    Date date=new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);  
+		recordLog(userName, program, 0, 0, submission.getInfo(), status, "Daily Ewars Report", date); //TODO: 
 		return submission.getInfo();
 	}
 	
@@ -242,7 +243,7 @@ public class DHISIntegrator {
 
 		submittedDataStore.write(submission);
 		submissionLog.log(program, userName, comment, status, filePath);
-		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
+		recordLog(userName, program, year, month, submission.getInfo(), status, comment, new Date());
 
 		return submission.getInfo();
 	}
@@ -269,13 +270,13 @@ public class DHISIntegrator {
 		}
 		submittedDataStore.write(submission);
 
-		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
+		recordLog(userName, program, year, month, submission.getInfo(), status, comment, new Date());
 		return submission.getInfo();
 	}
 
 	private String recordLog(String userName, String program, Integer year, Integer month, String log, Status status,
-			String comment) throws IOException, JSONException {
-		Date date = new Date();
+			String comment, Date date) throws IOException, JSONException {
+
 		Status submissionStatus = status;
 		if (status == Status.Failure) {
 			submissionStatus = Status.Incomplete;
