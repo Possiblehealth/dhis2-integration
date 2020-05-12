@@ -294,7 +294,7 @@ public class DHISIntegrator {
 			@RequestParam("month") Integer month, @RequestParam("date") String dateStr) throws SQLException, ParseException {
 		logger.info("Inside getLog method");
 		Date date = new Date();
-		if(dateStr != null || dateStr.isEmpty() ) {
+		if(dateStr != null || !dateStr.isEmpty() ) {
 			date=new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
 		}
 	       
