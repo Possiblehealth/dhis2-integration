@@ -99,7 +99,7 @@ public class DatabaseDriver {
 			PreparedStatement ps;
 			String retrieveQuery;
 			if (date != null) { // search by date 
-				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ?  submitted_date = ? ORDER BY submitted_date DESC LIMIT 1";
+				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ? AND submitted_date = ? ORDER BY submitted_date DESC LIMIT 1";
 				ps = connection.prepareStatement(retrieveQuery);
 	            Timestamp ts=new Timestamp(date.getTime());  
 				ps.setString(1, programName);
