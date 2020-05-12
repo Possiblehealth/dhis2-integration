@@ -102,11 +102,11 @@ public class DatabaseDriver {
 			ps.setString(1, programName);
 			ps.setInt(2, month);
 			ps.setInt(3, year);
-            Timestamp ts=new Timestamp(date.getTime());  
 
 			if (date != null) { // search by date 
 				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ?  submitted_date = ? ORDER BY submitted_date DESC LIMIT 1";
 				ps = connection.prepareStatement(retrieveQuery);
+	            Timestamp ts=new Timestamp(date.getTime());  
 				ps.setString(1, programName);
 				ps.setTimestamp(2, ts);
 			}
