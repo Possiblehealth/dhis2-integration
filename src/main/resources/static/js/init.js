@@ -339,24 +339,23 @@ function getStatus(index) {
 	var year = element('year', index).val();
 	var month = element('month', index).val();
 	var date = $('#datepicker').val();
-    alert("getting log for "+ date);
+    console.log("getting log for "+ date);
     
+    if (date){
+		programName = 'EWARS Plus';
+	}
 	var parameters = {
 		programName : programName,
 		month : month,
-		year : year
+		year : year,
+		date : date
 	};
 	
-	if (date){
-		programName = 'EWARS Plus';
-		parameters = {
-			name : programName,
-			date : date
-		};
-	}
+	
 	spinner.show();
 	$.get(logUrl, parameters).done(function(data) {
 		data = JSON.parse(data);
+		console.log("logs :: "+data);
 		if ($.isEmptyObject(data)) {
 			element('comment', index).html('');
 			element('status', index).html('');
