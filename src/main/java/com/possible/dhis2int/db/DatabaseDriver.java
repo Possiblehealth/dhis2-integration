@@ -96,19 +96,21 @@ public class DatabaseDriver {
 		String log = null;
 		try {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
-			
-			String retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ? AND report_month = ? AND report_year = ? ORDER BY submitted_date DESC LIMIT 1";
-			PreparedStatement ps = connection.prepareStatement(retrieveQuery);
-			ps.setString(1, programName);
-			ps.setInt(2, month);
-			ps.setInt(3, year);
-
+			PreparedStatement ps;
+			String retrieveQuery;
 			if (date != null) { // search by date 
 				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ?  submitted_date = ? ORDER BY submitted_date DESC LIMIT 1";
 				ps = connection.prepareStatement(retrieveQuery);
 	            Timestamp ts=new Timestamp(date.getTime());  
 				ps.setString(1, programName);
 				ps.setTimestamp(2, ts);
+			} else { 
+				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ? AND report_month = ? AND report_year = ? ORDER BY submitted_date DESC LIMIT 1";
+				ps = connection.prepareStatement(retrieveQuery);
+				ps.setString(1, programName);
+				ps.setInt(2, month);
+				ps.setInt(3, year);
+
 			}
 
 			resultSet = ps.executeQuery();
