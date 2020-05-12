@@ -339,14 +339,21 @@ function getStatus(index) {
 	var year = element('year', index).val();
 	var month = element('month', index).val();
 	var date = $('#datepicker').val();
-
-
+    alert("getting log for "+ date);
+    
 	var parameters = {
 		programName : programName,
 		month : month,
-		year : year,
-		date :  date
+		year : year
 	};
+	
+	if (date){
+		programName = 'EWARS Plus';
+		parameters = {
+			name : programName,
+			date : date
+		};
+	}
 	spinner.show();
 	$.get(logUrl, parameters).done(function(data) {
 		data = JSON.parse(data);
