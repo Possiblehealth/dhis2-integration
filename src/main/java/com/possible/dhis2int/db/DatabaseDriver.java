@@ -105,7 +105,7 @@ public class DatabaseDriver {
             Timestamp ts=new Timestamp(date.getTime());  
 
 			if (date != null) { // search by date 
-				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ?  date = ? ORDER BY submitted_date DESC LIMIT 1";
+				retrieveQuery = "SELECT * FROM  dhis2_log WHERE report_name = ?  submitted_date = ? ORDER BY submitted_date DESC LIMIT 1";
 				ps = connection.prepareStatement(retrieveQuery);
 				ps.setString(1, programName);
 				ps.setTimestamp(2, ts);
@@ -120,8 +120,10 @@ public class DatabaseDriver {
 			}
 			log = jsonObject.toString(INDENT_FACTOR);
 		} catch (SQLException e) {
+			logger.error(e);
 			throw new DHISIntegratorException(String.format(Messages.SQL_EXECUTION_EXCEPTION), e);
 		} catch (JSONException e) {
+			logger.error(e);
 			throw new DHISIntegratorException(String.format(Messages.SQL_EXECUTION_EXCEPTION), e);
 		} finally {
 			if (connection != null) {
