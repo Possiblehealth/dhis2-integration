@@ -251,7 +251,7 @@ function submitDailyReport() {
 	
 	disableBtn(element('submitDailyReport'));
 	var submitTo = submitDailyReportUrl;
-	var index = 1 //TODO: hardcoded index as 1 to get element as status-1
+	var index = 100 //TODO: hardcoded index as 1 to get element as status-100
 	$.get(submitTo, parameters).done(function(data) {
 		data = JSON.parse(data)
 		if (!$.isEmptyObject(data)) {
