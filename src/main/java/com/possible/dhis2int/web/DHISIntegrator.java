@@ -12,6 +12,7 @@ import static org.apache.log4j.Logger.getLogger;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -541,7 +542,7 @@ public class DHISIntegrator {
 		}
 	}
 
-	private Results getResult(String sql, String type, ReportDateRange dateRange) throws DHISIntegratorException {
+	private Results getResult(String sql, String type, ReportDateRange dateRange) throws DHISIntegratorException, UnsupportedEncodingException {
 		String formattedSql = sql.replaceAll("#startDate#", dateRange.getStartDate()).replaceAll("#endDate#",
 				dateRange.getEndDate());
 		return databaseDriver.executeQuery(formattedSql, type);
