@@ -39,10 +39,10 @@ public class DatabaseDriver {
 	public DatabaseDriver(Properties properties) throws UnsupportedEncodingException {
 		this.properties = properties;
 		if(properties.openmrsDBUrl.endsWith("%")) {
-			properties.openmrsDBUrl = properties.openmrsDBUrl + "25";
+			properties.openmrsDBUrl.replace("%", "25");
 		}
 		if(properties.openelisDBUrl.endsWith("%")) {
-			properties.openelisDBUrl = properties.openelisDBUrl + "25";
+			properties.openelisDBUrl.replace("%", "25");
 		}
 		this.decodedOpenmrsUrl = URLDecoder.decode(properties.openmrsDBUrl,"UTF-8"); 
 		this.decodedOpenelisUrl = URLDecoder.decode(properties.openelisDBUrl,"UTF-8"); 
