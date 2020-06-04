@@ -31,13 +31,19 @@ public class DatabaseDriver {
 
 	private Properties properties;
 	private final static Integer INDENT_FACTOR = 1;
-	private final String decodedOpenmrsUrl;
-	private final String decodedOpenelisUrl;
+	private String decodedOpenmrsUrl;
+	private String decodedOpenelisUrl;
 
 
 	@Autowired
 	public DatabaseDriver(Properties properties) throws UnsupportedEncodingException {
 		this.properties = properties;
+		if(properties.openmrsDBUrl.endsWith("%")) {
+			properties.openmrsDBUrl = properties.openmrsDBUrl + "25";
+		}
+		if(properties.openelisDBUrl.endsWith("%")) {
+			properties.openelisDBUrl = properties.openelisDBUrl + "25";
+		}
 		this.decodedOpenmrsUrl = URLDecoder.decode(properties.openmrsDBUrl,"UTF-8"); 
 		this.decodedOpenelisUrl = URLDecoder.decode(properties.openelisDBUrl,"UTF-8"); 
 
