@@ -2,6 +2,8 @@ package com.possible.dhis2int.db;
 
 import static org.apache.log4j.Logger.getLogger;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -35,11 +37,11 @@ public class DatabaseDriver {
 		this.properties = properties;
 	}
 
-	public Results executeQuery(String formattedSql, String type) throws DHISIntegratorException {
+	public Results executeQuery(String formattedSql, String type) throws DHISIntegratorException, UnsupportedEncodingException {
 		Connection connection = null;
 		try {
-
-			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			String decodedUrl = URLDecoder.decode(properties.openmrsDBUrl,"UTF-8"); 
+			connection = DriverManager.getConnection(decodedUrl);
 			if ("ElisGeneric".equalsIgnoreCase(type)) {
 				connection = DriverManager.getConnection(properties.openelisDBUrl);
 			}
