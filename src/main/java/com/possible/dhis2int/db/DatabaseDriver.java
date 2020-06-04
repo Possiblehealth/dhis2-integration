@@ -31,19 +31,24 @@ public class DatabaseDriver {
 
 	private Properties properties;
 	private final static Integer INDENT_FACTOR = 1;
+	private final String decodedOpenmrsUrl;
+	private final String decodedOpenelisUrl;
+
 
 	@Autowired
-	public DatabaseDriver(Properties properties) {
+	public DatabaseDriver(Properties properties) throws UnsupportedEncodingException {
 		this.properties = properties;
+		this.decodedOpenmrsUrl = URLDecoder.decode(properties.openmrsDBUrl,"UTF-8"); 
+		this.decodedOpenelisUrl = URLDecoder.decode(properties.openelisDBUrl,"UTF-8"); 
+
 	}
 
 	public Results executeQuery(String formattedSql, String type) throws DHISIntegratorException, UnsupportedEncodingException {
 		Connection connection = null;
 		try {
-			String decodedUrl = URLDecoder.decode(properties.openmrsDBUrl,"UTF-8"); 
-			connection = DriverManager.getConnection(decodedUrl);
+			connection = DriverManager.getConnection(decodedOpenmrsUrl);
 			if ("ElisGeneric".equalsIgnoreCase(type)) {
-				connection = DriverManager.getConnection(properties.openelisDBUrl);
+				connection = DriverManager.getConnection(decodedOpenelisUrl);
 			}
 			ResultSet resultSet = connection.createStatement().executeQuery(formattedSql);
 			return Results.create(resultSet);
@@ -63,7 +68,7 @@ public class DatabaseDriver {
 		logger.debug("Inside recordQueryLog method");
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			connection = DriverManager.getConnection(decodedOpenmrsUrl);
 			PreparedStatement ps = connection.prepareStatement(
 					"INSERT INTO dhis2_log (report_name, submitted_date, submitted_by, report_log ,status, comment, report_month, report_year) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
@@ -97,7 +102,7 @@ public class DatabaseDriver {
 		Connection connection = null;
 		String log = null;
 		try {
-			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			connection = DriverManager.getConnection(decodedOpenmrsUrl);
 			PreparedStatement ps;
 			String retrieveQuery;
 			if (date != null) { // search by date 
@@ -147,7 +152,7 @@ public class DatabaseDriver {
 
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			connection = DriverManager.getConnection(decodedOpenmrsUrl);
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("DROP TABLE IF EXISTS imam");
 			statement.executeUpdate(
@@ -174,7 +179,7 @@ public class DatabaseDriver {
 		logger.info("Inside dropImamTable method.");
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			connection = DriverManager.getConnection(decodedOpenmrsUrl);
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("DROP TABLE IF EXISTS imam");
 		} catch (SQLException e) {
@@ -197,7 +202,7 @@ public class DatabaseDriver {
 
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			connection = DriverManager.getConnection(decodedOpenmrsUrl);
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("DROP TABLE IF EXISTS familyPlanning");
 			statement.executeUpdate(
