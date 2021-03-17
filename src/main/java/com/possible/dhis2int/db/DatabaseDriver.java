@@ -109,7 +109,8 @@ public class DatabaseDriver {
 			}
 			log = jsonObject.toString(INDENT_FACTOR);
 		} catch (SQLException e) {
-			throw new DHISIntegratorException(String.format(Messages.SQL_EXECUTION_EXCEPTION), e);
+			e.printStackTrace();
+			throw new DHISIntegratorException ("DB Exception occurred "+ e.getMessage(), e);
 		} catch (JSONException e) {
 			throw new DHISIntegratorException(String.format(Messages.SQL_EXECUTION_EXCEPTION), e);
 		} finally {
