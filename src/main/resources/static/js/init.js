@@ -14,40 +14,40 @@ var spinner = spinner || {};
 
 var months = [ {
 	number : 12,
-	name : "Chaitra"
+	name : "December"
 }, {
 	number : 11,
-	name : "Falgun"
+	name : "November"
 }, {
 	number : 10,
-	name : "Mangh"
+	name : "October"
 }, {
 	number : 9,
-	name : "Paush"
+	name : "September"
 }, {
 	number : 8,
-	name : "Mangsir"
+	name : "August"
 }, {
 	number : 7,
-	name : "Kartik"
+	name : "July"
 }, {
 	number : 6,
-	name : "Ashwin"
+	name : "June"
 }, {
 	number : 5,
-	name : "Bhadra"
+	name : "May"
 }, {
 	number : 4,
-	name : "Shrawan"
+	name : "April"
 }, {
 	number : 3,
-	name : "Ashadh"
+	name : "March"
 }, {
 	number : 2,
-	name : "Jestha"
+	name : "February"
 }, {
 	number : 1,
-	name : "Baisakh"
+	name : "January"
 } ];
 
 var years = range(supportedStartDate, supportedEndDate);
