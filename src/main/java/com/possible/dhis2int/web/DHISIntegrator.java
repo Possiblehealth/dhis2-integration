@@ -430,7 +430,11 @@ public class DHISIntegrator {
 		}
 
 		JSONObject dhisConfig = getDHISConfig(name);
-		ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
+		//ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
+		int lastDay=30;//TODO: Generalise 
+		DateTime startDate = new DateTime(year, month, 1,0,0);
+		DateTime endDate = new DateTime(year, month, lastDay,0,0);
+		ReportDateRange dateRange = new ReportDateRange(startDate,endDate);//DateConverter().getDateRange(year, month);
 		List<Object> programDataValue = getProgramDataValues(childReports, dhisConfig.getJSONObject("reports"),
 				dateRange);
 
