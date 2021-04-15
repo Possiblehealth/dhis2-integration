@@ -57,7 +57,7 @@ public class DateConverter {
 	
 	/*check if nepali date is in the range of conversion*/
 	public static boolean isNepDateInRange(int yy, int mm, int dd) {
-		return (yy >= 2000 && yy <= 2090) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 32);
+		return (yy >= 2000 && yy <= 2090) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 31);
 	}
 	
 	/*calculate whether english year is leap year or not*/
@@ -135,6 +135,7 @@ public class DateConverter {
 				}
 				totalEngDaysCount--;
 			}
+			nepDD=nepDD>31?31:nepDD;
 			tempNepalDate = new NepalDate(nepYY, nepMM, nepDD);
 			
 			return tempNepalDate;
