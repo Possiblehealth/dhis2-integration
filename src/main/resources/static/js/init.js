@@ -14,40 +14,40 @@ var spinner = spinner || {};
 
 var months = [ {
 	number : 12,
-	name : "Chaitra"
+	name : "December"
 }, {
 	number : 11,
-	name : "Falgun"
+	name : "November"
 }, {
 	number : 10,
-	name : "Mangh"
+	name : "October"
 }, {
 	number : 9,
-	name : "Paush"
+	name : "September"
 }, {
 	number : 8,
-	name : "Mangsir"
+	name : "August"
 }, {
 	number : 7,
-	name : "Kartik"
+	name : "July"
 }, {
 	number : 6,
-	name : "Ashwin"
+	name : "June"
 }, {
 	number : 5,
-	name : "Bhadra"
+	name : "May"
 }, {
 	number : 4,
-	name : "Shrawan"
+	name : "April"
 }, {
 	number : 3,
-	name : "Ashadh"
+	name : "March"
 }, {
 	number : 2,
-	name : "Jestha"
+	name : "February"
 }, {
 	number : 1,
-	name : "Baisakh"
+	name : "January"
 } ];
 
 var years = range(supportedStartDate, supportedEndDate);
@@ -58,7 +58,7 @@ $(document).ready(
 		function() {
 			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
 					renderPrograms).then(renderYearlyReport).then(
-					selectApproxLatestNepaliYear).then(
+					selectApproxLatestGregorianYear).then(
 					registerOnchangeOnComment).then(getLogStatus);
 		});
 
@@ -99,6 +99,14 @@ function fiscalYearRange(start, end) {
 			function(ignore, index) {
 				return (start - index - 1) + '-' + (start - index);
 			});
+}
+
+function selectApproxLatestGregorianYear() {
+	var date = new Date();
+	$('[id^="year-"]').val(date.getFullYear());
+	$('[id^="month-"]').val(date.getMonth());
+
+	$('[id^="fiscal-year-"]').val( (date.getFullYear()-1) + '-' + date.getFullYear());
 }
 
 function selectApproxLatestNepaliYear() {
