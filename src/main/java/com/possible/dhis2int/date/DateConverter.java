@@ -57,7 +57,7 @@ public class DateConverter {
 	
 	/*check if nepali date is in the range of conversion*/
 	public static boolean isNepDateInRange(int yy, int mm, int dd) {
-		return (yy >= 2065 && yy <= 2090) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 32);
+		return (yy >= 2000 && yy <= 2090) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 32);
 	}
 	
 	/*calculate whether english year is leap year or not*/
@@ -162,7 +162,7 @@ public class DateConverter {
 		
 		if (isNepDateInRange(nepYY, nepMM, nepDD)) {
 			
-			int startingEngYear = 2008;
+			int startingEngYear = 2000;
 			int startingEngMonth = 4;
 			int startingEngDay = 13;
 			
@@ -227,7 +227,7 @@ public class DateConverter {
 				//Log.d("KG: BS->AD :totDayCount",""+totalNepDaysCount);
 				totalNepDaysCount--;
 			}
-			return new DateTime(engYY, engMM, engDD, 0, 0);
+			return new DateTime(nepYY, nepMM, nepDD, 0, 0);
 		} else {
 			throw new IllegalArgumentException("Out of Range: Date is out of range to Convert");
 		}
