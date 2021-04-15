@@ -58,7 +58,7 @@ $(document).ready(
 		function() {
 			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
 					renderPrograms).then(renderYearlyReport).then(
-					selectApproxLatestNepaliYear).then(
+					selectApproxLatestGregorianYear).then(
 					registerOnchangeOnComment).then(getLogStatus);
 		});
 
@@ -99,6 +99,14 @@ function fiscalYearRange(start, end) {
 			function(ignore, index) {
 				return (start - index - 1) + '-' + (start - index);
 			});
+}
+
+function selectApproxLatestGregorianYear() {
+	var date = new Date();
+	$('[id^="year-"]').val(date.getFullYear());
+	$('[id^="month-"]').val(date.getMonth()+1);
+ 
+	$('[id^="fiscal-year-"]').val((date.getFullYear() - 1) + '-' + date.getFullYear());
 }
 
 function selectApproxLatestNepaliYear() {
