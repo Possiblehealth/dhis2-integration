@@ -7,47 +7,47 @@ var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
 var FAMILYPLANNING_PROGRAM = '07 Family Planning Program';
 var logUrl = '/dhis-integration/log';
 var fiscalYearReportUrl = '/dhis-integration/download/fiscal-year-report?name=NAME&startYear=START_YEAR&startMonth=START_MONTH&endYear=END_YEAR&endMonth=END_MONTH&isImam=IS_IMAM';
-var supportedStartDate = 2025;
-var supportedEndDate = 2000;
+var supportedStartDate = 2008;
+var supportedEndDate = 2033;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
 var spinner = spinner || {};
 
 var months = [ {
 	number : 12,
-	name : "December"
+	name : "Chaitra"
 }, {
 	number : 11,
-	name : "November"
+	name : "Falgun"
 }, {
 	number : 10,
-	name : "October"
+	name : "Mangh"
 }, {
 	number : 9,
-	name : "September"
+	name : "Paush"
 }, {
 	number : 8,
-	name : "August"
+	name : "Mangsir"
 }, {
 	number : 7,
-	name : "July"
+	name : "Kartik"
 }, {
 	number : 6,
-	name : "June"
+	name : "Ashwin"
 }, {
 	number : 5,
-	name : "May"
+	name : "Bhadra"
 }, {
 	number : 4,
-	name : "April"
+	name : "Shrawan"
 }, {
 	number : 3,
-	name : "March"
+	name : "Ashadh"
 }, {
 	number : 2,
-	name : "February"
+	name : "Jestha"
 }, {
 	number : 1,
-	name : "January"
+	name : "Baisakh"
 } ];
 
 var years = range(supportedStartDate, supportedEndDate);
@@ -58,7 +58,7 @@ $(document).ready(
 		function() {
 			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
 					renderPrograms).then(renderYearlyReport).then(
-					selectApproxLatestGregorianYear).then(
+					selectApproxLatestNepaliYear).then(
 					registerOnchangeOnComment).then(getLogStatus);
 		});
 
@@ -99,14 +99,6 @@ function fiscalYearRange(start, end) {
 			function(ignore, index) {
 				return (start - index - 1) + '-' + (start - index);
 			});
-}
-
-function selectApproxLatestGregorianYear() {
-	var date = new Date();
-	$('[id^="year-"]').val(date.getFullYear());
-	$('[id^="month-"]').val(date.getMonth()+1);
- 
-	$('[id^="fiscal-year-"]').val((date.getFullYear() - 1) + '-' + date.getFullYear());
 }
 
 function selectApproxLatestNepaliYear() {

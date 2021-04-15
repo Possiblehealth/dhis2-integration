@@ -21,32 +21,32 @@ public class DateConverter {
         month "Baisakh", index 2 refers to second month "Jesth" and so on.
          */
 		
-		daysInMonthMap.put(2025, new int[] { 0, 31, 31, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 });
-		daysInMonthMap.put(2024, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31 });
-		daysInMonthMap.put(2023, new int[] { 0, 31, 31, 31, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2022, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2021, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 30, 29, 29, 30, 31 });
-		daysInMonthMap.put(2020, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30 });
-		daysInMonthMap.put(2019, new int[] { 0, 31, 31, 31, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2018, new int[] { 0, 31, 31, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2017, new int[] { 0, 31, 31, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 });
-		daysInMonthMap.put(2016, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2015, new int[] { 0, 31, 31, 31, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2014, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 30, 29, 29, 30, 30 });
-		daysInMonthMap.put(2013, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 30, 29, 30, 29, 31 });
-		daysInMonthMap.put(2012, new int[] { 0, 31, 31, 31, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2011, new int[] { 0, 31, 31, 31, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
-		daysInMonthMap.put(2010, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 30, 29, 29, 30, 30 });
-		daysInMonthMap.put(2009, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2008, new int[] { 0, 30, 31, 31, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2007, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2006, new int[] { 0, 31, 31, 31, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2005, new int[] { 0, 31, 31, 31, 31, 30, 31, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2004, new int[] { 0, 30, 31, 31, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2003, new int[] { 0, 31, 31, 31, 31, 31, 31, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2002, new int[] { 0, 30, 31, 31, 31, 30, 31, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2001, new int[] { 0, 30, 31, 31, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
-		daysInMonthMap.put(2000, new int[] { 0, 30, 31, 31, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2065, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 });
+		daysInMonthMap.put(2066, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31 });
+		daysInMonthMap.put(2067, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2068, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2069, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 });
+		daysInMonthMap.put(2070, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30 });
+		daysInMonthMap.put(2071, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2072, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2073, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 });
+		daysInMonthMap.put(2074, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2075, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2076, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30 });
+		daysInMonthMap.put(2077, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31 });
+		daysInMonthMap.put(2078, new int[] { 0, 31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2079, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
+		daysInMonthMap.put(2080, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30 });
+		daysInMonthMap.put(2081, new int[] { 0, 31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2082, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2083, new int[] { 0, 31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2084, new int[] { 0, 31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2085, new int[] { 0, 31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2086, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2087, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2088, new int[] { 0, 30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2089, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 });
+		daysInMonthMap.put(2090, new int[] { 0, 30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30 });
 		
 	}
 	
@@ -57,7 +57,7 @@ public class DateConverter {
 	
 	/*check if nepali date is in the range of conversion*/
 	public static boolean isNepDateInRange(int yy, int mm, int dd) {
-		return (yy >= 2000 && yy <= 2090) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 31);
+		return (yy >= 2065 && yy <= 2090) && (mm >= 1 && mm <= 12) && (dd >= 1 && dd <= 32);
 	}
 	
 	/*calculate whether english year is leap year or not*/
@@ -135,7 +135,6 @@ public class DateConverter {
 				}
 				totalEngDaysCount--;
 			}
-			nepDD=nepDD>31?31:nepDD;
 			tempNepalDate = new NepalDate(nepYY, nepMM, nepDD);
 			
 			return tempNepalDate;
@@ -163,7 +162,7 @@ public class DateConverter {
 		
 		if (isNepDateInRange(nepYY, nepMM, nepDD)) {
 			
-			int startingEngYear = 2000;
+			int startingEngYear = 2008;
 			int startingEngMonth = 4;
 			int startingEngDay = 13;
 			
@@ -228,7 +227,7 @@ public class DateConverter {
 				//Log.d("KG: BS->AD :totDayCount",""+totalNepDaysCount);
 				totalNepDaysCount--;
 			}
-			return new DateTime(nepYY, nepMM, nepDD, 0, 0);
+			return new DateTime(engYY, engMM, engDD, 0, 0);
 		} else {
 			throw new IllegalArgumentException("Out of Range: Date is out of range to Convert");
 		}
