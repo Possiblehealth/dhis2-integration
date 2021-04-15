@@ -7,7 +7,7 @@ var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
 var FAMILYPLANNING_PROGRAM = '07 Family Planning Program';
 var logUrl = '/dhis-integration/log';
 var fiscalYearReportUrl = '/dhis-integration/download/fiscal-year-report?name=NAME&startYear=START_YEAR&startMonth=START_MONTH&endYear=END_YEAR&endMonth=END_MONTH&isImam=IS_IMAM';
-var supportedStartDate = 2030;
+var supportedStartDate = 2025;
 var supportedEndDate = 2000;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
 var spinner = spinner || {};
