@@ -17,10 +17,10 @@ fi
 
 mysql --user="root" --password="P@ssw0rd" --database="openmrs" --execute="CREATE table dhis2_log ( 
 																		id INT(6) unsigned auto_increment primary key, 
-																		report_name varchar(30) not null, 
+																		report_name varchar(100) not null, 
 																		submitted_date timestamp, 
 																		submitted_by varchar(30) not null, 
-																		report_log varchar(1000) not null, 
+																		report_log varchar(4000) not null, 
 																		status varchar(30) not null,
 																		comment varchar(30) not null, 
 																		report_month integer, 
