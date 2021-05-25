@@ -183,7 +183,7 @@ function getDHISPrograms() {
 
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
-	if (data.status == 'Success' || data.status == 'Complete') {
+	if (data.status == 'SUCCESS' || data.status == 'Complete') {
 		alert("Status is SUCCESS...updating");
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
