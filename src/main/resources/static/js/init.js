@@ -183,18 +183,18 @@ function getDHISPrograms() {
 
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
-	if (data.status == 'SUCCESS' || data.status == 'Complete') {
+	if (data.status == 'Success' || data.status == 'Complete') {
 		alert("Status is SUCCESS...updating");
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
-		element('status', index).html(Mustache.render(template, data.status));
+		element('status', index).html(Mustache.render(template, 'Success'));
 		return;
 	}
 	alert("Status is FAILURE...updating");
 	var template = $('#failure-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
-	element('status', index).html(Mustache.render(template, data.status));
+	element('status', index).html(Mustache.render(template, 'Failure'));
 	element('status', index).find('.status-failure').on('click', function() {
 		alert(data.message);
 		console.log(data.message);
