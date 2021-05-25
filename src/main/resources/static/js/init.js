@@ -187,14 +187,14 @@ function putStatus(data, index) {
 		alert("Status is SUCCESS...updating");
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
-		element('status', index).html(Mustache.render(template, 'Success'));
+		element('status', index).html(Mustache.render(template, data));
 		return;
 	}
 	alert("Status is FAILURE...updating");
 	var template = $('#failure-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
-	element('status', index).html(Mustache.render(template, 'Failure'));
+	element('status', index).html(Mustache.render(template, data));
 	element('status', index).find('.status-failure').on('click', function() {
 		alert(data.message);
 		console.log(data.message);
