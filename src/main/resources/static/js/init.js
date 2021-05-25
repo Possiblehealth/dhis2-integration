@@ -257,6 +257,7 @@ function submit(index, attribute) {
 
 	disableBtn(element('submit', index));
 	var submitTo = submitUrl;
+	alert("Welcome to the submit function...");
 	if (attribute == true) {
 		alert("attribute == true, submitTo = submitUrlAtr");
 		submitTo = submitUrlAtr;
@@ -267,6 +268,7 @@ function submit(index, attribute) {
 			alert("Submitted...feedback not empty...putStatus()");
 			putStatus(data, index);
 		}
+		alert("Submitted...feedback is empty...");
 	}).fail(function(response) {
 		alert("Failed to submit...");
 		if (response.status == 403) {
