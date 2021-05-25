@@ -303,16 +303,19 @@ function getStatus(index) {
 			element('comment', index).html('');
 			element('status', index).html('');
 		} else {
+			alert("Status retried...updating");
 			putStatus(data, index);
 		}
 	}).fail(function(response) {
 		console.log("failure response");
 		if (response.status == 403) {
+			alert("Status retrieval failed...access forbidden...");
 			putStatus({
 				status : 'Failure',
 				exception : 'Not Authenticated'
 			}, index);
 		}
+		alert("Status retrieval failed...not sure why...");
 		putStatus({
 			status : 'Failure',
 			exception : response
