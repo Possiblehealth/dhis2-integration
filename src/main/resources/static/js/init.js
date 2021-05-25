@@ -258,15 +258,19 @@ function submit(index, attribute) {
 	disableBtn(element('submit', index));
 	var submitTo = submitUrl;
 	if (attribute == true) {
+		alert("attribute == true, submitTo = submitUrlAtr");
 		submitTo = submitUrlAtr;
 	}
 	$.get(submitTo, parameters).done(function(data) {
 		data = JSON.parse(data)
 		if (!$.isEmptyObject(data)) {
+			alert("Submitted...feedback not empty...putStatus()");
 			putStatus(data, index);
 		}
 	}).fail(function(response) {
+		alert("Failed to submit...");
 		if (response.status == 403) {
+			alert("Forbidden...403...");
 			putStatus({
 				status : 'Failure',
 				exception : 'Not Authenticated'
