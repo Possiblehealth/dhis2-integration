@@ -184,14 +184,14 @@ function getDHISPrograms() {
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
 	if (data.status == 'Success' || data.status == 'Complete') {
-		alert("Status is SUCCESS...updating...displaying the data");
+		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		alert(data.status);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, data));
 		return;
 	}
-	alert("Status is FAILURE...updating...displaying the data");
+	alert("[putStatus] Status is FAILURE...updating...displaying the data");
 	alert(data.status);
 	var template = $('#failure-status-template').html();
 	Mustache.parse(template);
@@ -259,7 +259,7 @@ function submit(index, attribute) {
 
 	disableBtn(element('submit', index));
 	var submitTo = submitUrl;
-	alert("Welcome to the submit function...");
+	alert("[submit] Welcome to the submit function...");
 	if (attribute == true) {
 		alert("attribute == true, submitTo = submitUrlAtr");
 		submitTo = submitUrlAtr;
@@ -267,15 +267,15 @@ function submit(index, attribute) {
 	$.get(submitTo, parameters).done(function(data) {
 		data = JSON.parse(data)
 		if (!$.isEmptyObject(data)) {
-			alert("Submitted...feedback not empty...putStatus()...here is the feedback");
+			alert("[submit] Submitted...feedback not empty...displaying the feedback...");
 			alert(data.status);
 			putStatus(data, index);
 		}
-		alert("Submitted...feedback is empty...");
+		alert("[submit] Submitted...feedback is empty...");
 	}).fail(function(response) {
-		alert("Failed to submit...");
+		alert("[submit] Failed to submit...");
 		if (response.status == 403) {
-			alert("Forbidden...403...");
+			alert("[submit] Forbidden...403...");
 			putStatus({
 				status : 'Failure',
 				exception : 'Not Authenticated'
@@ -309,25 +309,27 @@ function getStatus(index) {
 	};
 	spinner.show();
 	$.get(logUrl, parameters).done(function(data) {
+		alert("[getStatus] Status retrieved from log...updating,,displaying the status before json parsing...");
+		alert(data);
 		data = JSON.parse(data);
 		if ($.isEmptyObject(data)) {
 			element('comment', index).html('');
 			element('status', index).html('');
 		} else {
-			alert("Status retrieved...updating,,displaying the data...");
+			alert("[getStatus] Status retrieved from log...updating,,displaying the data after json parsing...");
 			alert(data.status);
 			putStatus(data, index);
 		}
 	}).fail(function(response) {
 		console.log("failure response");
 		if (response.status == 403) {
-			alert("Status retrieval failed...access forbidden...");
+			alert("[getStatus] Status retrieval failed...access forbidden...");
 			putStatus({
 				status : 'Failure',
 				exception : 'Not Authenticated'
 			}, index);
 		}
-		alert("Status retrieval failed...not sure why...");
+		alert("[getStatus] Status retrieval failed...not sure why...");
 		putStatus({
 			status : 'Failure',
 			exception : response
