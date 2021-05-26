@@ -183,6 +183,8 @@ function getDHISPrograms() {
 
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data...");
+	alert(data);
 	if (data.status == 'Success' || data.status == 'Complete') {
 		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		alert(data.status);
