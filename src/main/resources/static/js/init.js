@@ -185,14 +185,14 @@ function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
 	if (data.status == 'Success' || data.status == 'Complete') {
 		alert("Status is SUCCESS...updating...displaying the data");
-		alert(data);
+		alert(data.status);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, data));
 		return;
 	}
 	alert("Status is FAILURE...updating...displaying the data");
-	alert(data);
+	alert(data.status);
 	var template = $('#failure-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
@@ -268,7 +268,7 @@ function submit(index, attribute) {
 		data = JSON.parse(data)
 		if (!$.isEmptyObject(data)) {
 			alert("Submitted...feedback not empty...putStatus()...here is the feedback");
-			alert(data);
+			alert(data.status);
 			putStatus(data, index);
 		}
 		alert("Submitted...feedback is empty...");
@@ -315,7 +315,7 @@ function getStatus(index) {
 			element('status', index).html('');
 		} else {
 			alert("Status retrieved...updating,,displaying the data...");
-			alert(data);
+			alert(data.status);
 			putStatus(data, index);
 		}
 	}).fail(function(response) {
