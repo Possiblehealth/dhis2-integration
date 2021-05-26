@@ -315,7 +315,7 @@ function getStatus(index) {
 			element('status', index).html('');
 		} else {
 			alert("Status retrieved...updating,,displaying the data...");
-			alert(data.response);
+			alert(data.status.status);
 			putStatus(data, index);
 		}
 	}).fail(function(response) {
