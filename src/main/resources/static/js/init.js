@@ -184,13 +184,15 @@ function getDHISPrograms() {
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
 	if (data.status == 'Success' || data.status == 'Complete') {
-		alert("Status is SUCCESS...updating");
+		alert("Status is SUCCESS...updating...displaying the data");
+		alert(data);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, data));
 		return;
 	}
-	alert("Status is FAILURE...updating");
+	alert("Status is FAILURE...updating...displaying the data");
+	alert(data);
 	var template = $('#failure-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
@@ -265,7 +267,8 @@ function submit(index, attribute) {
 	$.get(submitTo, parameters).done(function(data) {
 		data = JSON.parse(data)
 		if (!$.isEmptyObject(data)) {
-			alert("Submitted...feedback not empty...putStatus()");
+			alert("Submitted...feedback not empty...putStatus()...here is the feedback");
+			alert(data);
 			putStatus(data, index);
 		}
 		alert("Submitted...feedback is empty...");
@@ -311,7 +314,8 @@ function getStatus(index) {
 			element('comment', index).html('');
 			element('status', index).html('');
 		} else {
-			alert("Status retrieved...updating");
+			alert("Status retrieved...updating,,displaying the data...");
+			alert(data);
 			putStatus(data, index);
 		}
 	}).fail(function(response) {
