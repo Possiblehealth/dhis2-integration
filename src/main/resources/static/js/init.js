@@ -317,7 +317,7 @@ function getStatus(index) {
 			element('status', index).html('');
 		} else {
 			alert("[getStatus] Status retrieved from log...updating,,displaying the data after json parsing...");
-			alert(data.status);
+			alert(data.status.status);
 			putStatus(data, index);
 		}
 	}).fail(function(response) {
