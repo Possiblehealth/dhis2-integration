@@ -218,7 +218,7 @@ function putStatusRefresh(data, index) {
 		//alert(data.status);
 		var template = $('#success-refresh-status-template').html();
 		Mustache.parse(template);
-		element('status', index).html(Mustache.render(template, data.status));
+		element('status', index).html(Mustache.render(template, {status : 'Success'}));
 		return;
 	}
 	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
@@ -226,7 +226,7 @@ function putStatusRefresh(data, index) {
 	var template = $('#failure-refresh-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
-	element('status', index).html(Mustache.render(template, data));
+	element('status', index).html(Mustache.render(template, {status : 'Failure'}));
 	element('status', index).find('.status-failure').on('click', function() {
 		alert(data.message);
 		console.log(data.message);
