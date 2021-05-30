@@ -218,15 +218,15 @@ function putStatusRefresh(data, index) {
 	if (data.status == 'Success' || data.comment == 'Complete') {
 		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		//alert(data.status);
-		reportStatus = 'Success';
-		var template = $('#success-status-template').html();
+		reportStatus.status = 'Success';
+		var template = $('#success-refresh-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, reportStatus));
 		return;
 	}
 	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
 	//alert(data.status.status);
-	var template = $('#failure-status-template').html();
+	var template = $('#failure-refresh-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
 	element('status', index).html(Mustache.render(template, reportStatus));
