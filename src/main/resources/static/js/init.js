@@ -213,12 +213,15 @@ function putStatusRefresh(data, index) {
 	//alert(JSON.stringify(data));
 	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
 	//alert(data.status);
+	var reportStatus = new Object();
+	reportStatus.status = 'Failure';
 	if (data.status == 'Success' || data.comment == 'Complete') {
 		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		//alert(data.status);
+		reportStatus = 'Success';
 		var template = $('#success-refresh-status-template').html();
 		Mustache.parse(template);
-		element('status', index).html(Mustache.render(template, data));
+		element('status', index).html(Mustache.render(template, reportStatus));
 		return;
 	}
 	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
@@ -226,11 +229,11 @@ function putStatusRefresh(data, index) {
 	var template = $('#failure-refresh-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
-	element('status', index).html(Mustache.render(template, data));
-	element('status', index).find('.status-failure').on('click', function() {
+	element('status', index).html(Mustache.render(template, reportStatus));
+	/*element('status', index).find('.status-failure').on('click', function() {
 		alert(data.message);
 		console.log(data.message);
-	});
+	});*/
 }
 
 function download(index) {
