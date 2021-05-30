@@ -207,6 +207,32 @@ function putStatus(data, index) {
 	});
 }
 
+function putStatusRefresh(data, index) {
+	element('comment', index).html(data.comment).html();
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
+	alert(JSON.stringify(data));
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
+	alert(data.status);
+	if (data.status == 'Success' || data.comment == 'Complete') {
+		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		//alert(data.status);
+		var template = $('#success-status-template').html();
+		Mustache.parse(template);
+		element('status', index).html(Mustache.render(template, data.status));
+		return;
+	}
+	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
+	//alert(data.status.status);
+	var template = $('#failure-status-template').html();
+	Mustache.parse(template);
+	data.message = JSON.stringify(data.exception || data.response);
+	element('status', index).html(Mustache.render(template, data));
+	element('status', index).find('.status-failure').on('click', function() {
+		alert(data.message);
+		console.log(data.message);
+	});
+}
+
 function download(index) {
 	var year = element('year', index).val();
 	var month = element('month', index).val();
@@ -328,7 +354,7 @@ function getStatus(index) {
 		} else {
 			//alert("[getStatus] Status retrieved from log...updating,,displaying the data after json parsing...");
 			//alert(data.status.status);
-			putStatus(data, index);
+			putStatusRefresh(data, index);
 		}
 	}).fail(function(response) {
 		console.log("failure response");
