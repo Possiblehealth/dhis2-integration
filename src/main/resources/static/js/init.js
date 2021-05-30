@@ -184,6 +184,8 @@ function getDHISPrograms() {
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
 	alert("[putStatus] Welcome to the putStatus function...displaying argument data...");
+	alert(data);
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
 	alert(data.status);
 	if (data.status == 'Success' || data.status == 'Complete') {
 		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
@@ -268,7 +270,9 @@ function submit(index, attribute) {
 	}
 	$.get(submitTo, parameters).done(function(data) {
 		data = JSON.parse(data)
-		alert("[submit] Submitted...displaying the feedback...");
+		alert("[submit] Submitted...displaying the feedback...data");
+		alert(data);
+		alert("[submit] Submitted...displaying the feedback...data.status");
 		alert(data.status);
 		if (!$.isEmptyObject(data)) {
 			
@@ -276,7 +280,7 @@ function submit(index, attribute) {
 		}
 		//alert("[submit] Submitted...feedback is empty...");
 	}).fail(function(response) {
-		alert("[submit] Failed to submit...");
+		//alert("[submit] Failed to submit...");
 		if (response.status == 403) {
 			//alert("[submit] Forbidden...403...");
 			putStatus({
@@ -314,8 +318,10 @@ function getStatus(index) {
 	$.get(logUrl, parameters).done(function(data) {
 		
 		data = JSON.parse(data);
-		alert("[getStatus] Status data retrieved from logUrl...displaying data after json parsing...");
+		alert("[getStatus] Status data retrieved from logUrl...displaying data after json parsing...data");
 		alert(data);
+		alert("[getStatus] Status data retrieved from logUrl...displaying data after json parsing...data.status");
+		alert(data.status);
 		if ($.isEmptyObject(data)) {
 			element('comment', index).html('');
 			element('status', index).html('');
