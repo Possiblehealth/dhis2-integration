@@ -218,7 +218,7 @@ function putStatusRefresh(data, index) {
 		//alert(data.status);
 		var template = $('#success-refresh-status-template').html();
 		Mustache.parse(template);
-		element('status', index).html(Mustache.render(template, data.status));
+		element('status', index).html(Mustache.render(template, data));
 		return;
 	}
 	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
