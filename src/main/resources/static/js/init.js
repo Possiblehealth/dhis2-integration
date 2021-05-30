@@ -226,7 +226,7 @@ function putStatusRefresh(data, index) {
 	var template = $('#failure-refresh-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
-	element('status', index).html(Mustache.render(template, data.status));
+	element('status', index).html(Mustache.render(template, data));
 	element('status', index).find('.status-failure').on('click', function() {
 		alert(data.message);
 		console.log(data.message);
