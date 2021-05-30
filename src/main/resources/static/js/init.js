@@ -188,7 +188,7 @@ function putStatus(data, index) {
 	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
 	alert(data.status);
 	if (data.status == 'Success' || data.status == 'Complete') {
-		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		//alert(data.status);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
@@ -214,7 +214,7 @@ function putStatusRefresh(data, index) {
 	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
 	alert(data.status);
 	if (data.status == 'Success' || data.comment == 'Complete') {
-		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		//alert(data.status);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
@@ -296,10 +296,10 @@ function submit(index, attribute) {
 	}
 	$.get(submitTo, parameters).done(function(data) {
 		data = JSON.parse(data)
-		alert("[submit] Submitted...displaying the feedback...data.stringify()");
-		alert(JSON.stringify(data));
-		alert("[submit] Submitted...displaying the feedback...data.status");
-		alert(data.status);
+		//alert("[submit] Submitted...displaying the feedback...data.stringify()");
+		//alert(JSON.stringify(data));
+		//alert("[submit] Submitted...displaying the feedback...data.status");
+		//alert(data.status);
 		if (!$.isEmptyObject(data)) {
 			
 			putStatus(data, index);
@@ -344,10 +344,10 @@ function getStatus(index) {
 	$.get(logUrl, parameters).done(function(data) {
 		
 		data = JSON.parse(data);
-		alert("[getStatus] Status data retrieved from logUrl...displaying data after json parsing...data.stringify()");
-		alert(JSON.stringify(data));
-		alert("[getStatus] Status data retrieved from logUrl...displaying data after json parsing...data.status");
-		alert(data.status);
+		//alert("[getStatus] Status data retrieved from logUrl...displaying data after json parsing...data.stringify()");
+		//alert(JSON.stringify(data));
+		//alert("[getStatus] Status data retrieved from logUrl...displaying data after json parsing...data.status");
+		//alert(data.status);
 		if ($.isEmptyObject(data)) {
 			element('comment', index).html('');
 			element('status', index).html('');
