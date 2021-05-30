@@ -183,12 +183,12 @@ function getDHISPrograms() {
 
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
-	alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
-	alert(JSON.stringify(data));
-	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
-	alert(data.status);
+	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
+	//alert(JSON.stringify(data));
+	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
+	//alert(data.status);
 	if (data.status == 'Success' || data.status == 'Complete') {
-		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		//alert(data.status);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
@@ -209,12 +209,12 @@ function putStatus(data, index) {
 
 function putStatusRefresh(data, index) {
 	element('comment', index).html(data.comment).html();
-	alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
-	alert(JSON.stringify(data));
-	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
-	alert(data.status);
+	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
+	//alert(JSON.stringify(data));
+	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
+	//alert(data.status);
 	if (data.status == 'Success' || data.comment == 'Complete') {
-		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
 		//alert(data.status);
 		var template = $('#success-refresh-status-template').html();
 		Mustache.parse(template);
