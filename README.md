@@ -79,18 +79,37 @@ The password for the DHIS2 user.
  </code></pre>
 </li>
 <li>Restart ssl and dhis-integration services.
-</li>
-<li><pre><code>
-systemctl restart httpd<br>
-systemctl restart dhis-integration
-</code></pre>
+<ul>Restart httpd<pre><code>systemctl restart httpd</code></pre></ul>
+<ul>Restart dhis-integration service<pre><code>systemctl restart dhis-integration</code></pre></ul>
+  Now the DHIS2 integration app is available on landing screen, given that the user has reporting privileges.
 </li>
 
 
+</li>
 </ol>
 
 
+<h2>Configure DHIS2 Integration App: OpenMRS Privileges</h2>  
+<ol>
+<li>Update the properties file of the DHIS2 integration app with right configuration.
+<ul>Navigate to the propertiles file.<pre><code>cd /etc/dhis-integration/dhis-integration.yml</code></pre></ul>
+</li>
+<li>Ensure Bahmni reports service is installed and running successfully.
+ <pre><code>
+  systemctl status bahmni-reports
+ </code></pre>
+</li>
+<li>Restart ssl and dhis-integration services.
+<ul>Restart httpd<pre><code>systemctl restart httpd</code></pre></ul>
+<ul>Restart dhis-integration service<pre><code>systemctl restart dhis-integration</code></pre></ul>
+</li>
+</li>
+</ol>
   
+
+
+
+
 <ol>  
 
 
