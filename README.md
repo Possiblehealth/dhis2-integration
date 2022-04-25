@@ -73,30 +73,9 @@ The password for the DHIS2 user.
   <tr><td>log4j.config.file</td><td>Server config. Properties file for logger of dhis-integration server.</td><td>log4j.properties</td></tr>
  </table>
 </li>
-</ol>
-
-
-  
-<ol>  
 <li>Ensure Bahmni reports service is installed and running successfully.
  <pre><code>
   service bahmni-reports status ##should be running
- </code></pre>
- </li>
-<li>Configure Bahmni landing page to show DHIS2 integration app.<br>
-Insert the following in <br>"/var/www/bahmni_config/openmrs/apps/home/extension.json" file
-<pre>
-  <code>
-"possible_dhis_2_integration": {
-    "id": "possible.dhis2Integration",
-    "extensionPointId": "org.bahmni.home.dashboard",
-    "type": "link",
-   "label": "DHIS2 integration",
-   "url": "/dhis-integration/index.html",
-   "icon": "fa-book",
-   "order": 11,
-   "requiredPrivilege": "app:reports"
-}
  </code></pre>
 </li>
 <li>Ensure Bahmni reports service is installed and running successfully.
@@ -110,6 +89,16 @@ service httpd restart<br>
 service dhis-integration restart
 </code></pre>
 </li>
+
+
+</ol>
+
+
+  
+<ol>  
+
+
+
 </ol>
 Now the DHIS2 integration app is available on landing screen, given that the user has reporting privileges.<br>
 Once you open the app you land on DHIS integration app page, where you select the month and year for given program, type a comment and submit report.                  
