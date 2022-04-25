@@ -81,28 +81,20 @@ The password for the DHIS2 user.
 <li>Restart ssl and dhis-integration services.
 <ul>Restart httpd<pre><code>systemctl restart httpd</code></pre></ul>
 <ul>Restart dhis-integration service<pre><code>systemctl restart dhis-integration</code></pre></ul>
-  Now the DHIS2 integration app is available on landing screen, given that the user has reporting privileges.
+  The DHIS2 Integration App should now be accessible from the landing screen, given that the user has reporting privileges.
 </li>
-
-
 </li>
 </ol>
 
 
 <h2>Configure DHIS2 Integration App: OpenMRS Privileges</h2>  
 <ol>
-<li>Update the properties file of the DHIS2 integration app with right configuration.
-<ul>Navigate to the propertiles file.<pre><code>cd /etc/dhis-integration/dhis-integration.yml</code></pre></ul>
-</li>
-<li>Ensure Bahmni reports service is installed and running successfully.
- <pre><code>
-  systemctl status bahmni-reports
- </code></pre>
-</li>
-<li>Restart ssl and dhis-integration services.
-<ul>Restart httpd<pre><code>systemctl restart httpd</code></pre></ul>
-<ul>Restart dhis-integration service<pre><code>systemctl restart dhis-integration</code></pre></ul>
-</li>
+<li>Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all user groups that will use the App.
+<ul>Navigate to OpenMRS home page (e.g localhost/openmrs).</ul> 
+<ul>Select Administration.</ul>
+<ul>Select Manage Privileges.</ul>  
+<ul>Select "Add Privilege" and add the "Submit DHIS Report" privilege.</ul> 
+<ul>Select "Manage Roles" and add the "Submit DHIS Report" privilege to all user roles that need to use the DHIS2 Integration App to sync reports to DHIS2.</ul> 
 </li>
 </ol>
   
