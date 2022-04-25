@@ -2,12 +2,18 @@
 <h2>Install and configure DHIS2 integration app</h2>
 Assuming you have Bahmni installer latest version installed and running successfully. 
 <ol>
-<li>Run the following command to install DHIS2 integration app.
-<pre><code>
-wget https://media.githubusercontent.com/media/Possiblehealth/possible-artifacts/master/dhis-integration-1.0-1.noarch.rpm<br>
-rpm –ivh dhis-integration-1.0-1.noarch.rpm
-</code></pre>
+<li>Update your distribution.<pre><code>sudo yum update</code></pre></li>
+<li>Navigate to the home directory.<pre><code>cd /home</code></pre></li>
+<li>Clone the binaries repo.<pre><code>git clone https://github.com/khobatha/bahmni-dhis2-integration-rpms.git</code></pre></li>
+<li>Install the dhis integration app.
+<ul>Navigate to the binaries folder<pre><code>cd bahmni-dhis2-integration-rpms</code></pre></ul>
+<ul>Install the latest version of the dhis2 integration app<pre><code>sudo yum install dhis-integration-1.0-1_060721.noarch.rpm</code></pre></ul>
 </li>
+</ol>
+  
+  
+<h2>Install and configure DHIS2 integration app</h2>  
+<ol>
 <li>Update the properties file for DHIS2 integration app, located at <br>'/etc/dhis-integration/dhis-integration.yml', <br>with right configuration.
   
 <table>
