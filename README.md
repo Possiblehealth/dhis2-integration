@@ -1,4 +1,5 @@
 <h1>Implementation Guide</h1>
+Connect to the EMR instance and follow the instructions below. This guide was tested on a dockerised EMR implementation.
 <h2>A. Install the DHIS2 Integration App</h2>
 Assuming you have Bahmni installer latest version installed and running successfully. 
 <ol>
