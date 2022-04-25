@@ -1,5 +1,5 @@
 <h1>Implementation Guide</h1>
-<h2>Install the DHIS2 Integration App</h2>
+<h2>A. Install the DHIS2 Integration App</h2>
 Assuming you have Bahmni installer latest version installed and running successfully. 
 <ol>
 <li>Update your distribution.<pre><code>sudo yum update</code></pre></li>
@@ -11,7 +11,7 @@ Assuming you have Bahmni installer latest version installed and running successf
 </li>
 </ol>
 
-<h2>Configure DHIS2 Integration: Security</h2>  
+<h2>B. Configure DHIS2 Integration: Security</h2>  
 <ol>
 <li>Download and place the ssl.conf file.
 <pre><code>
@@ -45,7 +45,7 @@ wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e82
 </ol> 
 
   
-<h2>Configure DHIS2 Integration App: Properties</h2>  
+<h2>C. Configure DHIS2 Integration App: Properties</h2>  
 <ol>
 <li>Update the properties file of the DHIS2 integration app with right configuration.
 <ul>Navigate to the propertiles file.<pre><code>cd /etc/dhis-integration/dhis-integration.yml</code></pre></ul>
@@ -87,7 +87,7 @@ The password for the DHIS2 user.
 </ol>
 
 
-<h2>Configure DHIS2 Integration App: OpenMRS Privileges</h2>  
+<h2>D. Configure DHIS2 Integration App: OpenMRS Privileges</h2>  
 Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all user groups that will use the App.
 <ol>
 <li>Navigate to OpenMRS home page (e.g localhost/openmrs).</li> 
@@ -99,7 +99,7 @@ Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all us
 </ol>
                   
  
-<h2>Configure New Program</h2>
+<h2>E. Configure New Program and Map to DHIS2</h2>
 <ol><li>Configure the concatenated reports for the program</li>
 <li>Put the following configuration in the concatenated report to make it DHIS2 program.<br>
 "DHISProgram": true,Example: <a href="https://github.com/Possiblehealth/possible-config/blob/8228d24730d854fa282ee04f16ec3d598e86909c/openmrs/apps/reports/reports.json#L1780-L1782">Safe motherhood program</a></li>
