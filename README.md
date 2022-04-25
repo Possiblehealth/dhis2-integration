@@ -1,5 +1,5 @@
 <h1>Implementation Guide</h1>
-<h2>Install and configure DHIS2 integration app</h2>
+<h2>Install the DHIS2 Integration App</h2>
 Assuming you have Bahmni installer latest version installed and running successfully. 
 <ol>
 <li>Update your distribution.<pre><code>sudo yum update</code></pre></li>
@@ -10,7 +10,37 @@ Assuming you have Bahmni installer latest version installed and running successf
 <ul>Install the latest version of the dhis2 integration app<pre><code>sudo yum install dhis-integration-1.0-1_060721.noarch.rpm</code></pre></ul>
 </li>
 </ol>
+
+<h2>Configure DHIS2 Integration: Security</h2>  
+<ol>
+<li>Download and place the ssl.conf file.
+<pre><code>
+cd /etc/httpd/conf.d/ <br>
+wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e823fac3dbcaf111aa72713a63139bb03/playbooks/roles/possible-dhis-integration/templates/dhis_integration_ssl.conf<br>
+</code></pre>
+</li>
+<li>Navigate to the ssl.conf file and disable all configuration entries (SSLCertificateFile, SSLCertificateKey, SSLCertificateChainFile) containing hiels.org.
+<pre><code>cd /etc/httpd/conf.d/ssl.conf<br></code></pre>
+</li>  
+<li>Update ssl.conf with new configuration entries for SSLCertificateFile and SSLCertificateKey.
+<pre><code>SSLCertificateFile /etc/bahmni-certs/cert.crt</code></pre>
+<pre><code>SSLCertificateKeyFile /etc/bahmni-certs/domain.key</code></pre>
+</li>  
+<li>Restart http service to reload the new ssl template configurations.
+<pre><code>sudo systemctl restart httpd</code></pre>
+<pre><code>sudo systemctl status httpd</code></pre>
+</li>
+<li>Use InstallCert to generate and install a self-signed ssl certificate for Bahmni - DHIS2 Integration App authentication.
+<ul>Navigate to the home director<pre><code>cd /home</code></pre></ul>
+<ul>Clone the InstallCert repo<pre><code>git clone https://github.com/escline/InstallCert.git</code></pre></ul>
+<ul>Navigate to the folder<pre><code>cd InstallCert</code></pre></ul>
+<ul>Compile InstallCert. NB: Follow <a href="https://mcvictech.blogspot.com/2017/07/how-to-install-java-8-jdkjre-8u131-on.html">this</a> link to install java 8 if jdk is missing on your server.<pre><code>javac InstallCert.java</code></pre></ul>  
+</li> 
+<ul>Once compiled successfully, run InstallCert to retrive an ssl certificate for the EMR.<pre><code>java InstallCert localhost:443</code></pre></ul>  
+</li> 
   
+</ol> 
+
   
 <h2>Install and configure DHIS2 integration app</h2>  
 <ol>
@@ -40,13 +70,11 @@ The password for the DHIS2 user.
   <tr><td>log4j.config.file</td><td>Server config. Properties file for logger of dhis-integration server.</td><td>log4j.properties</td></tr>
  </table>
 </li>
+</ol>
 
-<li>Download and place the ssl.conf file.
-<pre><code>
-cd /etc/httpd/conf.d/ <br>
-wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e823fac3dbcaf111aa72713a63139bb03/playbooks/roles/possible-dhis-integration/templates/dhis_integration_ssl.conf<br>
-</code></pre>
-</li>
+
+  
+<ol>  
 <li>Ensure Bahmni reports service is installed and running successfully.
  <pre><code>
   service bahmni-reports status ##should be running
