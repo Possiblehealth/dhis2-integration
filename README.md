@@ -38,7 +38,8 @@ wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e82
 </li> 
 <ul>Once compiled successfully, run InstallCert to retrive an ssl certificate for the EMR (accept default certificate 1). NB: Note down the CN associated with the certificate for use later in configuration the Integration App running properties. In the example shown below, the CN associated with the generated self-signed certificate is f4120c18c732. <pre><code>java InstallCert localhost:443</code></pre></ul>  
 <ul>Extract self-signed certificate from created jssecacerts keystore. NB: If keytool not accessible, use java alternatives command to reselect jre1.8 is your preferred java platform and rerun the keytool command.<pre><code>keytool -exportcert -alias localhost-1 -keystore jssecacerts -storepass changeit -file emr.cer</code></pre></ul> 
-<ul>The last step is now to import the extracted certificate into the system keystore (cacerts). NB: You may use sudo find / -name cacerts to locate the exact path to your system keystore. <pre><code>keytool -importcert -alias localhost-1 -keystore /usr/java/jre1.8.0_131/lib/security/cacerts -storepass changeit -file emr.cer</code></pre></ul> 
+<ul>The next step is now to import the extracted certificate into the system keystore (cacerts). NB: You may use sudo find / -name cacerts to locate the exact path to your system keystore. <pre><code>keytool -importcert -alias localhost-1 -keystore /usr/java/jre1.8.0_131/lib/security/cacerts -storepass changeit -file emr.cer</code></pre></ul>
+<ul>The last step is to use the automatically generated CN as an alias for the server's hostname. Open file /etc/hosts and append the CN to the right of localhost. <pre><code>sudo nano /etc/hosts</code></pre></ul>
 </li> 
   
 </ol> 
