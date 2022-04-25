@@ -75,18 +75,14 @@ The password for the DHIS2 user.
 </li>
 <li>Ensure Bahmni reports service is installed and running successfully.
  <pre><code>
-  service bahmni-reports status ##should be running
+  systemctl status bahmni-reports
  </code></pre>
-</li>
-<li>Ensure Bahmni reports service is installed and running successfully.
-<pre><code>service bahmni-reports status ##should be running
-</code></pre>
 </li>
 <li>Restart ssl and dhis-integration services.
 </li>
 <li><pre><code>
-service httpd restart<br>
-service dhis-integration restart
+systemctl restart httpd<br>
+systemctl restart dhis-integration
 </code></pre>
 </li>
 
