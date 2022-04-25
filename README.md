@@ -88,27 +88,16 @@ The password for the DHIS2 user.
 
 
 <h2>Configure DHIS2 Integration App: OpenMRS Privileges</h2>  
+Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all user groups that will use the App.
 <ol>
-<li>Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all user groups that will use the App.
-<ul>Navigate to OpenMRS home page (e.g localhost/openmrs).</ul> 
-<ul>Select Administration.</ul>
-<ul>Select Manage Privileges.</ul>  
-<ul>Select "Add Privilege" and add the "Submit DHIS Report" privilege.</ul> 
-<ul>Select "Manage Roles" and add the "Submit DHIS Report" privilege to all user roles that need to use the DHIS2 Integration App to sync reports to DHIS2.</ul> 
+<li>Navigate to OpenMRS home page (e.g localhost/openmrs).</li> 
+<li>Select Administration.</li>
+<li>Select Manage Privileges.</li>  
+<li>Select "Add Privilege" and add the "Submit DHIS Report" privilege.</li> 
+<li>Select "Manage Roles" and add the "Submit DHIS Report" privilege to all user roles that need to use the DHIS2 Integration App to sync reports to DHIS2.</li> 
 </li>
 </ol>
-  
-
-
-
-
-<ol>  
-
-
-
-</ol>
-Now the DHIS2 integration app is available on landing screen, given that the user has reporting privileges.<br>
-Once you open the app you land on DHIS integration app page, where you select the month and year for given program, type a comment and submit report.                  
+                  
  
 <h2>Configure New Program</h2>
 <ol><li>Configure the concatenated reports for the program</li>
