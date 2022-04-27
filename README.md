@@ -115,38 +115,35 @@ Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all us
  <li>Navigate to the DHIS2 Integration App on Bahmni and ensure that the TEST-01 report is now listed under DHIS2 programs.</li>
  <li>Create DHIS2 mapping configs for the TESTS-01 | DHIS2 Integration App SYNC Test report:
 <ul>Navigate to the DHIS2 Integration App mappings configs directory: <pre><code>cd bahmni_config092/dhis2</code></pre></ul>
-<ul>Create a new json file to store the mappings for the TESTS-01 report: <pre><code>touch TESTS-01_DHIS2_Integration_App_Sync_Test.json</code></pre>
-</li>
-</ol>
-
+<ul>Create a new json file to store the mappings for the TESTS-01 report: <pre><code>touch TESTS-01_DHIS2_Integration_App_Sync_Test.json</code></pre></ul>
+<li>Define the mappings for the TESTS-01 report in TESTS-01_DHIS2_Integration_App_Sync_Test.json: 
 <p>
-DHIS configuration file should have the following structure.
-<strong>DHIS Config</strong>
+DHIS2 mapping configuration file should have the following structure:
 <pre><code>
 {
-  "orgUnit": "<orgUnitId | find it from DHIS instance>",
+  "orgUnit": "&lt;orgUnitId | find it from DHIS instance&gt;",
   "reports": {
-    "<name of 1st sub report | find it from reports.json>": {
+    "&lt;name of 1st sub report | find it from reports.json&gt;": {
       "dataValues": [
         {
-          "categoryOptionCombo": "<category option combination id | find it from DHIS instance>",
-          "dataElement": "<data element id | find it from DHIS instance>",
-          "row": <row number of the cell | find it from output of the SQL report>,
-          "column": <column number of the cell | find it from output of the SQL report>
+          "categoryOptionCombo": "&lt;category option combination id | find it from DHIS instance&gt;",
+          "dataElement": "&lt;data element id | find it from DHIS instance&gt;",
+          "row": &lt;row number of the cell | find it from output of the SQL report&gt;,
+          "column": &lt;column number of the cell | find it from output of the SQL report&gt;
         },
         {
-          "categoryOptionCombo": "<category option combination id | find it from DHIS instance>",
-          "dataElement": "<data element id | find it from DHIS instance>",
-          "row": <row number of the cell | find it from output of the SQL report>,
-          "column": <column number of the cell | find it from output of the SQL report>
+          "categoryOptionCombo": "&lt;category option combination id | find it from DHIS instance&lgt;",
+          "dataElement": "&lt;data element id | find it from DHIS instance&gt;",
+          "row": &lt;row number of the cell | find it from output of the SQL report&gt;,
+          "column": &lt;column number of the cell | find it from output of the SQL report&gt;
         },
         ............more data element mappings............
       ]
     },
-    "<name of 2nd sub report | find it from reports.json>": {
+    "&lt;name of 2nd sub report | find it from reports.json&gt;": {
     "dataValues": [......]
     },
-    "<name of 3rd sub report | find it from reports.json>": {
+    "&lt;name of 3rd sub report | find it from reports.json&gt;": {
     "dataValues": [......]
     },
     ............more sub report mappings............
@@ -176,5 +173,7 @@ Example: Safe motherhood program
 <li>Copy the Id of the html element from window (See image), it would look like the following string: "kSnqP4GPOsQ-kdsirVNKdhm-val".</li>
 <li>This string is in the format of "dataElementId - categoryOptionComboId - ...."</li>
 <li>These dataElementId and categoryOptionComboId need to be used in DHIS2 configuration file. Refer the below image.</li>
-</ol>
 </p>
+</li>
+</ol>
+
