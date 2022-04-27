@@ -105,8 +105,9 @@ Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all us
 <li>Configure a simple OpenMRS report to map to DHIS2.
 <ul>Navigate to /development inside the EMR container: <pre><code>docker exec -it bahmni_docker_emr-service_1 bash</code></pre><pre><code>cd /development/bahmni_config_release/</code></pre></ul>
 <ul>Disable bahmni_config and use an experimental one containing tests: <pre><code>mv bahmni_config092 bahmni_config092_bkp</code></pre><pre><code>git clone https://github.com/khobatha/bahmni_config092.git</code></pre></ul>
+
+<ul>Refresh Bahmni landing page and to go to Reports and ensure that report TESTS-01 | DHIS2 Integration App SYNC Test report has been loaded and that it runs.</ul>
 </li>
-<li>Refresh Bahmni landing page and to go to Reports and ensure that report TESTS-01 | DHIS2 Integration App SYNC Test report has been loaded and that it runs.</li>
 <li>View configs for the TESTS-01 | DHIS2 Integration App SYNC Test report:
 <ul>View the report implementation: <pre><code>cd bahmni_config092/openmrs/apps/reports/sql/</code></pre><pre><code>nano dhis2_integration_test.sql</code></pre></ul>
 <ul>View the configuration that registers the report in Bahmni for viewing under Bahmni reports. You must scroll to the end of the config file to see the configuration entry for the test report: <pre><code>cd bahmni_config092/openmrs/apps/reports/</code></pre><pre><code>nano reports.json</code></pre></ul>
