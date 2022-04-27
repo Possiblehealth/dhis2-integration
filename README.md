@@ -5,9 +5,9 @@ Assuming you have Bahmni installer latest version installed and running successf
 <ol>
 <li>Update your distribution.<pre><code>sudo yum update</code></pre></li>
 <li>Navigate to the home directory.<pre><code>cd /home</code></pre></li>
-<li>Clone the binaries repo.<pre><code>git clone https://github.com/khobatha/bahmni-dhis2-integration-rpms.git</code></pre></li>
+<li>Clone the binaries repo.<pre><code>git clone https://github.com/khobatha/bahmni-app-dhis2-integration-rpms.git</code></pre></li>
 <li>Install the dhis integration app.
-<ul>Navigate to the binaries folder<pre><code>cd bahmni-dhis2-integration-rpms</code></pre></ul>
+<ul>Navigate to the binaries folder<pre><code>cd bahmni-app-dhis2-integration-rpms</code></pre></ul>
 <ul>Install the latest version of the dhis2 integration app<pre><code>sudo yum install dhis-integration-1.0-1_060721.noarch.rpm</code></pre></ul>
 </li>
 </ol>
