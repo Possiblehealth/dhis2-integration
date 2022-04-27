@@ -102,9 +102,9 @@ Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all us
  
 <h2>E. Configure New Program and Map to DHIS2</h2>
 <ol>
-<li>Configure a simple OpenMRS report to map to DHIS2.
+<li>Load a simple OpenMRS report to map to DHIS2:
 <ul>Navigate to /development inside the EMR container: <pre><code>docker exec -it bahmni_docker_emr-service_1 bash</code></pre><pre><code>cd /development/bahmni_config_release/</code></pre></ul>
-<ul>Disable bahmni_config and use an experimental one containing tests: <pre><code>mv bahmni_config092 bahmni_config092_bkp</code></pre><pre><code>git clone https://github.com/khobatha/bahmni_config092.git</code></pre></ul>
+<ul>Disable the release version of bahmni_config092 and pull a development version containing the test report: <pre><code>mv bahmni_config092 bahmni_config092_bkp</code></pre><pre><code>git clone https://github.com/khobatha/bahmni_config092.git</code></pre></ul>
 
 <ul>Refresh Bahmni landing page and to go to Reports and ensure that report TESTS-01 | DHIS2 Integration App SYNC Test report has been loaded and that it runs.</ul>
 </li>
@@ -112,9 +112,9 @@ Create a new OpenMRS privilege named "Submit DHIS Report" and grant it to all us
 <ul>View the report implementation: <pre><code>cd bahmni_config092/openmrs/apps/reports/sql/</code></pre><pre><code>nano dhis2_integration_test.sql</code></pre></ul>
 <ul>View the configuration that registers the report in Bahmni for viewing under Bahmni reports. You must scroll to the end of the config file to see the configuration entry for the test report: <pre><code>cd bahmni_config092/openmrs/apps/reports/</code></pre><pre><code>nano reports.json</code></pre></ul>
 </li>
-<li>Put the following configuration in the TESTS-01 | DHIS2 Integration App SYNC Test report reports.json config to make it a DHIS2 program and therefore have it listed under the Integration App for mapping to DHIS2.<br>Example: <a href="https://github.com/Possiblehealth/possible-config/blob/8228d24730d854fa282ee04f16ec3d598e86909c/openmrs/apps/reports/reports.json#L1780-L1782">Safe motherhood program</a><pre><code>"DHISProgram": true</code></pre></li>
+<li>Put the following configuration in the TESTS-01 | DHIS2 Integration App Sync Test report reports.json config to make it a DHIS2 program and therefore have it listed under the Integration App for mapping to DHIS2.<br>Example: <a href="https://github.com/Possiblehealth/possible-config/blob/8228d24730d854fa282ee04f16ec3d598e86909c/openmrs/apps/reports/reports.json#L1780-L1782">Safe motherhood program</a><pre><code>"DHISProgram": true</code></pre></li>
  <li>Navigate to the DHIS2 Integration App on Bahmni and ensure that the TEST-01 report is now listed under DHIS2 programs.</li>
- <li>Create DHIS2 mapping configs for the TESTS-01 | DHIS2 Integration App SYNC Test report:
+ <li>Create DHIS2 mapping configs for the TESTS-01 | DHIS2 Integration App Sync Test report:
 <ul>Navigate to the DHIS2 Integration App mappings configs directory: <pre><code>cd bahmni_config092/dhis2</code></pre></ul>
 <ul>Create a new json file to store the mappings for the TESTS-01 report: <pre><code>touch TESTS-01_DHIS2_Integration_App_Sync_Test.json</code></pre></ul>
 <li>Define the mappings for the TESTS-01 report in TESTS-01_DHIS2_Integration_App_Sync_Test.json: 
