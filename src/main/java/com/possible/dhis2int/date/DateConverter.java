@@ -148,8 +148,8 @@ public class DateConverter {
 		int lastDay = daysInMonthMap.get(year)[month];
 		//DateTime startDate = getEnglishDate(year, month, 1);
 		//DateTime endDate = getEnglishDate(year, month, lastDay);
-		DateTime startDate = new DateTime(year,month,1); //getEnglishDate(year, month, 1);
-		DateTime endDate = new DateTime(year,month,1); //getEnglishDate(year, month, lastDay);
+		DateTime startDate = new DateTime(year,month,1,0, 0); //getEnglishDate(year, month, 1);
+		DateTime endDate = new DateTime(year,month,1,0, 0); //getEnglishDate(year, month, lastDay);
 		return new ReportDateRange(startDate, endDate);
 	}
 	
