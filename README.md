@@ -22,41 +22,44 @@ wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e82
 </li>
 <li>Navigate to the ssl.conf file and disable all configuration entries (SSLCertificateFile, SSLCertificateKey, SSLCertificateChainFile) containing hiels.org.
 <pre><code>cd /etc/httpd/conf.d/ssl.conf<br></code></pre>
-</li>  
-<li>Update ssl.conf with new configuration entries for SSLCertificateFile and SSLCertificateKey.
-<pre><code>SSLCertificateFile /etc/bahmni-certs/cert.crt</code></pre>
-<pre><code>SSLCertificateKeyFile /etc/bahmni-certs/domain.key</code></pre>
-</li>  
+</li>
+<li>Use openssl to generate a self signed certificate, valid for 1 year, and copy it to /etc/bahmni-certs. NB: Use hostnamectl command to check the static
+ hostname of the container and input as the certificate CN.
+<pre><code>cd ~</code></pre>
+<pre><code>openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out dhis2_integration_app.crt -keyout dhis2_integration_app.key</code></pre>
+<pre><code>cp dhis2_integration_app.crt dhis2_integration_app.key /etc/bahmni-certs </code></pre>
+</li>   
+<li>Update /etc/httpd/conf.d/ssl.conf with new configuration entries for SSLCertificateFile and SSLCertificateKey.
+<pre><code>SSLCertificateFile /etc/bahmni-certs/dhis2_integration_app.crt</code></pre>
+<pre><code>SSLCertificateKeyFile /etc/bahmni-certs/dhis2_integration_app.key</code></pre>
+</li>   
 <li>Restart http service to reload the new ssl template configurations.
 <pre><code>sudo systemctl restart httpd</code></pre>
 <pre><code>sudo systemctl status httpd</code></pre>
 </li>
-<li>Use InstallCert to generate and install a self-signed ssl certificate for Bahmni - DHIS2 Integration App authentication.
-<ul>Navigate to the home director<pre><code>cd /home</code></pre></ul>
-<ul>Clone the InstallCert repo<pre><code>git clone https://github.com/escline/InstallCert.git</code></pre></ul>
-<ul>Navigate to the folder<pre><code>cd InstallCert</code></pre></ul>
-<ul>Compile InstallCert. NB: Follow <a href="https://mcvictech.blogspot.com/2017/07/how-to-install-java-8-jdkjre-8u131-on.html">this</a> link to install java 8 if jdk is missing on your server.<pre><code>javac InstallCert.java</code></pre></ul>  
+<li>Install the self-signed ssl certificate into the system keystore.
+<ul>Navigate to the home directory<pre><code>cd ~</code></pre></ul>
+<ul>The next step is now to import the certificate into the system keystore (cacerts). NB: You may use sudo find / -name cacerts to locate the exact path to your system keystore. Use the container static hostname as an alias. <pre><code>keytool -importcert -alias 0568561e1f23 -keystore /usr/java/jre1.8.0_131/lib/security/cacerts -storepass changeit -file dhis2_integration_app.crt</code></pre></ul>
 </li> 
-<ul>Once compiled successfully, run InstallCert to retrive an ssl certificate for the EMR (accept default certificate 1). NB: Note down the CN associated with the certificate for use later in configuration the Integration App running properties. In the example shown below, the CN associated with the generated self-signed certificate is f4120c18c732. <pre><code>java InstallCert localhost:443</code></pre></ul>  
-<ul>Extract self-signed certificate from created jssecacerts keystore. NB: If keytool not accessible, use java alternatives command to reselect jre1.8 is your preferred java platform and rerun the keytool command.<pre><code>keytool -exportcert -alias localhost-1 -keystore jssecacerts -storepass changeit -file emr.cer</code></pre></ul> 
-<ul>The next step is now to import the extracted certificate into the system keystore (cacerts). NB: You may use sudo find / -name cacerts to locate the exact path to your system keystore. <pre><code>keytool -importcert -alias localhost-1 -keystore /usr/java/jre1.8.0_131/lib/security/cacerts -storepass changeit -file emr.cer</code></pre></ul>
-<ul>The last step is to use the automatically generated CN as an alias for the server's hostname. Open file /etc/hosts and append the CN to the right of localhost. <pre><code>sudo nano /etc/hosts</code></pre></ul>
-</li> 
+<li>Restart dhis-integration service to reload the new security configurations.
+<pre><code>sudo systemctl restart dhis-integration</code></pre>
+<pre><code>sudo systemctl status dhis-integration</code></pre>
+</li>
   
 </ol> 
 
   
 <h2>C. Configure DHIS2 Integration App: Properties</h2>  
 <ol>
-<li>Update the properties file of the DHIS2 integration app with right configuration.
+<li>Update the properties file of the DHIS2 integration app with right configuration. NB: Use the name of the EMR container in the openmrs.root.url and openmrs.db.url as exemplified below.
 <ul>Navigate to the propertiles file.<pre><code>cd /etc/dhis-integration/dhis-integration.yml</code></pre></ul>
 <table>
   <tr><th>Key</th><th>Description</th><th>Example</th></tr>
-  <tr><td>openmrs.root.url</td><td>Url to access Openmrs service</td><td>http://f4120c18c732/openmrs/ws/rest/v1</td></tr>
+  <tr><td>openmrs.root.url</td><td>Url to access Openmrs service</td><td>http://0568561e1f23/openmrs/ws/rest/v1</td></tr>
   <tr><td>bahmni.login.url</td><td>When user isn't logged in, then user is redirected to this url.</td><td>
-https://f4120c18c732/bahmni/home/#/login?showLoginMessage
+https://localhost.localdomain/bahmni/home/#/login?showLoginMessage
 </td></tr>
-  <tr><td>reports.url</td><td>Bahmni reports url. Used for downloading reports.</td><td>https://f4120c18c732/bahmnireports/report</td></tr>
+  <tr><td>reports.url</td><td>Bahmni reports url. Used for downloading reports.</td><td>https://localhost.localdomain/bahmnireports/report</td></tr>
   <tr><td>reports.json</td><td>This file contains configurations of DHIS2 reports.</td><td>/var/www/bahmni_config/openmrs/apps/reports/reports.json</td></tr>
   <tr><td>dhis.config.directory</td><td>This folder contains DHIS2 integration configurations program wise.</td><td>/var/www/bahmni_config/dhis2/</td></tr>
   <tr><td>dhis.url</td><td>The DHIS2 government server instance url.</td><td>Ex. 1: http://100.100.100.100:8080/</br>
@@ -67,7 +70,7 @@ Note that the url could be at domain or ip address level (ex1) or could be at a 
   <tr><td>dhis.password</td><td>
 The password for the DHIS2 user.
 </td><td>password</td></tr>
-  <tr><td>openmrs.db.url</td><td>Mysql connection url to access "openmrs" database. Set valid user and password in the url.</td><td>jdbc:mysql://f4120c18c732/openmrs?user=openmrs-user&password=XXXXXXXXXX</td></tr>
+  <tr><td>openmrs.db.url</td><td>Mysql connection url to access "openmrs" database. Set valid user and password in the url.</td><td>jdbc:mysql://0568561e1f23/openmrs?user=openmrs-user&password=XXXXXXXXXX</td></tr>
   <tr><td>submission.audit.folder</td><td>All DHIS2 submissions are stored in this directory. Ensure the directory exists and "bahmni" user has access to it, or configure a different directory.</td><td>/dhis-integration-data</td></tr>
   <tr><td>server.port</td><td>Server config. Port for server to listen to.</td><td>8040</td></tr>
   <tr><td>server.context-path</td><td>Server config. Mapping incoming requests.</td><td>/dhis-integration/</td></tr>

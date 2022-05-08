@@ -56,7 +56,8 @@ var hasReportingPrivilege = false;
 
 $(document).ready(
 		function() {
-			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
+			//isAuthenticated().then(isSubmitAuthorized).then
+			(initTabs).then(
 					renderPrograms).then(renderYearlyReport).then(
 					selectApproxLatestGregorianYear).then(
 					registerOnchangeOnComment).then(getLogStatus);
