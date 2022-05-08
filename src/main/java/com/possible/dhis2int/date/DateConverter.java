@@ -20,7 +20,8 @@ public class DateConverter {
         days in months seems more intuitive that index 1 refers to first
         month "Baisakh", index 2 refers to second month "Jesth" and so on.
          */
-		
+		daysInMonthMap.put(2021, new int[] { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 });
+		daysInMonthMap.put(2022, new int[] { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 });
 		daysInMonthMap.put(2065, new int[] { 0, 31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31 });
 		daysInMonthMap.put(2066, new int[] { 0, 31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31 });
 		daysInMonthMap.put(2067, new int[] { 0, 31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30 });
@@ -145,8 +146,10 @@ public class DateConverter {
 	
 	public ReportDateRange getDateRange(Integer year, Integer month) {
 		int lastDay = daysInMonthMap.get(year)[month];
-		DateTime startDate = getEnglishDate(year, month, 1);
-		DateTime endDate = getEnglishDate(year, month, lastDay);
+		//DateTime startDate = getEnglishDate(year, month, 1);
+		//DateTime endDate = getEnglishDate(year, month, lastDay);
+		DateTime startDate = new DateTime(year,month,1); //getEnglishDate(year, month, 1);
+		DateTime endDate = new DateTime(year,month,1); //getEnglishDate(year, month, lastDay);
 		return new ReportDateRange(startDate, endDate);
 	}
 	
