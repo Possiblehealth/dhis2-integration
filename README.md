@@ -20,11 +20,11 @@ cd /etc/httpd/conf.d/ <br>
 wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e823fac3dbcaf111aa72713a63139bb03/playbooks/roles/possible-dhis-integration/templates/dhis_integration_ssl.conf<br>
 </code></pre>
 </li>
-<li>Navigate to the ssl.conf file and disable all configuration entries (SSLCertificateFile, SSLCertificateKey, SSLCertificateChainFile) containing hiels.org.
+<li>Navigate to the ssl.conf file and disable (comment out) all configuration entries (SSLCertificateFile, SSLCertificateKey, SSLCertificateChainFile) containing hiels.org.
 <pre><code>cd /etc/httpd/conf.d/ssl.conf<br></code></pre>
 </li>
 <li>Use openssl to generate a self signed certificate, valid for 1 year, and copy it to /etc/bahmni-certs. NB: Use hostnamectl command to check the static
- hostname of the container and input as the certificate CN.
+ hostname of the container and enter it as the Common Name (CN) when prompted for the CN by the openssl tool.
 <pre><code>cd ~</code></pre>
 <pre><code>openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out dhis2_integration_app.crt -keyout dhis2_integration_app.key</code></pre>
 <pre><code>cp dhis2_integration_app.crt dhis2_integration_app.key /etc/bahmni-certs </code></pre>
@@ -33,7 +33,7 @@ wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e82
 <pre><code>SSLCertificateFile /etc/bahmni-certs/dhis2_integration_app.crt</code></pre>
 <pre><code>SSLCertificateKeyFile /etc/bahmni-certs/dhis2_integration_app.key</code></pre>
 </li>   
-<li>Restart http service to reload the new ssl template configurations.
+<li>Restart http service to reload the new ssl template configurations and verify that it is running.
 <pre><code>sudo systemctl restart httpd</code></pre>
 <pre><code>sudo systemctl status httpd</code></pre>
 </li>
@@ -41,7 +41,7 @@ wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e82
 <ul>Navigate to the home directory<pre><code>cd ~</code></pre></ul>
 <ul>The next step is now to import the certificate into the system keystore (cacerts). NB: You may use sudo find / -name cacerts to locate the exact path to your system keystore. Use the container static hostname as an alias. <pre><code>keytool -importcert -alias 0568561e1f23 -keystore /usr/java/jre1.8.0_131/lib/security/cacerts -storepass changeit -file dhis2_integration_app.crt</code></pre></ul>
 </li> 
-<li>Restart dhis-integration service to reload the new security configurations.
+<li>Restart dhis-integration service to reload the new security configurations and verify that it is running.
 <pre><code>sudo systemctl restart dhis-integration</code></pre>
 <pre><code>sudo systemctl status dhis-integration</code></pre>
 </li>
