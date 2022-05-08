@@ -1,5 +1,5 @@
 <h1>Implementation Guide</h1>
-Connect to the EMR instance and follow the instructions below. This guide was tested on a dockerised EMR implementation.
+Connect to the EMR instance and follow the instructions below. This guide was tested on a dockerised EMR implementation. 
 <h2>A. Install the DHIS2 Integration App</h2>
 Assuming you have Bahmni installer latest version installed and running successfully. 
 <ol>
@@ -51,15 +51,15 @@ wget https://raw.githubusercontent.com/Possiblehealth/possible-config/89662e8e82
   
 <h2>C. Configure DHIS2 Integration App: Properties</h2>  
 <ol>
-<li>Update the properties file of the DHIS2 integration app with right configuration. NB: Use the name of the EMR container in the openmrs.root.url and openmrs.db.url as exemplified below.
+<li>Update the properties file of the DHIS2 integration app with right configuration. NB: Use the hostname of the EMR container in the openmrs.root.url and openmrs.db.url as exemplified below.
 <ul>Navigate to the propertiles file.<pre><code>cd /etc/dhis-integration/dhis-integration.yml</code></pre></ul>
 <table>
   <tr><th>Key</th><th>Description</th><th>Example</th></tr>
   <tr><td>openmrs.root.url</td><td>Url to access Openmrs service</td><td>http://0568561e1f23/openmrs/ws/rest/v1</td></tr>
   <tr><td>bahmni.login.url</td><td>When user isn't logged in, then user is redirected to this url.</td><td>
-https://localhost.localdomain/bahmni/home/#/login?showLoginMessage
+https://localhost/bahmni/home/#/login?showLoginMessage
 </td></tr>
-  <tr><td>reports.url</td><td>Bahmni reports url. Used for downloading reports.</td><td>https://localhost.localdomain/bahmnireports/report</td></tr>
+  <tr><td>reports.url</td><td>Bahmni reports url. Used for downloading reports.</td><td>https://localhost/bahmnireports/report</td></tr>
   <tr><td>reports.json</td><td>This file contains configurations of DHIS2 reports.</td><td>/var/www/bahmni_config/openmrs/apps/reports/reports.json</td></tr>
   <tr><td>dhis.config.directory</td><td>This folder contains DHIS2 integration configurations program wise.</td><td>/var/www/bahmni_config/dhis2/</td></tr>
   <tr><td>dhis.url</td><td>The DHIS2 government server instance url.</td><td>Ex. 1: http://100.100.100.100:8080/</br>
@@ -70,7 +70,7 @@ Note that the url could be at domain or ip address level (ex1) or could be at a 
   <tr><td>dhis.password</td><td>
 The password for the DHIS2 user.
 </td><td>password</td></tr>
-  <tr><td>openmrs.db.url</td><td>Mysql connection url to access "openmrs" database. Set valid user and password in the url.</td><td>jdbc:mysql://0568561e1f23/openmrs?user=openmrs-user&password=XXXXXXXXXX</td></tr>
+  <tr><td>openmrs.db.url</td><td>Mysql connection url to access "openmrs" database. Set valid user and password in the url.</td><td>jdbc:mysql://0568561e1f23/openmrs?user=user&password=password</td></tr>
   <tr><td>submission.audit.folder</td><td>All DHIS2 submissions are stored in this directory. Ensure the directory exists and "bahmni" user has access to it, or configure a different directory.</td><td>/dhis-integration-data</td></tr>
   <tr><td>server.port</td><td>Server config. Port for server to listen to.</td><td>8040</td></tr>
   <tr><td>server.context-path</td><td>Server config. Mapping incoming requests.</td><td>/dhis-integration/</td></tr>
