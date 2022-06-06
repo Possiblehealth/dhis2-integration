@@ -56,7 +56,8 @@ var hasReportingPrivilege = false;
 
 $(document).ready(
 		function() {
-			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
+			//isAuthenticated().then(isSubmitAuthorized).then
+			(initTabs).then(
 					renderPrograms).then(renderYearlyReport).then(
 					selectApproxLatestGregorianYear).then(
 					registerOnchangeOnComment).then(getLogStatus);
@@ -225,7 +226,7 @@ function putStatusRefresh(data, index) {
 		return;
 	}
 	alert("[putStatus] Status is FAILURE...updating...displaying the data");
-	alert(data.status.status);
+	alert(data.status);
 	var template = $('#failure-refresh-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
@@ -291,6 +292,61 @@ function submit(index, attribute) {
 	};
 
 	disableBtn(element('submit', index));
+	var submitTo = submitUrl;
+	//alert("[submit] Welcome to the submit function...");
+	if (attribute == true) {
+		alert("attribute == true, submitTo = submitUrlAtr");
+		submitTo = submitUrlAtr;
+	}
+	$.get(submitTo, parameters).done(function(data) {
+		data = JSON.parse(data)
+		//alert("[submit] Submitted...displaying the feedback...data.stringify()");
+		//alert(JSON.stringify(data));
+		//alert("[submit] Submitted...displaying the feedback...data.status");
+		//alert(data.status);
+		if (!$.isEmptyObject(data)) {
+			
+			putStatus(data, index);
+		}
+		//alert("[submit] Submitted...feedback is empty...");
+	}).fail(function(response) {
+		//alert("[submit] Failed to submit...");
+		if (response.status == 403) {
+			//alert("[submit] Forbidden...403...");
+			putStatus({
+				status : 'Failure',
+				exception : 'Not Authenticated'
+			}, index);
+		}
+		putStatus({
+			status : 'Failure',
+			exception : response
+		}, index);
+	}).always(function() {
+		enableBtn(element('submit', index));
+		spinner.hide();
+	});
+}
+
+function autoSubmit(year,month,programName,comment) {
+	//spinner.show();
+	//var year = element('year', index).val();
+	//var month = element('month', index).val();
+	//var programName = element('program-name', index).html();
+	//var comment = element('comment', index).val();
+	var isImam = false;
+	isFamily = false;
+
+	var parameters = {
+		year : year,
+		month : month,
+		name : programName,
+		comment : comment,
+		isImam : isImam,
+		isFamily : isFamily
+	};
+
+	//disableBtn(element('submit', index));
 	var submitTo = submitUrl;
 	//alert("[submit] Welcome to the submit function...");
 	if (attribute == true) {
@@ -412,3 +468,6 @@ function getLogStatus() {
 		getStatus(index);
 	});
 }
+
+
+//console.log(submit())
