@@ -183,20 +183,20 @@ function getDHISPrograms() {
 
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
-	//alert(JSON.stringify(data));
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
-	//alert(data.status);
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
+	alert(JSON.stringify(data));
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
+	alert(data.status);
 	if (data.status == 'Success' || data.status == 'Complete') {
-		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
-		//alert(data.status);
+		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		alert(data.status);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, data));
 		return;
 	}
-	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
-	//alert(data.status.status);
+	alert("[putStatus] Status is FAILURE...updating...displaying the data");
+	alert(data.status.status);
 	var template = $('#failure-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
@@ -209,23 +209,23 @@ function putStatus(data, index) {
 
 function putStatusRefresh(data, index) {
 	element('comment', index).html(data.comment).html();
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
-	//alert(JSON.stringify(data));
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
-	//alert(data.status);
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
+	alert(JSON.stringify(data));
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
+	alert(data.status);
 	var reportStatus = new Object();
 	reportStatus.status = 'Failure';
 	if (data.status == 'Success' || data.comment == 'Complete') {
-		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
-		//alert(data.status);
+		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		alert(data.status);
 		reportStatus.status = 'Success';
 		var template = $('#success-refresh-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, reportStatus));
 		return;
 	}
-	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
-	//alert(data.status.status);
+	alert("[putStatus] Status is FAILURE...updating...displaying the data");
+	alert(data.status.status);
 	var template = $('#failure-refresh-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
