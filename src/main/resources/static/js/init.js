@@ -52,14 +52,11 @@ var months = [ {
 
 var years = range(supportedStartDate, supportedEndDate);
 var fiscalYears = fiscalYearRange(supportedStartDate, supportedEndDate);
-var hasReportingPrivilege = false;
+var hasReportingPrivilege = true;
 
 $(document).ready(
 		function() {
-			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
-					renderPrograms).then(renderYearlyReport).then(
-					selectApproxLatestGregorianYear).then(
-					registerOnchangeOnComment).then(getLogStatus);
+			initTabs();
 		});
 
 function isAuthenticated() {
@@ -137,6 +134,14 @@ function renderPrograms() {
 						});
 			});
 }
+
+function listPrograms() {
+	getContent(isYearlyReport, canSubmitReport).then(
+						function(content) {
+							alert(content);
+						});
+}	
+
 
 function renderYearlyReport() {
 	return $.get('html/programs.html').then(function(template) {

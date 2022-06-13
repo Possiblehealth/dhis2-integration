@@ -1,0 +1,558 @@
+<html>
+<head>
+<title>DHIS2 Integration App</title>
+<link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
+<link rel="stylesheet" href="../bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
+
+<link rel="stylesheet" href="../css/stylesheet-auto.css">
+<link rel="stylesheet" href="../css/stylesheet.css">
+<link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.min.css">
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<script src="../bower_components/jquery.min/index.js"></script>
+<script src="../bower_components/mustache.min/index.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+	$(document).ready(function(){
+		// Activate tooltip
+		$('[data-toggle="tooltip"]').tooltip();
+		
+		// Select/Deselect checkboxes
+		var checkbox = $('table tbody input[type="checkbox"]');
+		$("#selectAll").click(function(){
+			if(this.checked){
+				checkbox.each(function(){
+					this.checked = true;                        
+				});
+			} else{
+				checkbox.each(function(){
+					this.checked = false;                        
+				});
+			} 
+		});
+		checkbox.click(function(){
+			if(!this.checked){
+				$("#selectAll").prop("checked", false);
+			}
+		});
+	});
+</script>
+
+
+
+</head>
+<body>
+	<div class="header">
+		<div class="dhisTitleWrapper">
+			<div class="home">
+				<a href="/bahmni/home" class="btn header-link">Home</a>
+			</div>
+			<div class="home">
+				<a href="manualsync.html" class="btn header-link">Manual</a>
+			</div>
+            <div class="home">
+				<a href="#" class="btn header-link">Automation</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="dhisWrapper">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tab-weekly">Weekly</a></li>
+				<li><a href="#tab-monthly">Monthly</a></li>
+				<li><a href="#tab-quarterly">Quarterly</a></li>
+			</ul>
+			<div id="tab-weekly">
+					<div class="container-xl">
+						<div class="table-responsive">
+							<div class="table-wrapper">
+								<div class="table-title">
+									<div class="row">
+										<div class="col-sm-6">
+											<h2>List of Weekly Schedules</h2>
+										</div>
+										<div class="col-sm-6">
+											<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New</span></a>
+										</div>
+									</div>
+								</div>
+								<table class="table table-striped table-hover">
+									<thead>
+										<tr>
+											<th>
+												<span class="custom-checkbox">
+													<input type="checkbox" id="selectAll">
+													<label for="selectAll"></label>
+												</span>
+											</th>
+											<th>Program</th>
+											<th>Last Run</th>
+											<th>Status</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<span class="custom-checkbox">
+													<input type="checkbox" id="checkbox1" name="options[]" value="1">
+													<label for="checkbox1"></label>
+												</span>
+											</td>
+											<td>ART-067 HIV Care and Treatment 2020a</td>
+											<td>2021-06-30 23:59:00.0</td>
+											<td style="color:#ff0000">Failed</td>
+											<td>
+												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="custom-checkbox">
+													<input type="checkbox" id="checkbox2" name="options[]" value="1">
+													<label for="checkbox2"></label>
+												</span>
+											</td>
+											<td>PHARM-004 | Daily Dispensing Tally Sheet</td>
+											<td>2021-06-30 23:59:00.0</td>
+											<td style="color:#28a745">Success</td>
+											<td>
+												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="custom-checkbox">
+													<input type="checkbox" id="checkbox3" name="options[]" value="1">
+													<label for="checkbox3"></label>
+												</span>
+											</td>
+											<td>PHARM-005 | Regimens List</td>
+											<td>2021-06-30 23:59:00.0</td>
+											<td style="color:#28a745">Success</td>
+											<td>
+												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<span class="custom-checkbox">
+													<input type="checkbox" id="checkbox4" name="options[]" value="1">
+													<label for="checkbox4"></label>
+												</span>
+											</td>
+											<td>TESTS-01 DHIS Integration App Sync Test</td>
+											<td>2021-06-30 23:59:00.0</td>
+											<td style="color:#28a745">Success</td>
+											<td>
+												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											</td>
+										</tr>					
+										<tr>
+											<td>
+												<span class="custom-checkbox">
+													<input type="checkbox" id="checkbox5" name="options[]" value="1">
+													<label for="checkbox5"></label>
+												</span>
+											</td>
+											<td>HTS-005 | HTS Positive Clients with Linkage Status (List)</td>
+											<td>2021-06-30 23:59:00.0</td>
+											<td style="color:#28a745">Success</td>
+											<td>
+												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											</td>
+										</tr> 
+									</tbody>
+								</table>
+								<div class="clearfix">
+									<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+									<ul class="pagination">
+										<li class="page-item disabled"><a href="#">Previous</a></li>
+										<li class="page-item"><a href="#" class="page-link">1</a></li>
+										<li class="page-item"><a href="#" class="page-link">2</a></li>
+										<li class="page-item active"><a href="#" class="page-link">3</a></li>
+										<li class="page-item"><a href="#" class="page-link">4</a></li>
+										<li class="page-item"><a href="#" class="page-link">5</a></li>
+										<li class="page-item"><a href="#" class="page-link">Next</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>        
+					</div>
+					<!-- Edit Modal HTML -->
+					<div id="addEmployeeModal" class="modal fade">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form>
+									<div class="modal-header">						
+										<h4 class="modal-title">Add New Weekly Schedule</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									</div>
+									<div class="modal-body">					
+										<div class="form-group">
+											<label>Name</label>
+											<!--input type="text" class="form-control" required-->
+											<select name="weekly-progname" id="weekly-progname">
+												<option value="empty">---</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Comment</label>
+											<input type="text" class="form-control" required>
+										</div>					
+									</div>
+									<div class="modal-footer">
+										<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+										<input type="submit" class="btn btn-success" value="Add">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+			</div>
+
+			<div id="tab-monthly">
+				<div class="container-xl">
+					<div class="table-responsive">
+						<div class="table-wrapper">
+							<div class="table-title">
+								<div class="row">
+									<div class="col-sm-6">
+										<h2>List of Monthly Schedules</h2>
+									</div>
+									<div class="col-sm-6">
+										<a href="#addMonthlyModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New</span></a>
+									</div>
+								</div>
+							</div>
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="selectAll">
+												<label for="selectAll"></label>
+											</span>
+										</th>
+										<th>Program</th>
+										<th>Last Run</th>
+										<th>Success</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox1" name="options[]" value="1">
+												<label for="checkbox1"></label>
+											</span>
+										</td>
+										<td>ART-067 HIV Care and Treatment 2020a</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox2" name="options[]" value="1">
+												<label for="checkbox2"></label>
+											</span>
+										</td>
+										<td>PHARM-004 | Daily Dispensing Tally Sheet</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#ff3300">Failed</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox3" name="options[]" value="1">
+												<label for="checkbox3"></label>
+											</span>
+										</td>
+										<td>PHARM-005 | Regimens List</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox4" name="options[]" value="1">
+												<label for="checkbox4"></label>
+											</span>
+										</td>
+										<td>TESTS-01 DHIS Integration App Sync Test</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>					
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox5" name="options[]" value="1">
+												<label for="checkbox5"></label>
+											</span>
+										</td>
+										<td>HTS-005 | HTS Positive Clients with Linkage Status (List)</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr> 
+								</tbody>
+							</table>
+							<div class="clearfix">
+								<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+								<ul class="pagination">
+									<li class="page-item disabled"><a href="#">Previous</a></li>
+									<li class="page-item"><a href="#" class="page-link">1</a></li>
+									<li class="page-item"><a href="#" class="page-link">2</a></li>
+									<li class="page-item active"><a href="#" class="page-link">3</a></li>
+									<li class="page-item"><a href="#" class="page-link">4</a></li>
+									<li class="page-item"><a href="#" class="page-link">5</a></li>
+									<li class="page-item"><a href="#" class="page-link">Next</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>        
+				</div>
+				<!-- Edit Modal HTML -->
+				<div id="addMonthlyModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form>
+								<div class="modal-header">						
+									<h4 class="modal-title">Add New Monthly Schedule</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">					
+									<div class="form-group">
+										<label>Name</label>
+										<input type="text" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Comment</label>
+										<input type="text" class="form-control" required>
+									</div>					
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input type="submit" class="btn btn-success" value="Add">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<div id="tab-quarterly" class="tab-quarterly">
+				<div class="container-xl">
+					<div class="table-responsive">
+						<div class="table-wrapper">
+							<div class="table-title">
+								<div class="row">
+									<div class="col-sm-6">
+										<h2>List of Quarterly Schedules</h2>
+									</div>
+									<div class="col-sm-6">
+										<a href="#addQuarterlyModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New</span></a>
+									</div>
+								</div>
+							</div>
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="selectAll">
+												<label for="selectAll"></label>
+											</span>
+										</th>
+										<th>Program</th>
+										<th>Last Run</th>
+										<th>Status</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox1" name="options[]" value="1">
+												<label for="checkbox1"></label>
+											</span>
+										</td>
+										<td>ART-067 HIV Care and Treatment 2020a</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox2" name="options[]" value="1">
+												<label for="checkbox2"></label>
+											</span>
+										</td>
+										<td>PHARM-004 | Daily Dispensing Tally Sheet</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox3" name="options[]" value="1">
+												<label for="checkbox3"></label>
+											</span>
+										</td>
+										<td>PHARM-005 | Regimens List</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox4" name="options[]" value="1">
+												<label for="checkbox4"></label>
+											</span>
+										</td>
+										<td>TESTS-01 DHIS Integration App Sync Test</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>					
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox5" name="options[]" value="1">
+												<label for="checkbox5"></label>
+											</span>
+										</td>
+										<td>HTS-005 | HTS Positive Clients with Linkage Status (List)</td>
+										<td>2021-06-30 23:59:00.0</td>
+										<td style="color:#28a745">Success</td>
+										<td>
+											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+										</td>
+									</tr> 
+								</tbody>
+							</table>
+							<div class="clearfix">
+								<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+								<ul class="pagination">
+									<li class="page-item disabled"><a href="#">Previous</a></li>
+									<li class="page-item"><a href="#" class="page-link">1</a></li>
+									<li class="page-item"><a href="#" class="page-link">2</a></li>
+									<li class="page-item active"><a href="#" class="page-link">3</a></li>
+									<li class="page-item"><a href="#" class="page-link">4</a></li>
+									<li class="page-item"><a href="#" class="page-link">5</a></li>
+									<li class="page-item"><a href="#" class="page-link">Next</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>        
+				</div>
+				<!-- Edit Modal HTML -->
+				<div id="addQuarterlyModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form>
+								<div class="modal-header">						
+									<h4 class="modal-title">Add New Quarterly Schedule</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">					
+									<div class="form-group">
+										<label>Name</label>
+										<input type="text" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Comment</label>
+										<input type="text" class="form-control" required>
+									</div>					
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input type="submit" class="btn btn-success" value="Add">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				
+			</div>
+		</div>
+	  
+	</div>
+	<script id="failure-status-template" type="x-tmpl-mustache">
+    	<u class="status-failure">
+        	<b>{{status}}</b>
+   		</u>
+	</script>
+	<script id="failure-refresh-status-template" type="x-tmpl-mustache">
+    	<b class="status-failure">{{status}}</b>
+	</script>
+	<script id="success-status-template" type="x-tmpl-mustache">
+    	<b class="status-success">{{status}}</b>
+	</script>
+	<script id="success-refresh-status-template" type="x-tmpl-mustache">
+    	<b class="status-success">{{status}}</b>
+	</script>
+	<script src="../js/spinner.js"></script>
+	<script src="../js/init.js"></script>
+	<script src="../bower_components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
+</body>
+</html>

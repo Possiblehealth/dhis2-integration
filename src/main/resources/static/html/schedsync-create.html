@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>DHIS2 Integration App</title>
+<link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
+<link rel="stylesheet"
+	href="../bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
+<link rel="stylesheet"
+	href="../bower_components/jquery-ui/themes/base/jquery-ui.min.css">
+<link rel="stylesheet" href="../css/stylesheet.css">
+<script src="../bower_components/jquery.min/index.js"></script>
+<script src="../bower_components/mustache.min/index.js"></script>
+<script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
+</head>
+<body>
+
+	<div class="header">
+		<div class="dhisTitleWrapper">
+			<div class="home">
+				<a href="/bahmni/home" class="btn header-link">Home</a>
+			</div>
+			<div class="home">
+				<a href="manualsync.html" class="btn header-link">Manual</a>
+			</div>
+            <div class="home">
+				<a href="#" class="btn header-link">Automation</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="dhisWrapper">
+		
+
+	</div>
+	<script id="failure-status-template" type="x-tmpl-mustache">
+    	<u class="status-failure">
+        	<b>{{status}}</b>
+   		</u>
+	</script>
+	<script id="failure-refresh-status-template" type="x-tmpl-mustache">
+    	<b class="status-failure">{{status}}</b>
+	</script>
+	<script id="success-status-template" type="x-tmpl-mustache">
+    	<b class="status-success">{{status}}</b>
+	</script>
+	<script id="success-refresh-status-template" type="x-tmpl-mustache">
+    	<b class="status-success">{{status}}</b>
+	</script>
+	<script src="../js/spinner.js"></script>
+	<script src="../js/init.js"></script>
+	<script
+		src="../bower_components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
+</body>
+</html>
