@@ -57,6 +57,7 @@ var hasReportingPrivilege = true;
 $(document).ready(
 		function() {
 			initTabs();
+
 		});
 
 function isAuthenticated() {
@@ -188,20 +189,20 @@ function getDHISPrograms() {
 
 function putStatus(data, index) {
 	element('comment', index).html(data.comment).html();
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
-	//alert(JSON.stringify(data));
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
-	//alert(data.status);
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
+	alert(JSON.stringify(data));
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
+	alert(data.status);
 	if (data.status == 'Success' || data.status == 'Complete') {
-		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
-		//alert(data.status);
+		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		alert(data.status);
 		var template = $('#success-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, data));
 		return;
 	}
-	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
-	//alert(data.status.status);
+	alert("[putStatus] Status is FAILURE...updating...displaying the data");
+	alert(data.status.status);
 	var template = $('#failure-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
@@ -214,23 +215,23 @@ function putStatus(data, index) {
 
 function putStatusRefresh(data, index) {
 	element('comment', index).html(data.comment).html();
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
-	//alert(JSON.stringify(data));
-	//alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
-	//alert(data.status);
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.stringify()...");
+	alert(JSON.stringify(data));
+	alert("[putStatus] Welcome to the putStatus function...displaying argument data.status...");
+	alert(data.status);
 	var reportStatus = new Object();
 	reportStatus.status = 'Failure';
 	if (data.status == 'Success' || data.comment == 'Complete') {
-		//alert("[putStatus] Status is SUCCESS...updating...displaying the data");
-		//alert(data.status);
+		alert("[putStatus] Status is SUCCESS...updating...displaying the data");
+		alert(data.status);
 		reportStatus.status = 'Success';
 		var template = $('#success-refresh-status-template').html();
 		Mustache.parse(template);
 		element('status', index).html(Mustache.render(template, reportStatus));
 		return;
 	}
-	//alert("[putStatus] Status is FAILURE...updating...displaying the data");
-	//alert(data.status.status);
+	alert("[putStatus] Status is FAILURE...updating...displaying the data");
+	alert(data.status);
 	var template = $('#failure-refresh-status-template').html();
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
@@ -296,6 +297,61 @@ function submit(index, attribute) {
 	};
 
 	disableBtn(element('submit', index));
+	var submitTo = submitUrl;
+	//alert("[submit] Welcome to the submit function...");
+	if (attribute == true) {
+		alert("attribute == true, submitTo = submitUrlAtr");
+		submitTo = submitUrlAtr;
+	}
+	$.get(submitTo, parameters).done(function(data) {
+		data = JSON.parse(data)
+		//alert("[submit] Submitted...displaying the feedback...data.stringify()");
+		//alert(JSON.stringify(data));
+		//alert("[submit] Submitted...displaying the feedback...data.status");
+		//alert(data.status);
+		if (!$.isEmptyObject(data)) {
+			
+			putStatus(data, index);
+		}
+		//alert("[submit] Submitted...feedback is empty...");
+	}).fail(function(response) {
+		//alert("[submit] Failed to submit...");
+		if (response.status == 403) {
+			//alert("[submit] Forbidden...403...");
+			putStatus({
+				status : 'Failure',
+				exception : 'Not Authenticated'
+			}, index);
+		}
+		putStatus({
+			status : 'Failure',
+			exception : response
+		}, index);
+	}).always(function() {
+		enableBtn(element('submit', index));
+		spinner.hide();
+	});
+}
+
+function autoSubmit(year,month,programName,comment) {
+	//spinner.show();
+	//var year = element('year', index).val();
+	//var month = element('month', index).val();
+	//var programName = element('program-name', index).html();
+	//var comment = element('comment', index).val();
+	var isImam = false;
+	isFamily = false;
+
+	var parameters = {
+		year : year,
+		month : month,
+		name : programName,
+		comment : comment,
+		isImam : isImam,
+		isFamily : isFamily
+	};
+
+	//disableBtn(element('submit', index));
 	var submitTo = submitUrl;
 	//alert("[submit] Welcome to the submit function...");
 	if (attribute == true) {
@@ -417,3 +473,6 @@ function getLogStatus() {
 		getStatus(index);
 	});
 }
+
+
+//console.log(submit())
