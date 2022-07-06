@@ -56,7 +56,10 @@ var hasReportingPrivilege = true;
 
 $(document).ready(
 		function() {
-			initTabs();
+			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
+				renderPrograms).then(renderYearlyReport).then(
+				selectApproxLatestGregorianYear).then(
+				registerOnchangeOnComment).then(getLogStatus);
 
 		});
 
