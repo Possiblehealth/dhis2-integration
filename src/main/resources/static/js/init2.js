@@ -12,51 +12,10 @@ var supportedEndDate = 2008;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
 var spinner = spinner || {};
 
-var months = [ {
-	number : 12,
-	name : "December"
-}, {
-	number : 11,
-	name : "November"
-}, {
-	number : 10,
-	name : "October"
-}, {
-	number : 9,
-	name : "September"
-}, {
-	number : 8,
-	name : "August"
-}, {
-	number : 7,
-	name : "July"
-}, {
-	number : 6,
-	name : "June"
-}, {
-	number : 5,
-	name : "May"
-}, {
-	number : 4,
-	name : "April"
-}, {
-	number : 3,
-	name : "March"
-}, {
-	number : 2,
-	name : "February"
-}, {
-	number : 1,
-	name : "January"
-} ];
-
-var years = range(supportedStartDate, supportedEndDate);
-var fiscalYears = fiscalYearRange(supportedStartDate, supportedEndDate);
-var hasReportingPrivilege = true;
-
 $(document).ready(
 		function() {
 
+			initTabs();
 			// Activate tooltip
 			$('[data-toggle="tooltip"]').tooltip();
 			
@@ -78,8 +37,6 @@ $(document).ready(
 					$("#selectAll").prop("checked", false);
 				}
 			});
-
-			initTabs();
 
 		});
 
