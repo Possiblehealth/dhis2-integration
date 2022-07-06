@@ -84,7 +84,7 @@
 											<h2>List of Weekly Schedules</h2>
 										</div>
 										<div class="col-sm-6">
-											<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New</span></a>
+											<a href="#addWeeklyScheduleModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New</span></a>
 										</div>
 									</div>
 								</div>
@@ -115,8 +115,8 @@
 											<td>2021-06-30 23:59:00.0</td>
 											<td style="color:#ff0000">Failed</td>
 											<td>
-												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+												<a href="#editWeeklyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteWeeklyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 											</td>
 										</tr>
 										<tr>
@@ -130,8 +130,8 @@
 											<td>2021-06-30 23:59:00.0</td>
 											<td style="color:#28a745">Success</td>
 											<td>
-												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+												<a href="#editWeeklyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteWeeklyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 											</td>
 										</tr>
 										<tr>
@@ -145,8 +145,8 @@
 											<td>2021-06-30 23:59:00.0</td>
 											<td style="color:#28a745">Success</td>
 											<td>
-												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+												<a href="#editWeeklyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteWeeklyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 											</td>
 										</tr>
 										<tr>
@@ -160,8 +160,8 @@
 											<td>2021-06-30 23:59:00.0</td>
 											<td style="color:#28a745">Success</td>
 											<td>
-												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+												<a href="#editWeeklyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteWeeklyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 											</td>
 										</tr>					
 										<tr>
@@ -175,8 +175,8 @@
 											<td>2021-06-30 23:59:00.0</td>
 											<td style="color:#28a745">Success</td>
 											<td>
-												<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-												<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+												<a href="#editWeeklyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+												<a href="#deleteWeeklyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 											</td>
 										</tr> 
 									</tbody>
@@ -197,7 +197,7 @@
 						</div>        
 					</div>
 					<!-- Edit Modal HTML -->
-					<div id="addEmployeeModal" class="modal fade">
+					<div id="addWeeklyScheduleModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<form>
@@ -226,6 +226,62 @@
 							</div>
 						</div>
 					</div>
+					<!-- Edit Modal HTML -->
+					<div id="editWeeklyScheduleModal" class="modal fade">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form>
+									<div class="modal-header">						
+										<h4 class="modal-title">Edit Employee</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									</div>
+									<div class="modal-body">					
+										<div class="form-group">
+											<label>Name</label>
+											<input type="text" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label>Email</label>
+											<input type="email" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label>Address</label>
+											<textarea class="form-control" required></textarea>
+										</div>
+										<div class="form-group">
+											<label>Phone</label>
+											<input type="text" class="form-control" required>
+										</div>					
+									</div>
+									<div class="modal-footer">
+										<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+										<input type="submit" class="btn btn-info" value="Save">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!-- Delete Modal HTML -->
+					<div id="deleteWeeklyScheduleModal" class="modal fade">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form>
+									<div class="modal-header">						
+										<h4 class="modal-title">Delete Employee</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									</div>
+									<div class="modal-body">					
+										<p>Are you sure you want to delete these Records?</p>
+										<p class="text-warning"><small>This action cannot be undone.</small></p>
+									</div>
+									<div class="modal-footer">
+										<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+										<input type="submit" class="btn btn-danger" value="Delete">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 
 			</div>
 
@@ -239,7 +295,7 @@
 										<h2>List of Monthly Schedules</h2>
 									</div>
 									<div class="col-sm-6">
-										<a href="#addMonthlyModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New</span></a>
+										<a href="#addMonthlyScheduleModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New</span></a>
 									</div>
 								</div>
 							</div>
@@ -270,8 +326,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editMonthlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteMonthlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>
 									<tr>
@@ -285,8 +341,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#ff3300">Failed</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editMonthlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteMonthlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>
 									<tr>
@@ -300,8 +356,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editMonthlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteMonthlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>
 									<tr>
@@ -315,8 +371,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editMonthlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteMonthlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>					
 									<tr>
@@ -330,8 +386,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editMonthlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteMonthlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr> 
 								</tbody>
@@ -352,12 +408,12 @@
 					</div>        
 				</div>
 				<!-- Edit Modal HTML -->
-				<div id="addMonthlyModal" class="modal fade">
+				<div id="addMonthlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Add New Monthly Schedule</h4>
+									<h4 class="modal-title">Add Monthly Schedule</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
@@ -373,6 +429,62 @@
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
 									<input type="submit" class="btn btn-success" value="Add">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- Edit Modal HTML -->
+				<div id="editMonthlyScheduleModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form>
+								<div class="modal-header">						
+									<h4 class="modal-title">Edit Monthly Schedule</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">					
+									<div class="form-group">
+										<label>Name</label>
+										<input type="text" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Email</label>
+										<input type="email" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Address</label>
+										<textarea class="form-control" required></textarea>
+									</div>
+									<div class="form-group">
+										<label>Phone</label>
+										<input type="text" class="form-control" required>
+									</div>					
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input type="submit" class="btn btn-info" value="Save">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- Delete Modal HTML -->
+				<div id="deleteMonthlyScheduleModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form>
+								<div class="modal-header">						
+									<h4 class="modal-title">Delete Monthly Schedule</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">					
+									<p>Are you sure you want to delete these Records?</p>
+									<p class="text-warning"><small>This action cannot be undone.</small></p>
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input type="submit" class="btn btn-danger" value="Delete">
 								</div>
 							</form>
 						</div>
@@ -423,8 +535,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editQuarterlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteQuarterlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>
 									<tr>
@@ -438,8 +550,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editQuarterlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteQuarterlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>
 									<tr>
@@ -453,8 +565,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editQuarterlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteQuarterlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>
 									<tr>
@@ -468,8 +580,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editQuarterlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteQuarterlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr>					
 									<tr>
@@ -483,8 +595,8 @@
 										<td>2021-06-30 23:59:00.0</td>
 										<td style="color:#28a745">Success</td>
 										<td>
-											<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+											<a href="#editQuarterlyScheduleModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+											<a href="#deleteQuarterlyScheduleModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 										</td>
 									</tr> 
 								</tbody>
@@ -505,12 +617,12 @@
 					</div>        
 				</div>
 				<!-- Edit Modal HTML -->
-				<div id="addQuarterlyModal" class="modal fade">
+				<div id="addQuarterlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Add New Quarterly Schedule</h4>
+									<h4 class="modal-title">Add Quarterly Schedule</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
@@ -526,6 +638,62 @@
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
 									<input type="submit" class="btn btn-success" value="Add">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- Edit Modal HTML -->
+				<div id="editQuarterlyScheduleModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form>
+								<div class="modal-header">						
+									<h4 class="modal-title">Edit Quarterly Schedule</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">					
+									<div class="form-group">
+										<label>Name</label>
+										<input type="text" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Email</label>
+										<input type="email" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Address</label>
+										<textarea class="form-control" required></textarea>
+									</div>
+									<div class="form-group">
+										<label>Phone</label>
+										<input type="text" class="form-control" required>
+									</div>					
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input type="submit" class="btn btn-info" value="Save">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- Delete Modal HTML -->
+				<div id="deleteQuarterlyScheduleModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form>
+								<div class="modal-header">						
+									<h4 class="modal-title">Delete Quarterly Schedule</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">					
+									<p>Are you sure you want to delete these Records?</p>
+									<p class="text-warning"><small>This action cannot be undone.</small></p>
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input type="submit" class="btn btn-danger" value="Delete">
 								</div>
 							</form>
 						</div>

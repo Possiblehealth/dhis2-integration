@@ -56,17 +56,11 @@ var hasReportingPrivilege = true;
 
 $(document).ready(
 		function() {
-			isAuthenticated().then(isSubmitAuthorized).then(initTabs).then(
-				renderPrograms).then(renderYearlyReport).then(
-				selectApproxLatestGregorianYear).then(
-				registerOnchangeOnComment).then(getLogStatus);
+			initTabs();
 		});
 
 function isAuthenticated() {
-	return true;
-
-	//disable session authentication
-	/*$.get("is-logged-in").then(function(response) {
+	return $.get("is-logged-in").then(function(response) {
 		if (response != 'Logged in') {
 			window.location.href = loginRedirectUrl + window.location.href;
 		}
@@ -74,7 +68,7 @@ function isAuthenticated() {
 		if (response && response.status != 200) {
 			window.location.href = loginRedirectUrl;
 		}
-	});*/
+	});
 }
 
 function isSubmitAuthorized() {
