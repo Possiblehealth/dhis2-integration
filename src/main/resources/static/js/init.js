@@ -239,10 +239,7 @@ function putStatusRefresh(data, index) {
 	Mustache.parse(template);
 	data.message = JSON.stringify(data.exception || data.response);
 	element('status', index).html(Mustache.render(template, reportStatus));
-	/*element('status', index).find('.status-failure').on('click', function() {
-		alert(data.message);
-		console.log(data.message);
-	});*/
+
 }
 
 function download(index) {
@@ -477,5 +474,3 @@ function getLogStatus() {
 	});
 }
 
-
-//console.log(submit())
