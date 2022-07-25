@@ -22,7 +22,8 @@ $(document).ready(
 			$.getJSON(reportConfigUrl).then(function(reportConfigs) {
 				Object.keys(reportConfigs).forEach(function(reportKey) {
 					if (reportConfigs[reportKey].DHISProgram) {
-						alert(JSON.stringify(reportConfigs[reportKey]));
+						var data=JSON.stringify(reportConfigs[reportKey]);
+						alert(data);
 					}
 				});
 			
