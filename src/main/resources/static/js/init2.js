@@ -13,6 +13,11 @@ var approximateNepaliYear = (new Date()).getFullYear() + 56;
 var spinner = spinner || {};
 
 $(document).ready(
+
+	
+
+
+
 		function() {
 
 			initTabs();
@@ -39,17 +44,16 @@ $(document).ready(
 			});
 
 			
-			$.getJSON("https://localhost/bahmni_config/openmrs/apps/reports/reports.json", function(data){
-            
-			let dropdown = $('#weekly-progname');
-			dropdown.empty();
-			dropdown.append('<option selected="true" disabled>Choose Program</option>');
-			dropdown.prop('selectedIndex', 0);
-			for(var i in data){
-				dropdown.append($('<option></option>').attr('value', data[i].name).text(data[i].name));	
-			}	
-			}).fail(function(){
-				document.write("An error has occurred.");
+			return getDHISPrograms().then(function(programs) {
+
+				let dropdown = $('#weekly-progname');
+				dropdown.empty();
+				dropdown.append('<option selected="true" disabled>Choose Program</option>');
+				dropdown.prop('selectedIndex', 0);
+				for(var i in programs){
+					dropdown.append($('<option></option>').attr('value', data[i].name).text(data[i].name));	
+				}
+				
 			});
 
 
@@ -99,3 +103,15 @@ function getLogStatus() {
 	});
 }
 
+function getDHISPrograms() {
+	return $.getJSON(reportConfigUrl).then(function(reportConfigs) {
+		var DHISPrograms = [];
+		Object.keys(reportConfigs).forEach(function(reportKey) {
+			if (reportConfigs[reportKey].DHISProgram) {
+				reportConfigs[reportKey].index = DHISPrograms.length;
+				DHISPrograms.push(reportConfigs[reportKey]);
+			}
+		});
+		return DHISPrograms;
+	});
+}
