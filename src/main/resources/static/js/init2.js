@@ -22,8 +22,7 @@ $(document).ready(
 
 			getDHISPrograms().then(function(programs) {
 				var myJsonString = JSON.stringify(programs);
-				alert(myJsonString[0].name);
-				alert(myJsonString[1].name);
+				alert(myJsonString);
 			});
 
 
