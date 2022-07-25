@@ -13,16 +13,19 @@ var approximateNepaliYear = (new Date()).getFullYear() + 56;
 var spinner = spinner || {};
 
 $(document).ready(
-
-	
-
-
-
 		function() {
 
 			initTabs();
 			// Activate tooltip
 			$('[data-toggle="tooltip"]').tooltip();
+
+
+			getDHISPrograms().then(function(programs) {
+				var myJsonString = JSON.stringify(programs);
+				alert(myJsonString);
+			});
+
+
 			
 			// Select/Deselect checkboxes
 			var checkbox = $('table tbody input[type="checkbox"]');
@@ -43,19 +46,7 @@ $(document).ready(
 				}
 			});
 
-			$.getJSON(reportConfigUrl).then(function(reportConfigs) {
-				let dropdown = $('#weekly-progname');
-				dropdown.empty();
-				dropdown.append('<option selected="true" disabled>Choose Program</option>');
-				dropdown.prop('selectedIndex', 0);
-				Object.keys(reportConfigs).forEach(function(reportKey) {
-					if (reportConfigs[reportKey].DHISProgram) {
-						reportConfigs[reportKey].index = DHISPrograms.length;
-						alert(reportConfigs[reportKey].name);
-						dropdown.append($('<option></option>').attr('value', reportConfigs[reportKey].name).text(reportConfigs[reportKey].name));	
-					}
-				});
-			});
+		
 
 
 		});
@@ -68,6 +59,18 @@ function initTabs() {
 	$("#tabs").tabs();
 }
 
+function getDHISPrograms() {
+	return $.getJSON(reportConfigUrl).then(function(reportConfigs) {
+		var DHISPrograms = [];
+		Object.keys(reportConfigs).forEach(function(reportKey) {
+			if (reportConfigs[reportKey].DHISProgram) {
+				reportConfigs[reportKey].index = DHISPrograms.length;
+				DHISPrograms.push(reportConfigs[reportKey]);
+			}
+		});
+		return DHISPrograms;
+	});
+}
 
 function element(name, index) {
 	var id = name + '-' + index;
