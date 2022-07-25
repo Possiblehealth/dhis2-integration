@@ -19,13 +19,12 @@ $(document).ready(
 			// Activate tooltip
 			$('[data-toggle="tooltip"]').tooltip();
 
-
-			getDHISPrograms().then(function(programs) {
-				var myJsonString = JSON.stringify(programs);
-				alert(myJsonString);
-			});
-
-
+			$.getJSON(reportConfigUrl).then(function(reportConfigs) {
+				Object.keys(reportConfigs).forEach(function(reportKey) {
+					if (reportConfigs[reportKey].DHISProgram) {
+						alert(JSON.stringify(reportConfigs[reportKey]));
+					}
+				});
 			
 			// Select/Deselect checkboxes
 			var checkbox = $('table tbody input[type="checkbox"]');
