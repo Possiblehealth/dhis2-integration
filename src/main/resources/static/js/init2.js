@@ -38,6 +38,21 @@ $(document).ready(
 				}
 			});
 
+			
+			$.getJSON("http://localhost/bahmni_config/openmrs/apps/reports/reports.json", function(data){
+            
+			let dropdown = $('#weekly-progname');
+			dropdown.empty();
+			dropdown.append('<option selected="true" disabled>Choose Program</option>');
+			dropdown.prop('selectedIndex', 0);
+			for(var i in data){
+				dropdown.append($('<option></option>').attr('value', data[i].name).text(data[i].name));	
+			}	
+			}).fail(function(){
+				document.write("An error has occurred.");
+			});
+
+
 		});
 
 
