@@ -39,7 +39,7 @@ $(document).ready(
 			});
 
 			
-			$.getJSON("http://localhost/bahmni_config/openmrs/apps/reports/reports.json", function(data){
+			$.getJSON("https://localhost/bahmni_config/openmrs/apps/reports/reports.json", function(data){
             
 			let dropdown = $('#weekly-progname');
 			dropdown.empty();
