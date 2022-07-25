@@ -18,14 +18,6 @@ $(document).ready(
 			initTabs();
 			// Activate tooltip
 			$('[data-toggle="tooltip"]').tooltip();
-
-			$.getJSON(reportConfigUrl).then(function(reportConfigs) {
-				Object.keys(reportConfigs).forEach(function(reportKey) {
-					if (reportConfigs[reportKey].DHISProgram) {
-						var data=JSON.stringify(reportConfigs[reportKey]);
-						alert(data);
-					}
-				});
 			
 			// Select/Deselect checkboxes
 			var checkbox = $('table tbody input[type="checkbox"]');
