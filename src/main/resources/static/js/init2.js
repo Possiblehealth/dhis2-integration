@@ -43,18 +43,18 @@ $(document).ready(
 				}
 			});
 
-			
-			return getDHISPrograms().then(function(programs) {
-				alert(programs);
+			$.getJSON(reportConfigUrl).then(function(reportConfigs) {
 				let dropdown = $('#weekly-progname');
 				dropdown.empty();
 				dropdown.append('<option selected="true" disabled>Choose Program</option>');
 				dropdown.prop('selectedIndex', 0);
-				for(var i in programs){
-					alert(i);
-					dropdown.append($('<option></option>').attr('value', i.name).text(i.name));	
-				}
-				
+				Object.keys(reportConfigs).forEach(function(reportKey) {
+					if (reportConfigs[reportKey].DHISProgram) {
+						reportConfigs[reportKey].index = DHISPrograms.length;
+						alert(reportConfigs[reportKey].name);
+						dropdown.append($('<option></option>').attr('value', reportConfigs[reportKey].name).text(reportConfigs[reportKey].name));	
+					}
+				});
 			});
 
 
