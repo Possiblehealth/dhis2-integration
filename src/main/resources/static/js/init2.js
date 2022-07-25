@@ -45,13 +45,14 @@ $(document).ready(
 
 			
 			return getDHISPrograms().then(function(programs) {
-
+				alert(programs);
 				let dropdown = $('#weekly-progname');
 				dropdown.empty();
 				dropdown.append('<option selected="true" disabled>Choose Program</option>');
 				dropdown.prop('selectedIndex', 0);
 				for(var i in programs){
-					dropdown.append($('<option></option>').attr('value', data[i].name).text(data[i].name));	
+					alert(i);
+					dropdown.append($('<option></option>').attr('value', i.name).text(i.name));	
 				}
 				
 			});
