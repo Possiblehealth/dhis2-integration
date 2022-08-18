@@ -12,6 +12,8 @@ var supportedEndDate = 2008;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
 var spinner = spinner || {};
 
+var hasReportingPrivilege = true;
+
 $(document).ready(
 		function() {
 
