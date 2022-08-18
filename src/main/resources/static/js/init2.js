@@ -126,15 +126,12 @@ function getContent(isYearlyReport, canSubmitReport) {
 	return getDHISPrograms().then(function(programs) {
 		if (isYearlyReport) {
 			return {
-				years : fiscalYears,
 				programs : programs,
 				isYearlyReport : isYearlyReport,
 				canSubmitReport : canSubmitReport
 			};
 		} else {
 			return {
-				months : months,
-				years : years,
 				programs : programs,
 				isYearlyReport : isYearlyReport,
 				canSubmitReport : canSubmitReport
