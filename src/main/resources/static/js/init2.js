@@ -38,6 +38,14 @@ $(document).ready(
 				}
 			});
 
+			var isYearlyReport = false;
+			var canSubmitReport = hasReportingPrivilege;
+			getContent(isYearlyReport, canSubmitReport).then(
+						function(content) {
+							console.log('[automation]');
+							console.log(content.programs);
+						});
+
 		
 
 
@@ -109,5 +117,26 @@ function getDHISPrograms() {
 			}
 		});
 		return DHISPrograms;
+	});
+}
+
+function getContent(isYearlyReport, canSubmitReport) {
+	return getDHISPrograms().then(function(programs) {
+		if (isYearlyReport) {
+			return {
+				years : fiscalYears,
+				programs : programs,
+				isYearlyReport : isYearlyReport,
+				canSubmitReport : canSubmitReport
+			};
+		} else {
+			return {
+				months : months,
+				years : years,
+				programs : programs,
+				isYearlyReport : isYearlyReport,
+				canSubmitReport : canSubmitReport
+			};
+		}
 	});
 }

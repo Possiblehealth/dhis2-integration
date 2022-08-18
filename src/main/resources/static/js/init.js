@@ -156,7 +156,7 @@ function renderPrograms() {
 				var canSubmitReport = hasReportingPrivilege;
 				return getContent(isYearlyReport, canSubmitReport).then(
 						function(content) {
-							console.log(content.programs);
+							//console.log(content.programs);
 							$("#programs").html(
 									Mustache.render(template, content));
 						});
