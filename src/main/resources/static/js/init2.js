@@ -46,6 +46,13 @@ $(document).ready(
 						function(content) {
 							console.log('[automation]');
 							console.log(content.programs);
+							let dropdown = $('#weekly-progname');
+							dropdown.empty();
+							dropdown.append('<option selected="true" disabled>Choose Program</option>');
+							dropdown.prop('selectedIndex', 0);
+							$.each(content.programs, function (key, entry) {
+								dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
+							});
 						});
 
 		
