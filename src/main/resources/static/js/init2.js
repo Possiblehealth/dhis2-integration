@@ -39,7 +39,8 @@ $(document).ready(
 					$("#selectAll").prop("checked", false);
 				}
 			});
-
+			
+			//populate list of programs into select element
 			var isYearlyReport = false;
 			var canSubmitReport = hasReportingPrivilege;
 			getContent(isYearlyReport, canSubmitReport).then(
@@ -55,6 +56,23 @@ $(document).ready(
 							});
 						});
 
+			//populate list of schedules from db
+			var mysql = require('mysql');
+
+			var con = mysql.createConnection({
+			host: "localhost",
+			user: "root",
+			password: "P@ssw0rd",
+			database: "openmrs"
+			});
+
+			con.connect(function(err) {
+			if (err) throw err;
+			con.query("SELECT * FROM integration_app_schedules", function (err, result, fields) {
+				if (err) throw err;
+				console.log(result);
+			});
+			});
 		
 
 
