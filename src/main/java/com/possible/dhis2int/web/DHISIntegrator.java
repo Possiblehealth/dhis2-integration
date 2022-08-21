@@ -175,11 +175,13 @@ public class DHISIntegrator {
 
 
 	@RequestMapping(path = "/load-schedules")
-	public String loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
-			throws IOException, JSONException {
-			String msg="request received";
+	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
+			throws IOException, JSONException, DHISIntegratorException, Exception {
+			String sql="SELECT * from integration_app_schedules";
+			JSONArray jsonArray = Results.convertToJSON(databaseDriver.executeQuery(sql));
+		
+			return jsonArray;
 
-			return msg;
 	}
 
 	@RequestMapping(path = "/save-schedules")

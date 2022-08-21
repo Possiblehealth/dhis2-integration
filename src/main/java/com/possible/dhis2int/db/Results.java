@@ -5,6 +5,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+
 public class Results {
 	
 	private final List<List<String>> rows = new ArrayList<>();
@@ -20,6 +24,22 @@ public class Results {
 			results.rows.add(row);
 		}
 		return results;
+	}
+
+	public static JSONArray convertToJSON(ResultSet resultSet) throws Exception {
+		JSONArray jsonArray = new JSONArray();
+ 
+		while (resultSet.next()) {
+	
+			int columns = resultSet.getMetaData().getColumnCount();
+			JSONObject obj = new JSONObject();
+	
+			for (int i = 0; i < columns; i++)
+				obj.put(resultSet.getMetaData().getColumnLabel(i + 1).toLowerCase(), resultSet.getObject(i + 1));
+	
+			jsonArray.put(obj);
+		}
+		return jsonArray;
 	}
 	
 	public String get(Integer row, Integer column) {
