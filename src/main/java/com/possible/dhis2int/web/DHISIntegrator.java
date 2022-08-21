@@ -175,13 +175,15 @@ public class DHISIntegrator {
 
 
 	@RequestMapping(path = "/load-schedules")
-	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
+	public Results loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			String sql="SELECT * FROM integration_app_schedules";
 			JSONArray jsonArray=new JSONArray();
+			Results result = new Results();
+			String type="MRSGeneric";
 
 			try{
-				jsonArray = Results.convertToJSON(databaseDriver.executeQuery(sql));
+				result = databaseDriver.executeQuery(sql,type);
 			}
 			catch(DHISIntegratorException | JSONException e){
 				logger.error(Messages.SQL_EXECUTION_EXCEPTION,e);
@@ -190,7 +192,7 @@ public class DHISIntegrator {
 				logger.error(Messages.INTERNAL_SERVER_ERROR,e);
 			}
 		
-			return jsonArray;
+			return result;
 
 	}
 
