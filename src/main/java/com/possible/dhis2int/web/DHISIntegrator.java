@@ -185,13 +185,15 @@ public class DHISIntegrator {
 
 			try{
 				results = databaseDriver.executeQuery(sql,type);
+
 				for (List<String> row : results.getRows()) {
-					JSONObject schedule = new JSONObject();
+					logger.info(row);
+					/*JSONObject schedule = new JSONObject();
 					schedule.put("id",row.get(0));
 					schedule.put("name",row.get(1));
 					schedule.put("last-run",row.get(2));
 					schedule.put("status",row.get(3));
-					jsonArray.put(schedule);
+					jsonArray.put(schedule);*/
 				}
 
 
