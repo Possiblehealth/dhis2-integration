@@ -193,7 +193,7 @@ public class DHISIntegrator {
 					logger.info(row.get(1));
 					logger.info(row.get(2));
 					logger.info(row.get(3));
-					JSONObject schedule = new JSONObject();
+					schedule = new JSONObject();
 					schedule.put("id",row.get(0));
 					schedule.put("name",row.get(1));
 					schedule.put("last-run",row.get(2));
