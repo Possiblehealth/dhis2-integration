@@ -1,6 +1,8 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
 var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM&isFamily=IS_FAMILY';
 var submitUrl = '/dhis-integration/submit-to-dhis';
+var loadSchedulesUrl = '/dhis-integration/load-schedules';
+var submitSchedulesUrl = '/dhis-integration/save-schedules';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
@@ -57,22 +59,7 @@ $(document).ready(
 						});
 
 			//populate list of schedules from db
-			var mysql = require('mysql');
-
-			var con = mysql.createConnection({
-			host: "localhost",
-			user: "root",
-			password: "P@ssw0rd",
-			database: "openmrs"
-			});
-
-			con.connect(function(err) {
-			if (err) throw err;
-			con.query("SELECT * FROM integration_app_schedules", function (err, result, fields) {
-				if (err) throw err;
-				console.log(result);
-			});
-			});
+			getDHISSchedules();
 		
 
 
@@ -98,6 +85,18 @@ function getDHISPrograms() {
 		return DHISPrograms;
 	});
 }
+
+
+function getDHISSchedules() {
+	$.get(loadSchedulesUrl).done(function(data) {
+		data = JSON.parse(data)
+		console.log(data);
+		
+	}).fail(function(response) {
+		
+	});
+}
+
 
 function element(name, index) {
 	var id = name + '-' + index;

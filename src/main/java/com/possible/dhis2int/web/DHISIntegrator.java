@@ -173,6 +173,24 @@ public class DHISIntegrator {
 
 	}
 
+
+	@RequestMapping(path = "/load-schedules")
+	public String loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
+			throws IOException, JSONException {
+			String msg="request received";
+
+			return msg;
+	}
+
+	@RequestMapping(path = "/save-schedules")
+	public String saveIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
+			throws IOException, JSONException {
+			String msg="schedule saved";
+
+			return msg;
+	}
+
+
 	@RequestMapping(path = "/submit-to-dhis")
 	public String submitToDHIS(@RequestParam("name") String program, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("comment") String comment,
