@@ -180,13 +180,22 @@ public class DHISIntegrator {
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			String sql="SELECT * FROM integration_app_schedules";
 			JSONArray jsonArray=new JSONArray();
-			Results result = new Results();
+			Results results = new Results();
 			String type="MRSGeneric";
 
 			try{
-				ResultSet res = databaseDriver.executeQuery(sql);
-				jsonArray = Results.convertToJSON(res);
-				logger.info(result.get(1, 1));
+				results = databaseDriver.executeQuery(sql,type);
+				for (List<String> row : results.getRows()) {
+					JSONObject schedule = new JSONObject();
+					schedule.put("id",row.get(0));
+					schedule.put("name",row.get(1));
+					schedule.put("last-run",row.get(2));
+					schedule.put("status",row.get(3));
+					jsonArray.put(schedule);
+				}
+
+
+				logger.info(results.get(1, 1));
 				logger.info("Inside loadIntegrationSchedules...");
 			}
 			catch(DHISIntegratorException | JSONException e){
