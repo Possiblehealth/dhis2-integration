@@ -89,7 +89,7 @@ function getDHISPrograms() {
 
 function getDHISSchedules() {
 	return $.get(loadSchedulesUrl).done(function(data) {
-		//data = JSON.parse(data)
+		data = JSON.parse(data)
 		console.log(data);
 		
 	}).fail(function(response) {

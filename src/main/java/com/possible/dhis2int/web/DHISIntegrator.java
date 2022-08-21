@@ -177,7 +177,7 @@ public class DHISIntegrator {
 	@RequestMapping(path = "/load-schedules")
 	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
-			String sql="SELECT * from integration_app_schedules";
+			String sql="SELECT * FROM integration_app_schedules";
 			JSONArray jsonArray=new JSONArray();
 
 			try{
