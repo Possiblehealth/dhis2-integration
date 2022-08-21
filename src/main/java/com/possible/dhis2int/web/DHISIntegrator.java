@@ -178,7 +178,17 @@ public class DHISIntegrator {
 	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			String sql="SELECT * from integration_app_schedules";
-			JSONArray jsonArray = Results.convertToJSON(databaseDriver.executeQuery(sql));
+			JSONArray jsonArray=new JSONArray();
+
+			try{
+				jsonArray = Results.convertToJSON(databaseDriver.executeQuery(sql));
+			}
+			catch(DHISIntegratorException | JSONException e){
+				logger.error(Messages.SQL_EXECUTION_EXCEPTION,e);
+			}
+			catch(Exception e){
+				logger.error(Messages.INTERNAL_SERVER_ERROR,e);
+			}
 		
 			return jsonArray;
 
