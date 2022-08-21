@@ -184,8 +184,11 @@ public class DHISIntegrator {
 
 			try{
 				result = databaseDriver.executeQuery(sql,type);
+				logger.info(result.get(1, 1));
+				logger.info("Inside loadIntegrationSchedules...");
 			}
 			catch(DHISIntegratorException | JSONException e){
+				//logger.info("Inside loadIntegrationSchedules...");
 				logger.error(Messages.SQL_EXECUTION_EXCEPTION,e);
 			}
 			catch(Exception e){
