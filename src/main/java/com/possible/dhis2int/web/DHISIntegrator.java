@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -183,7 +184,8 @@ public class DHISIntegrator {
 			String type="MRSGeneric";
 
 			try{
-				jsonArray = Results.convertToJSON(databaseDriver.executeQuery(sql));
+				ResultSet res = databaseDriver.executeQuery(sql);
+				jsonArray = Results.convertToJSON(res);
 				logger.info(result.get(1, 1));
 				logger.info("Inside loadIntegrationSchedules...");
 			}
