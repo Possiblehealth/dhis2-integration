@@ -182,6 +182,7 @@ public class DHISIntegrator {
 			JSONArray jsonArray=new JSONArray();
 			Results results = new Results();
 			String type="MRSGeneric";
+			JSONObject schedule;
 
 			try{
 				results = databaseDriver.executeQuery(sql,type);
