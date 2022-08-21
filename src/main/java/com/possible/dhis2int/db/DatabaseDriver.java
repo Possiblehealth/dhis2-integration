@@ -56,6 +56,29 @@ public class DatabaseDriver {
 		}
 	}
 
+	public ResultSet executeQuery(String formattedSql) throws DHISIntegratorException {
+		Connection connection = null;
+		String type="MRSGeneric";
+		try {
+
+			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			if ("ElisGeneric".equalsIgnoreCase(type)) {
+				connection = DriverManager.getConnection(properties.openelisDBUrl);
+			}
+			ResultSet resultSet = connection.createStatement().executeQuery(formattedSql);
+			return resultSet;
+		} catch (SQLException e) {
+			throw new DHISIntegratorException(String.format(Messages.SQL_EXECUTION_EXCEPTION, formattedSql), e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException ignored) {
+				}
+			}
+		}
+	}
+
 	public void recordQueryLog(Recordlog record, Integer month, Integer year) throws DHISIntegratorException {
 		logger.debug("Inside recordQueryLog method");
 		Connection connection = null;
