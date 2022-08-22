@@ -59,7 +59,9 @@ $(document).ready(
 						});
 
 			//populate list of schedules from db
-			getDHISSchedules();
+			getDHISSchedules().then(function(content){
+				console.log(content);
+			});
 		
 
 
@@ -90,7 +92,7 @@ function getDHISPrograms() {
 function getDHISSchedules() {
 	return $.get(loadSchedulesUrl).done(function(data) {
 		//data = JSON.stringify(data);
-		console.log(data);
+		//console.log(data);
 		
 	}).fail(function(response) {
 		
