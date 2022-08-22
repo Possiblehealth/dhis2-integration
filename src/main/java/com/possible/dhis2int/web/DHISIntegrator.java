@@ -178,6 +178,7 @@ public class DHISIntegrator {
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			String sql="SELECT * FROM integration_app_schedules";
 			JSONArray jsonArray=new JSONArray();
+			ArrayList<Schedules> list=new ArrayList<Schedules>();
 			Results results = new Results();
 			String type="MRSGeneric";
 			Schedules schedule;
@@ -189,15 +190,17 @@ public class DHISIntegrator {
 				for (List<String> row : results.getRows()) {
 					logger.info(row);
 					schedule=new Schedules();
-					mapper = new ObjectMapper();
+					
 					schedule.setId(Integer.parseInt(row.get(0)));
 					schedule.setProgName(row.get(1));
 					schedule.setLastRun(row.get(2));
 					schedule.setStatus(row.get(3));
-					String jsonstring=mapper.writeValueAsString(schedule);
-					jsonArray.put(jsonstring);
+					list.add(schedule);
+					
 				}
-				
+				mapper = new ObjectMapper();
+				String jsonstring=mapper.writeValueAsString(list);
+				jsonArray.put(jsonstring);
 				logger.info("Inside loadIntegrationSchedules...");
 			}
 			catch(DHISIntegratorException | JSONException e){
