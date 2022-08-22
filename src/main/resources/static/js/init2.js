@@ -47,7 +47,7 @@ $(document).ready(
 			var canSubmitReport = hasReportingPrivilege;
 			getContent(isYearlyReport, canSubmitReport).then(
 						function(content) {
-							console.log('[automation]');
+							console.log('[populate option element]');
 							console.log(content.programs);
 							let dropdown = $('#weekly-progname');
 							dropdown.empty();
@@ -60,7 +60,9 @@ $(document).ready(
 
 			//populate list of schedules from db
 			getDHISSchedules().then(function(data){
+				console.log('[render program schedules]');
 				console.log(data);
+				console.log(data.name[0]);
 				var table = document.getElementById('weekly-program-schedules');
 				data.forEach(function(object) {
 					var tr = document.createElement('tr');
