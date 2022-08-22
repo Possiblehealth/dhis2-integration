@@ -63,7 +63,8 @@ $(document).ready(
 				console.log('[render program schedules]');
 				console.log(data);
 				var table = document.getElementById('weekly-program-schedules');
-				data.forEach(function(object) {
+				var schedules=JSON.parse(data);
+				schedules.forEach(function(object) {
 					var tr = document.createElement('tr');
 					tr.innerHTML ="<td>"+"<span class='custom-checkbox'>"+
 									"<input type='checkbox' id='checkbox1' name='options[]' value='1'/>"+
