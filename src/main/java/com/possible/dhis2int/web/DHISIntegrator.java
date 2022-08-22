@@ -14,11 +14,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +33,12 @@ import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.possible.dhis2int.Properties;
 import com.possible.dhis2int.audit.Recordlog;
 import com.possible.dhis2int.audit.Submission;
@@ -53,6 +50,7 @@ import com.possible.dhis2int.date.ReportDateRange;
 import com.possible.dhis2int.db.DatabaseDriver;
 import com.possible.dhis2int.db.Results;
 import com.possible.dhis2int.dhis.DHISClient;
+import com.possible.dhis2int.web.Schedules;
 import com.possible.dhis2int.exception.NotAvailableException;
 
 @RestController
@@ -183,22 +181,27 @@ public class DHISIntegrator {
 			Results results = new Results();
 			String type="MRSGeneric";
 			JSONObject schedule;
+			Schedules sched;
+			ObjectMapper mapper;
 
 			try{
 				results = databaseDriver.executeQuery(sql,type);
 
 				for (List<String> row : results.getRows()) {
 					logger.info(row);
-					logger.info(row.get(0));
-					logger.info(row.get(1));
-					logger.info(row.get(2));
-					logger.info(row.get(3));
-					schedule = new JSONObject();
-					schedule.put("id",row.get(0));
-					schedule.put("name",row.get(1));
-					schedule.put("last-run",row.get(2));
-					schedule.put("status",row.get(3));
-					jsonArray.put(schedule);
+					//logger.info(row.get(0));
+					//logger.info(row.get(1));
+					//logger.info(row.get(2));
+					//logger.info(row.get(3));
+					//schedule = new JSONObject();
+					sched=new Schedules();
+					mapper = new ObjectMapper();
+					sched.setId(Integer.parseInt(row.get(0)));
+					sched.setProgName(row.get(1));
+					sched.setLastRun(row.get(2));
+					sched.setStatus(row.get(3));
+					String jsonstring=mapper.writeValueAsString(sched);
+					jsonArray.put(jsonstring);
 				}
 
 
