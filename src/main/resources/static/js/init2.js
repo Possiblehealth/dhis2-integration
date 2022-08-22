@@ -62,7 +62,7 @@ $(document).ready(
 			getDHISSchedules().then(function(data){
 				console.log('[render program schedules]');
 				console.log(data);
-				alert(data);
+				//alert(data);
 				var table = document.getElementById('weekly-program-schedules');
 				var schedules=JSON.parse(data);
 				schedules.forEach(function(object) {
