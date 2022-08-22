@@ -180,8 +180,7 @@ public class DHISIntegrator {
 			JSONArray jsonArray=new JSONArray();
 			Results results = new Results();
 			String type="MRSGeneric";
-			JSONObject schedule;
-			Schedules sched;
+			Schedules schedule;
 			ObjectMapper mapper;
 
 			try{
@@ -189,23 +188,16 @@ public class DHISIntegrator {
 
 				for (List<String> row : results.getRows()) {
 					logger.info(row);
-					//logger.info(row.get(0));
-					//logger.info(row.get(1));
-					//logger.info(row.get(2));
-					//logger.info(row.get(3));
-					//schedule = new JSONObject();
-					sched=new Schedules();
+					schedule=new Schedules();
 					mapper = new ObjectMapper();
-					sched.setId(Integer.parseInt(row.get(0)));
-					sched.setProgName(row.get(1));
-					sched.setLastRun(row.get(2));
-					sched.setStatus(row.get(3));
-					String jsonstring=mapper.writeValueAsString(sched);
+					schedule.setId(Integer.parseInt(row.get(0)));
+					schedule.setProgName(row.get(1));
+					schedule.setLastRun(row.get(2));
+					schedule.setStatus(row.get(3));
+					String jsonstring=mapper.writeValueAsString(schedule);
 					jsonArray.put(jsonstring);
 				}
-
-
-				logger.info(results.get(1, 1));
+				
 				logger.info("Inside loadIntegrationSchedules...");
 			}
 			catch(DHISIntegratorException | JSONException e){
