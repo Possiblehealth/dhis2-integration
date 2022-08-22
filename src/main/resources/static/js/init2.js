@@ -59,8 +59,23 @@ $(document).ready(
 						});
 
 			//populate list of schedules from db
-			getDHISSchedules().then(function(content){
-				console.log(content);
+			getDHISSchedules().then(function(data){
+				console.log(data);
+				var table = document.getElementById('weekly-program-schedules');
+				data.forEach(function(object) {
+					var tr = document.createElement('tr');
+					tr.innerHTML ="<td>"+"<span class='custom-checkbox'>"+
+									"<input type='checkbox' id='checkbox1' name='options[]' value='1'/>"+
+									"<label for='checkbox1'></label>"+"</span></td>" +
+									'<td>' + object.programName + '</td>' +
+									'<td>' + object.lastRun + '</td>' +
+									'<td>' + object.status + '</td>'+
+									"<td>"+
+									"<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+									"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+									"</td>";
+					table.appendChild(tr);
+				});
 			});
 		
 
