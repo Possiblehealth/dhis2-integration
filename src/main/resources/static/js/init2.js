@@ -117,6 +117,29 @@ function getDHISSchedules() {
 	});
 }
 
+function submiNewSchedule(){
+	var programName=document.getElementById('weekly-progname').value;
+	var scheduleFrequency=document.getElementById('weekly-frequency').value;
+	var scheduleTime=document.getElementById('weekly-time').value;
+
+	var parameters = {
+		programName : programName,
+		scheduleFrequency : scheduleFrequency,
+		scheduleTime : scheduleTime
+	};
+
+	var submitTo = submitSchedulesUrl;
+	return $.get(submitTo,parameters).done(function(data) {
+		//data = JSON.stringify(data);
+		console.log('[Server result for submitNewSchedule()]');
+		console.log(data);
+		
+	}).fail(function(response) {
+		console.log('[Operation submitNewSchedule() failed]');
+	});
+
+}
+
 
 function element(name, index) {
 	var id = name + '-' + index;
@@ -183,3 +206,4 @@ function getContent(isYearlyReport, canSubmitReport) {
 		}
 	});
 }
+

@@ -216,12 +216,25 @@ public class DHISIntegrator {
 	}
 
 	@RequestMapping(path = "/save-schedules")
-	public String saveIntegrationSchedules(@RequestParam("programName") String progName, @RequestParam("scheduleFrequency") String schedFrequency,
+	public Results saveIntegrationSchedules(@RequestParam("programName") String progName, @RequestParam("scheduleFrequency") String schedFrequency,
 	@RequestParam("scheduleTime") String schedTime,HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-			String msg="schedule saved";
+			String sql="INSERT INTO integration_app_schedules ("+progName+","+schedFrequency+","+schedTime+")";
+			String type="MRSGeneric";
+			Results results=new Results();
+			try{
+				results = databaseDriver.executeQuery(sql,type);
+				logger.info("Inside saveIntegrationSchedules...");
 
-			return msg;
+			}
+			catch(DHISIntegratorException | JSONException e){
+				logger.error(Messages.SQL_EXECUTION_EXCEPTION,e);
+			}
+			catch(Exception e){
+				logger.error(Messages.INTERNAL_SERVER_ERROR,e);
+			}
+
+			return results;
 	}
 
 
