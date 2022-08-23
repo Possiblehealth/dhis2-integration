@@ -184,40 +184,35 @@
 										<div class="form-group">
 											<label>Name</label>
 											<!--input type="text" class="form-control" required-->
-											<select name="weekly-progname" id="weekly-progname">
+											<select name="weekly-progname" id="weekly-progname" required>
 											</select>
 										</div>
 										<div class="form-group">
 											<label>Frequency</label>
 											<!--input type="text" class="form-control" required-->
-											<select name="weekly-frequency" id="weekly-frequency">
+											<select name="weekly-frequency" id="weekly-frequency" required>
 												<option value="weekly">Weekly</option>
 												<option value="monthly">Monthly</option>
 												<option value="quarterly">Quarterly</option>
 											</select>
 										</div>
 										<div class="form-group">
-											<label>Day</label>
-											<!--input type="text" class="form-control" required-->
-											<select name="weekly-schedule-day" id="weekly-schedule-day">
-												<option value="1">Sunday</option>
-												<option value="2">Monday</option>
-												<option value="3">Tuesday</option>
-												<option value="4">Wednesday</option>
-												<option value="5">Thursday</option>
-												<option value="6">Friday</option>
-												<option value="7">Saturday</option>
-											</select>
-										</div>
-										<div class="form-group">
 											<label>Time</label>
-											<!--input type="text" class="form-control" required-->
-											<input type="text" class="form-control" id="weekly-schedule-time" required>
-										</div>
-										<div class="form-group">
-											<label>Comment</label>
-											<input type="text" class="form-control" required>
-										</div>					
+											<select name="weekly-time" id="weekly-time" required>
+												<option value="17:00">17:00</option>
+												<option value="18:00">18:00</option>
+												<option value="19:00">19:00</option>
+												<option value="20:00">20:00</option>
+												<option value="21:00">21:00</option>
+												<option value="22:00">22:00</option>
+												<option value="23:00">23:00</option>
+												<option value="00:00">00:00</option>
+												<option value="01:00">01:00</option>
+												<option value="02:00">02:00</option>
+												<option value="03:00">03:00</option>
+												<option value="04:00">04:00</option>
+											</select>
+										</div>				
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
