@@ -222,9 +222,10 @@ public class DHISIntegrator {
 			String sql="INSERT INTO integration_app_schedules ("+progName+","+schedFrequency+","+schedTime+")";
 			String type="MRSGeneric";
 			Results results=new Results();
+			logger.info("Inside saveIntegrationSchedules...");
 			try{
 				results = databaseDriver.executeQuery(sql,type);
-				logger.info("Inside saveIntegrationSchedules...");
+				logger.info("Executed insert query successfully...");
 
 			}
 			catch(DHISIntegratorException | JSONException e){
