@@ -216,7 +216,8 @@ public class DHISIntegrator {
 	}
 
 	@RequestMapping(path = "/save-schedules")
-	public String saveIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
+	public String saveIntegrationSchedules(@RequestParam("programName") String progName, @RequestParam("scheduleFrequency") String schedFrequency,
+	@RequestParam("scheduleTime") String schedTime,HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
 			String msg="schedule saved";
 
