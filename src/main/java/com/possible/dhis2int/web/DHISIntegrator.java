@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -219,12 +221,32 @@ public class DHISIntegrator {
 	public Results saveIntegrationSchedules(@RequestParam("programName") String progName, @RequestParam("scheduleFrequency") String schedFrequency,
 	@RequestParam("scheduleTime") String schedTime,HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-			String sql="INSERT INTO dhis2_schedules (report_name,frequency,created_by,created_date,target_time) VALUES('"+progName+"','"+schedFrequency+"','Test', '2022-08-22','"+schedTime+"');";
-			String type="MRSGeneric";
+			Schedules newschedule = new Schedules();
+			newschedule.setProgName(progName);
+			newschedule.setFrequency(schedFrequency);
+			newschedule.setCreatedBy("Test");
+
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
+			String created_date_string="2022-08-26";
+			String target_time_string="2022-08-26";
+			Date created_date = new Date();
+			Date target_time = new Date();
+			try {
+				created_date = formatter.parse(created_date_string);
+				target_time = formatter.parse(target_time_string);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			newschedule.setCreatedDate(created_date);
+			newschedule.setTargetTime(target_time);
+
+
 			Results results=new Results();
 			logger.info("Inside saveIntegrationSchedules...");
 			try{
-				results = databaseDriver.executeQuery(sql,type);
+				databaseDriver.executeUpdateQuery(newschedule);
 				logger.info("Executed insert query successfully...");
 
 			}
