@@ -219,12 +219,12 @@ public class DHISIntegrator {
 	public Results saveIntegrationSchedules(@RequestParam("programName") String progName, @RequestParam("scheduleFrequency") String schedFrequency,
 	@RequestParam("scheduleTime") String schedTime,HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-			String sql="INSERT INTO integration_app_schedules ("+progName+","+schedFrequency+","+schedTime+")";
+			String sql="INSERT INTO dhis2_schedules (report_name,frequency,created_by,created_date,target_time) VALUES('"+progName+"','"+schedFrequency+"','Test', '2022-08-22','"+schedTime+"');";
 			String type="MRSGeneric";
 			Results results=new Results();
 			logger.info("Inside saveIntegrationSchedules...");
 			try{
-				//results = databaseDriver.executeQuery(sql,type);
+				results = databaseDriver.executeQuery(sql,type);
 				logger.info("Executed insert query successfully...");
 
 			}
