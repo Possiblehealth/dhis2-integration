@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -226,19 +227,9 @@ public class DHISIntegrator {
 			newschedule.setFrequency(schedFrequency);
 			newschedule.setCreatedBy("Test");
 
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
-			String created_date_string="2022-08-26";
-			String target_time_string="2022-08-26";
-			Date created_date = new Date();
-			Date target_time = new Date();
-			try {
-				created_date = formatter.parse(created_date_string);
-				target_time = formatter.parse(target_time_string);
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
+		
+			LocalDate created_date = LocalDate.now(); 
+			LocalDate target_time =  LocalDate.now();
 			newschedule.setCreatedDate(created_date);
 			newschedule.setTargetTime(target_time);
 
