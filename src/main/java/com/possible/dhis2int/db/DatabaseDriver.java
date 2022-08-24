@@ -9,8 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import com.possible.dhis2int.Properties;
 import com.possible.dhis2int.audit.Recordlog;
 import com.possible.dhis2int.web.DHISIntegratorException;
 import com.possible.dhis2int.web.Messages;
+import com.possible.dhis2int.web.Schedules;
 
 @Service
 public class DatabaseDriver {
@@ -69,6 +72,33 @@ public class DatabaseDriver {
 			return resultSet;
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format(Messages.SQL_EXECUTION_EXCEPTION, formattedSql), e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException ignored) {
+				}
+			}
+		}
+	}
+
+	public void executeUpdateQuery(Schedules record) 
+	throws DHISIntegratorException {
+		logger.debug("Inside executeUpdateQuery method");
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			PreparedStatement ps = connection.prepareStatement(
+					"INSERT INTO dhis2_schedules (report_name,frequency,created_by,created_date,target_time) VALUES (?, ?, ?, ?, ?)");
+
+			ps.setString(1, record.getProgramName());
+			ps.setString(2, record.getFrequency());
+			ps.setString(3, record.getCreatedBy());
+			ps.setString(4, record.getCreatedDate().toString());
+			ps.setString(5, record.getTargetTime().toString());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
 		} finally {
 			if (connection != null) {
 				try {
