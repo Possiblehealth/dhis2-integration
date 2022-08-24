@@ -224,7 +224,7 @@ public class DHISIntegrator {
 			Results results=new Results();
 			logger.info("Inside saveIntegrationSchedules...");
 			try{
-				results = databaseDriver.executeQuery(sql,type);
+				//results = databaseDriver.executeQuery(sql,type);
 				logger.info("Executed insert query successfully...");
 
 			}
