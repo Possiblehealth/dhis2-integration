@@ -1,5 +1,6 @@
 package com.possible.dhis2int.web;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.joda.time.DateTime;
@@ -9,8 +10,8 @@ public class Schedules {
     private String programName;
     private String lastRun;
     private String status;
-    private Date created_date;
-    private Date target_time;
+    private LocalDate created_date;
+    private LocalDate target_time;
     private String created_by;
     private String frequency;
 
@@ -50,16 +51,16 @@ public class Schedules {
     public void setCreatedBy(String created_by){
         this.created_by=created_by;
     }
-    public Date getCreatedDate(){
+    public LocalDate getCreatedDate(){
         return created_date;
     }
-    public void setCreatedDate(Date created_date){
+    public void setCreatedDate(LocalDate created_date){
         this.created_date=created_date;
     }
-    public Date getTargetTime(){
+    public LocalDate getTargetTime(){
         return target_time;
     }
-    public void setTargetTime(Date target_time){
+    public void setTargetTime(LocalDate target_time){
         this.target_time=target_time;
     }
      
