@@ -117,7 +117,7 @@ function getDHISSchedules() {
 	});
 }
 
-function submiNewSchedule(){
+function submitNewSchedule(){
 	var programName=document.getElementById('weekly-progname').value;
 	var scheduleFrequency=document.getElementById('weekly-frequency').value;
 	var scheduleTime=document.getElementById('weekly-time').value;
