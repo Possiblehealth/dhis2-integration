@@ -36,6 +36,7 @@ import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -172,6 +173,13 @@ public class DHISIntegrator {
 
 		databaseDriver.createTempTable(numberOfMaleLessThanSix, numberOfFemalesLessThanSix, numberOfMalesMoreThanSix,
 				numberOfFemalesMoreThanSix);
+
+	}
+
+	@Scheduled(fixedRate = 2000L)
+	public void scheduleDHISSubmissions()
+			throws IOException, JSONException, DHISIntegratorException, Exception {
+			logger.info("Now is "+new Date());
 
 	}
 
