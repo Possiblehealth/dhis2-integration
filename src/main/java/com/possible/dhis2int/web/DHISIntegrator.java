@@ -176,14 +176,6 @@ public class DHISIntegrator {
 
 	}
 
-	@Scheduled(fixedRate = 2000L)
-	public void scheduleDHISSubmissions()
-			throws IOException, JSONException, DHISIntegratorException, Exception {
-			logger.info("Now is "+new Date());
-
-	}
-
-
 	@RequestMapping(path = "/load-schedules")
 	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
