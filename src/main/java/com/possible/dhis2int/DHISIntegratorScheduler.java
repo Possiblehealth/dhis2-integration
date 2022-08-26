@@ -17,7 +17,7 @@ import ch.qos.logback.classic.Logger;
 @Configuration
 @EnableScheduling
 @ConditionalOnProperty(name="scheduling.enabled",matchIfMissing = true)
-public class SchedulingConfiguration{
+public class DHISIntegratorScheduler{
 
     @Scheduled(fixedRate = 2000L)
 	public void scheduleDHISSubmissions()
