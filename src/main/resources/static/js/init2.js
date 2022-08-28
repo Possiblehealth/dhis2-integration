@@ -70,7 +70,7 @@ $(document).ready(
 
 			//populate list of schedules from db
 			getDHISSchedules().then(function(data){
-				console.log('[render weekly program schedules]');
+				console.log('[render hmis program schedules]');
 				console.log(data);
 				//alert(data);
 				var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
@@ -87,7 +87,7 @@ $(document).ready(
 									'<td>' + object.lastRun + '</td>' +
 									'<td>' + object.status + '</td>';
 					if(object.frequency=="weekly"){
-						tr.innerHTML =tempHTML
+						tr.innerHTML =tempHTML+
 									"<td>"+
 									"<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
 									"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
@@ -95,7 +95,7 @@ $(document).ready(
 						weeklySchedulesTable.appendChild(tr);
 					}
 					else if(object.frequency=="monthly"){
-						tr.innerHTML =tempHTML
+						tr.innerHTML =tempHTML+
 									"<td>"+
 									"<a href='#editMonthlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
 									"<a href='#deleteMonthlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
@@ -103,7 +103,7 @@ $(document).ready(
 						monthlySchedulesTable.appendChild(tr);
 					}
 					else if(object.frequency=="quarterly"){
-						tr.innerHTML =tempHTML
+						tr.innerHTML =tempHTML+
 									"<td>"+
 									"<a href='#editQuarterlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
 									"<a href='#deleteQuarterlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
