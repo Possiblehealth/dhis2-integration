@@ -171,7 +171,7 @@
 							</div>
 						</div>        
 					</div>
-					<!-- Edit Modal HTML -->
+					<!-- Add Weekly Schedule Modal HTML -->
 					<div id="addWeeklyScheduleModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -222,7 +222,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- Edit Modal HTML -->
+					<!-- Edit Weekly Schedule Modal HTML -->
 					<div id="editWeeklyScheduleModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -257,7 +257,7 @@
 							</div>
 						</div>
 					</div>
-					<!-- Delete Modal HTML -->
+					<!-- Delete Weekly Schedule Modal HTML -->
 					<div id="deleteWeeklyScheduleModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -280,7 +280,7 @@
 					</div>
 
 			</div>
-
+			<!-- List Monthly Schedules HTML -->
 			<div id="tab-monthly">
 				<div class="container-xl">
 					<div class="table-responsive">
@@ -403,34 +403,58 @@
 						</div>
 					</div>        
 				</div>
-				<!-- Edit Modal HTML -->
+				<!-- Add Monthly Schedule Modal HTML -->
 				<div id="addMonthlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Add Monthly Schedule</h4>
+									<h4 class="modal-title">Add New Monthly Schedule</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
 									<div class="form-group">
 										<label>Name</label>
-										<input type="text" class="form-control" required>
+										<!--input type="text" class="form-control" required-->
+										<select name="monthly-progname" id="monthly-progname" required>
+										</select>
 									</div>
 									<div class="form-group">
-										<label>Comment</label>
-										<input type="text" class="form-control" required>
-									</div>					
+										<label>Frequency</label>
+										<!--input type="text" class="form-control" required-->
+										<select name="monthly-frequency" id="monthly-frequency" required>
+											<option value="weekly">Weekly</option>
+											<option value="monthly">Monthly</option>
+											<option value="quarterly">Quarterly</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label>Time</label>
+										<select name="monthly-time" id="monthly-time" required>
+											<option value="17:00">17:00</option>
+											<option value="18:00">18:00</option>
+											<option value="19:00">19:00</option>
+											<option value="20:00">20:00</option>
+											<option value="21:00">21:00</option>
+											<option value="22:00">22:00</option>
+											<option value="23:00">23:00</option>
+											<option value="00:00">00:00</option>
+											<option value="01:00">01:00</option>
+											<option value="02:00">02:00</option>
+											<option value="03:00">03:00</option>
+											<option value="04:00">04:00</option>
+										</select>
+									</div>				
 								</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-									<input type="submit" class="btn btn-success" value="Add">
+									<input type="button" class="btn btn-success" value="Add" onclick="submitNewSchedule()">
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
-				<!-- Edit Modal HTML -->
+				<!-- Edit Monthly Schedules Modal HTML -->
 				<div id="editMonthlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -465,7 +489,7 @@
 						</div>
 					</div>
 				</div>
-				<!-- Delete Modal HTML -->
+				<!-- Delete Monthly Schedules Modal HTML -->
 				<div id="deleteMonthlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -489,7 +513,7 @@
 
 
 			</div>
-
+			<!-- List Quarterly Schedules HTML -->
 			<div id="tab-quarterly" class="tab-quarterly">
 				<div class="container-xl">
 					<div class="table-responsive">
@@ -612,34 +636,58 @@
 						</div>
 					</div>        
 				</div>
-				<!-- Edit Modal HTML -->
+				<!-- Add Quarterly Schedules Modal HTML -->
 				<div id="addQuarterlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Add Quarterly Schedule</h4>
+									<h4 class="modal-title">Add New Quarterly Schedule</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
 									<div class="form-group">
 										<label>Name</label>
-										<input type="text" class="form-control" required>
+										<!--input type="text" class="form-control" required-->
+										<select name="quarterly-progname" id="quarterly-progname" required>
+										</select>
 									</div>
 									<div class="form-group">
-										<label>Comment</label>
-										<input type="text" class="form-control" required>
-									</div>					
+										<label>Frequency</label>
+										<!--input type="text" class="form-control" required-->
+										<select name="quarterly-frequency" id="quarterly-frequency" required>
+											<option value="weekly">Weekly</option>
+											<option value="monthly">Monthly</option>
+											<option value="quarterly">Quarterly</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label>Time</label>
+										<select name="quarterly-time" id="quarterly-time" required>
+											<option value="17:00">17:00</option>
+											<option value="18:00">18:00</option>
+											<option value="19:00">19:00</option>
+											<option value="20:00">20:00</option>
+											<option value="21:00">21:00</option>
+											<option value="22:00">22:00</option>
+											<option value="23:00">23:00</option>
+											<option value="00:00">00:00</option>
+											<option value="01:00">01:00</option>
+											<option value="02:00">02:00</option>
+											<option value="03:00">03:00</option>
+											<option value="04:00">04:00</option>
+										</select>
+									</div>				
 								</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-									<input type="submit" class="btn btn-success" value="Add">
+									<input type="button" class="btn btn-success" value="Add" onclick="submitNewSchedule()">
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
-				<!-- Edit Modal HTML -->
+				<!-- Edit Quarterly Schedules Modal HTML -->
 				<div id="editQuarterlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -674,7 +722,7 @@
 						</div>
 					</div>
 				</div>
-				<!-- Delete Modal HTML -->
+				<!-- Delete Quarterly Schedules Modal HTML -->
 				<div id="deleteQuarterlyScheduleModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
