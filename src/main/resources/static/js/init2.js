@@ -74,8 +74,8 @@ $(document).ready(
 				console.log(data);
 				//alert(data);
 				var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
-				var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
-				var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
+				//var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
+				//var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
 				var schedules=JSON.parse(data);
 				schedules.forEach(function(object) {
 					var tr = document.createElement('tr');
@@ -90,8 +90,8 @@ $(document).ready(
 									"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
 									"</td>";
 					weeklySchedulesTable.appendChild(tr);
-					monthlySchedulesTable.appendChild(tr);
-					quarterlySchedulesTable.appendChild(tr);
+					//monthlySchedulesTable.appendChild(tr);
+					//quarterlySchedulesTable.appendChild(tr);
 				});
 			});
 		
