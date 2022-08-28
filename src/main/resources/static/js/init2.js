@@ -42,25 +42,35 @@ $(document).ready(
 				}
 			});
 			
-			//populate list of programs into select element
+			//populate list of DHIS-enabled hmis programs into select element
 			var isYearlyReport = false;
 			var canSubmitReport = hasReportingPrivilege;
 			getContent(isYearlyReport, canSubmitReport).then(
 						function(content) {
 							console.log('[populate option element]');
 							console.log(content.programs);
-							let dropdown = $('#weekly-progname');
-							dropdown.empty();
-							dropdown.append('<option selected="true" disabled>Choose Program</option>');
-							dropdown.prop('selectedIndex', 0);
+							let weekly_dropdown = $('#weekly-progname');
+							let monthly_dropdown = $('#monthly-progname');
+							let quarterly_dropdown = $('#quarterly-progname');
+							weekly_dropdown.empty();
+							monthly_dropdown.empty();
+							uarterly_dropdown.empty();
+							weekly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
+							monthly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
+							quarterly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
+							weekly_dropdown.prop('selectedIndex', 0);
+							monthly_dropdown.prop('selectedIndex', 0);
+							quarterly_dropdown.prop('selectedIndex', 0);
 							$.each(content.programs, function (key, entry) {
-								dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
+								weekly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
+								monthly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
+								quarterly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
 							});
 						});
 
 			//populate list of schedules from db
 			getDHISSchedules().then(function(data){
-				console.log('[render program schedules]');
+				console.log('[render weekly program schedules]');
 				console.log(data);
 				//alert(data);
 				var table = document.getElementById('weekly-program-schedules');
