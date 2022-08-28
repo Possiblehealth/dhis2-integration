@@ -73,7 +73,9 @@ $(document).ready(
 				console.log('[render weekly program schedules]');
 				console.log(data);
 				//alert(data);
-				var table = document.getElementById('weekly-program-schedules');
+				var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
+				var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
+				var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
 				var schedules=JSON.parse(data);
 				schedules.forEach(function(object) {
 					var tr = document.createElement('tr');
@@ -87,7 +89,9 @@ $(document).ready(
 									"<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
 									"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
 									"</td>";
-					table.appendChild(tr);
+					weeklySchedulesTable.appendChild(tr);
+					monthlySchedulesTable.appendChild(tr);
+					quarterlySchedulesTable.appendChild(tr);
 				});
 			});
 		
