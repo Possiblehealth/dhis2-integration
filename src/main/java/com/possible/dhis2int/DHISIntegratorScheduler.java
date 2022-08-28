@@ -19,11 +19,34 @@ import ch.qos.logback.classic.Logger;
 @ConditionalOnProperty(name="scheduling.enabled",matchIfMissing = true)
 public class DHISIntegratorScheduler{
 
-    @Scheduled(fixedRate = 2000L)
-	public void scheduleDHISSubmissions()
+	@Scheduled(cron="0 0/5 * * * *")
+	public void scheduleDailyDHISSubmissions()
 			throws IOException, JSONException, DHISIntegratorException, Exception {
-			System.out.println("Now is"+new Date());
+			System.out.println("Firing the daily task. Now is"+new Date());
 
 	}
+
+    @Scheduled(cron="59 59 23 * * 0")
+	public void scheduleWeeklyDHISSubmissions()
+			throws IOException, JSONException, DHISIntegratorException, Exception {
+			System.out.println("Firing the weekly task. Now is"+new Date());
+
+	}
+
+	@Scheduled(cron="59 59 23 28-31 * *")
+	public void scheduleMonthlyDHISSubmissions()
+			throws IOException, JSONException, DHISIntegratorException, Exception {
+			System.out.println("Firing the monthly task. Now is"+new Date());
+
+	}
+
+	@Scheduled(cron="59 59 23 28-31 3,6,9,12 *")
+	public void scheduleQuarterlyDHISSubmissions()
+			throws IOException, JSONException, DHISIntegratorException, Exception {
+			System.out.println("Firing the quarterly task. Now is"+new Date());
+
+	}
+
+
 
 }
