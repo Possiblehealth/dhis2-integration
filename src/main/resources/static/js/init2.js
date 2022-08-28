@@ -153,20 +153,58 @@ function submitNewSchedule(clicked_id){
 	var programName;
 	var scheduleFrequency;
 	var scheduleTime;
+	var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
+	var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
+	var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
+	var tr = document.createElement('tr');
+	var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
+				  "<input type='checkbox' id='checkbox1' name='options[]' value='1'/>"+
+				  "<label for='checkbox1'></label>"+"</span></td>";
+
 	if(clicked_id == 'addWeeklySchedulebtn'){
 		programName=document.getElementById('weekly-progname').value;
 		scheduleFrequency=document.getElementById('weekly-frequency').value;
 		scheduleTime=document.getElementById('weekly-time').value;
+
+		tr.innerHTML =tempHTML+
+					  '<td>' + programName + '</td>' +
+					  '<td>' + '' + '</td>' +
+					  '<td>' + '' + '</td>'+
+					  "<td>"+
+					  "<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+					  "<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+					  "</td>";
+		weeklySchedulesTable.appendChild(tr);
 	}
 	else if(clicked_id == 'addMonthlySchedulebtn'){
 		programName=document.getElementById('monthly-progname').value;
 		scheduleFrequency=document.getElementById('monthly-frequency').value;
 		scheduleTime=document.getElementById('monthly-time').value;
+
+		tr.innerHTML =tempHTML+
+					  '<td>' + programName + '</td>' +
+					  '<td>' + '' + '</td>' +
+					  '<td>' + '' + '</td>'+
+					  "<td>"+
+					  "<a href='#editMonthlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+					  "<a href='#deleteMonthlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+					  "</td>";
+		monthlySchedulesTable.appendChild(tr);
 	}
 	else if(clicked_id == 'addQuarterlySchedulebtn'){
 		programName=document.getElementById('quarterly-progname').value;
 		scheduleFrequency=document.getElementById('quarterly-frequency').value;
 		scheduleTime=document.getElementById('quarterly-time').value;
+
+		tr.innerHTML =tempHTML+
+					  '<td>' + programName + '</td>' +
+					  '<td>' + '' + '</td>' +
+					  '<td>' + '' + '</td>'+
+					  "<td>"+
+					  "<a href='#editQuarterlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+					  "<a href='#deleteQuarterlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+					  "</td>";
+		quarterlySchedulesTable.appendChild(tr);
 	}
 
 	var parameters = {
