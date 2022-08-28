@@ -127,10 +127,25 @@ function getDHISSchedules() {
 	});
 }
 
-function submitNewSchedule(){
-	var programName=document.getElementById('weekly-progname').value;
-	var scheduleFrequency=document.getElementById('weekly-frequency').value;
-	var scheduleTime=document.getElementById('weekly-time').value;
+function submitNewSchedule(clicked_id){
+	var programName;
+	var scheduleFrequency;
+	var scheduleTime;
+	if(clicked_id == 'addWeeklySchedulebtn'){
+		programName=document.getElementById('weekly-progname').value;
+		scheduleFrequency=document.getElementById('weekly-frequency').value;
+		scheduleTime=document.getElementById('weekly-time').value;
+	}
+	else if(clicked_id == 'addMonthlySchedulebtn'){
+		programName=document.getElementById('monthly-progname').value;
+		scheduleFrequency=document.getElementById('monthly-frequency').value;
+		scheduleTime=document.getElementById('monthly-time').value;
+	}
+	else if(clicked_id == 'addQuarterlySchedulebtn'){
+		programName=document.getElementById('quarterly-progname').value;
+		scheduleFrequency=document.getElementById('quarterly-frequency').value;
+		scheduleTime=document.getElementById('quarterly-time').value;
+	}
 
 	var parameters = {
 		programName : programName,
