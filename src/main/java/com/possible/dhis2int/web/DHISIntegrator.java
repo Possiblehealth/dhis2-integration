@@ -179,7 +179,7 @@ public class DHISIntegrator {
 	@RequestMapping(path = "/load-schedules")
 	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
-			String sql="SELECT * FROM integration_app_schedules";
+			String sql="SELECT id, report_name, frequency, last_run, status FROM dhis2_schedules;";
 			JSONArray jsonArray=new JSONArray();
 			ArrayList<Schedules> list=new ArrayList<Schedules>();
 			Results results = new Results();
@@ -196,8 +196,9 @@ public class DHISIntegrator {
 					
 					schedule.setId(Integer.parseInt(row.get(0)));
 					schedule.setProgName(row.get(1));
-					schedule.setLastRun(row.get(2));
-					schedule.setStatus(row.get(3));
+					schedule.setFrequency(row.get(2));
+					schedule.setLastRun(row.get(3));
+					schedule.setStatus(row.get(4));
 					list.add(schedule);
 					
 				}

@@ -74,24 +74,42 @@ $(document).ready(
 				console.log(data);
 				//alert(data);
 				var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
-				//var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
-				//var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
+				var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
+				var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
 				var schedules=JSON.parse(data);
 				schedules.forEach(function(object) {
+					console.log(object);
 					var tr = document.createElement('tr');
-					tr.innerHTML ="<td>"+"<span class='custom-checkbox'>"+
+					var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
 									"<input type='checkbox' id='checkbox1' name='options[]' value='1'/>"+
 									"<label for='checkbox1'></label>"+"</span></td>" +
 									'<td>' + object.programName + '</td>' +
 									'<td>' + object.lastRun + '</td>' +
-									'<td>' + object.status + '</td>'+
+									'<td>' + object.status + '</td>';
+					if(object.frequency=="weekly"){
+						tr.innerHTML =tempHTML
 									"<td>"+
 									"<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
 									"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
 									"</td>";
-					weeklySchedulesTable.appendChild(tr);
-					//monthlySchedulesTable.appendChild(tr);
-					//quarterlySchedulesTable.appendChild(tr);
+						weeklySchedulesTable.appendChild(tr);
+					}
+					else if(object.frequency=="monthly"){
+						tr.innerHTML =tempHTML
+									"<td>"+
+									"<a href='#editMonthlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+									"<a href='#deleteMonthlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+									"</td>";
+						monthlySchedulesTable.appendChild(tr);
+					}
+					else if(object.frequency=="quarterly"){
+						tr.innerHTML =tempHTML
+									"<td>"+
+									"<a href='#editQuarterlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+									"<a href='#deleteQuarterlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+									"</td>";
+						quarterlySchedulesTable.appendChild(tr);
+					}
 				});
 			});
 		
