@@ -54,7 +54,7 @@ $(document).ready(
 							let quarterly_dropdown = $('#quarterly-progname');
 							weekly_dropdown.empty();
 							monthly_dropdown.empty();
-							uarterly_dropdown.empty();
+							quarterly_dropdown.empty();
 							weekly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
 							monthly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
 							quarterly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
