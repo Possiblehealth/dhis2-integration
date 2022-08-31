@@ -30,7 +30,7 @@ import javax.naming.spi.DirStateFactory.Result;
 @ConditionalOnProperty(name="scheduling.enabled",matchIfMissing = true)
 public class DHISIntegratorScheduler{
 
-	private final DatabaseDriver databaseDriver;
+	//private final DatabaseDriver databaseDriver;
 
 	@Scheduled(cron="0 0/5 * * * *")
 	public void scheduleDailyDHISSubmissions()
