@@ -167,7 +167,7 @@ function deleteSchedule(clicked_id){
 	var parameters = {
 		scheduleId : scheduleId
 	};
-
+	/*
 	var submitTo = submitSchedulesUrl;
 	return $.get(deleteScheduleUrl,parameters).done(function(data) {
 		//data = JSON.stringify(data);
@@ -177,6 +177,7 @@ function deleteSchedule(clicked_id){
 	}).fail(function(response) {
 		console.log('[Operation submitNewSchedule() failed]');
 	});
+	*/
 
 }
 
