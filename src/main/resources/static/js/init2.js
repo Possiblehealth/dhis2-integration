@@ -3,6 +3,7 @@ var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&is
 var submitUrl = '/dhis-integration/submit-to-dhis';
 var loadSchedulesUrl = '/dhis-integration/load-schedules';
 var submitSchedulesUrl = '/dhis-integration/save-schedules';
+var deleteScheduleUrl='/dhis-integration/delete-schedule';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
@@ -81,7 +82,7 @@ $(document).ready(
 					console.log(object);
 					var tr = document.createElement('tr');
 					var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
-									"<input type='checkbox' id='checkbox1' name='options[]' value='1'/>"+
+									"<input class='selectSchedule' type='checkbox' id='checkbox1' name='options[]' value='"+object.id+"'/>"+
 									"<label for='checkbox1'></label>"+"</span></td>" +
 									'<td>' + object.programName + '</td>' +
 									'<td>' + object.lastRun + '</td>' +
@@ -120,7 +121,6 @@ $(document).ready(
 
 
 
-
 function initTabs() {
 	$("#tabs").tabs();
 }
@@ -147,6 +147,37 @@ function getDHISSchedules() {
 	}).fail(function(response) {
 		
 	});
+}
+
+function deleteSchedule(clicked_id){
+	
+
+	if(clicked_id == 'addWeeklySchedulebtn'){
+		scheduleId=$('.selectSchedule:checked').val();
+	}
+	else if(clicked_id == 'addMonthlySchedulebtn'){
+		scheduleId=$('.selectSchedule:checked').val();
+	}
+	else if(clicked_id == 'addQuarterlySchedulebtn'){
+		scheduleId=$('.selectSchedule:checked').val();	
+	}
+
+	console.log('Clicked schedule to delete is '+scheduleId);
+
+	var parameters = {
+		scheduleId : scheduleId
+	};
+
+	var submitTo = submitSchedulesUrl;
+	return $.get(deleteScheduleUrl,parameters).done(function(data) {
+		//data = JSON.stringify(data);
+		console.log('[Server result for submitNewSchedule()]');
+		console.log(data);
+		
+	}).fail(function(response) {
+		console.log('[Operation submitNewSchedule() failed]');
+	});
+
 }
 
 function submitNewSchedule(clicked_id){
