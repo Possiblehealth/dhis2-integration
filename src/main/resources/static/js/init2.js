@@ -150,7 +150,7 @@ function getDHISSchedules() {
 }
 
 function deleteSchedule(clicked_id){
-	
+	var scheduleId;
 
 	if(clicked_id == 'addWeeklySchedulebtn'){
 		scheduleId=$('.selectSchedule:checked').val();
