@@ -153,13 +153,13 @@ function deleteSchedule(clicked_id){
 	var scheduleId;
 
 	if(clicked_id == 'addWeeklySchedulebtn'){
-		scheduleId=$('.selectSchedule:checked').val();
+		scheduleId=document.querySelector('.selectSchedule:checked').value;
 	}
 	else if(clicked_id == 'addMonthlySchedulebtn'){
-		scheduleId=$('.selectSchedule:checked').val();
+		scheduleId=document.querySelector('.selectSchedule:checked').value;
 	}
 	else if(clicked_id == 'addQuarterlySchedulebtn'){
-		scheduleId=$('.selectSchedule:checked').val();	
+		scheduleId=document.querySelector('.selectSchedule:checked').value;
 	}
 
 	console.log('Clicked schedule to delete is '+scheduleId);
