@@ -1,5 +1,6 @@
 package com.possible.dhis2int.web;
 
+//dummy comments
 import static com.possible.dhis2int.audit.Submission.Status.Failure;
 import static com.possible.dhis2int.web.Cookies.BAHMNI_USER;
 import static com.possible.dhis2int.web.Messages.CONFIG_FILE_NOT_FOUND;
@@ -99,20 +100,18 @@ public class DHISIntegrator {
 		logger.info("Inside isLoggedIn");
 		return "Logged in";
 	}
-	
+
 	@RequestMapping(path = "/hasReportingPrivilege")
 	public Boolean hasReportSubmissionPrivilege(HttpServletRequest request, HttpServletResponse response) {
-    	return dHISClient.hasDhisSubmitPrivilege(request, response);
-    }
+		return dHISClient.hasDhisSubmitPrivilege(request, response);
+	}
 
 	public void prepareImamReport(Integer year, Integer month) throws JSONException {
 		logger.info("Inside prepareImamReport method");
 
-
 		JSONObject dhisConfig = (JSONObject) getDHISConfig(IMAM_PROGRAM_NAME);
 		String orgUnit = (String) dhisConfig.get("orgUnit");
 		String imamDataSetId = (String) dhisConfig.get("dataSetIdImam");
-
 
 		Integer prevMonth;
 		if (month == 1) {
@@ -179,84 +178,79 @@ public class DHISIntegrator {
 	@RequestMapping(path = "/load-schedules")
 	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
-			String sql="SELECT id, report_name, frequency, last_run, status FROM dhis2_schedules;";
-			JSONArray jsonArray=new JSONArray();
-			ArrayList<Schedules> list=new ArrayList<Schedules>();
-			Results results = new Results();
-			String type="MRSGeneric";
-			Schedules schedule;
-			ObjectMapper mapper;
+		String sql = "SELECT id, report_name, frequency, last_run, status FROM dhis2_schedules;";
+		JSONArray jsonArray = new JSONArray();
+		ArrayList<Schedules> list = new ArrayList<Schedules>();
+		Results results = new Results();
+		String type = "MRSGeneric";
+		Schedules schedule;
+		ObjectMapper mapper;
 
-			try{
-				results = databaseDriver.executeQuery(sql,type);
+		try {
+			results = databaseDriver.executeQuery(sql, type);
 
-				for (List<String> row : results.getRows()) {
-					logger.info(row);
-					schedule=new Schedules();
-					
-					schedule.setId(Integer.parseInt(row.get(0)));
-					schedule.setProgName(row.get(1));
-					schedule.setFrequency(row.get(2));
-					schedule.setLastRun(row.get(3));
-					schedule.setStatus(row.get(4));
-					list.add(schedule);
-					
-				}
-				mapper = new ObjectMapper();
-				String jsonstring=mapper.writeValueAsString(list);
-				jsonArray.put(jsonstring);
-				logger.info("Inside loadIntegrationSchedules...");
+			for (List<String> row : results.getRows()) {
+				logger.info(row);
+				schedule = new Schedules();
+
+				schedule.setId(Integer.parseInt(row.get(0)));
+				schedule.setProgName(row.get(1));
+				schedule.setFrequency(row.get(2));
+				schedule.setLastRun(row.get(3));
+				schedule.setStatus(row.get(4));
+				list.add(schedule);
+
 			}
-			catch(DHISIntegratorException | JSONException e){
-				//logger.info("Inside loadIntegrationSchedules...");
-				logger.error(Messages.SQL_EXECUTION_EXCEPTION,e);
-			}
-			catch(Exception e){
-				logger.error(Messages.INTERNAL_SERVER_ERROR,e);
-			}
-		
-			return jsonArray;
+			mapper = new ObjectMapper();
+			String jsonstring = mapper.writeValueAsString(list);
+			jsonArray.put(jsonstring);
+			logger.info("Inside loadIntegrationSchedules...");
+		} catch (DHISIntegratorException | JSONException e) {
+			// logger.info("Inside loadIntegrationSchedules...");
+			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
+		} catch (Exception e) {
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
+		}
+
+		return jsonArray;
 
 	}
 
 	@RequestMapping(path = "/save-schedules")
-	public Results saveIntegrationSchedules(@RequestParam("programName") String progName, @RequestParam("scheduleFrequency") String schedFrequency,
-	@RequestParam("scheduleTime") String schedTime,HttpServletRequest clientReq, HttpServletResponse clientRes)
+	public Results saveIntegrationSchedules(@RequestParam("programName") String progName,
+			@RequestParam("scheduleFrequency") String schedFrequency,
+			@RequestParam("scheduleTime") String schedTime, HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-			Schedules newschedule = new Schedules();
-			newschedule.setProgName(progName);
-			newschedule.setFrequency(schedFrequency);
-			newschedule.setCreatedBy("Test");
+		Schedules newschedule = new Schedules();
+		newschedule.setProgName(progName);
+		newschedule.setFrequency(schedFrequency);
+		newschedule.setCreatedBy("Test");
 
-		
-			LocalDate created_date = LocalDate.now(); 
-			LocalDate target_time =  LocalDate.now();
-			newschedule.setCreatedDate(created_date);
-			newschedule.setTargetTime(target_time);
+		LocalDate created_date = LocalDate.now();
+		LocalDate target_time = LocalDate.now();
+		newschedule.setCreatedDate(created_date);
+		newschedule.setTargetTime(target_time);
 
+		Results results = new Results();
+		logger.info("Inside saveIntegrationSchedules...");
+		try {
+			databaseDriver.executeUpdateQuery(newschedule);
+			logger.info("Executed insert query successfully...");
 
-			Results results=new Results();
-			logger.info("Inside saveIntegrationSchedules...");
-			try{
-				databaseDriver.executeUpdateQuery(newschedule);
-				logger.info("Executed insert query successfully...");
+		} catch (DHISIntegratorException | JSONException e) {
+			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
+		} catch (Exception e) {
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
+		}
 
-			}
-			catch(DHISIntegratorException | JSONException e){
-				logger.error(Messages.SQL_EXECUTION_EXCEPTION,e);
-			}
-			catch(Exception e){
-				logger.error(Messages.INTERNAL_SERVER_ERROR,e);
-			}
-
-			return results;
+		return results;
 	}
-
 
 	@RequestMapping(path = "/submit-to-dhis")
 	public String submitToDHIS(@RequestParam("name") String program, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("comment") String comment,
-			@RequestParam("isImam") Boolean isImam,@RequestParam("isFamily") Boolean isFamily,HttpServletRequest clientReq, HttpServletResponse clientRes)
+			@RequestParam("isImam") Boolean isImam, @RequestParam("isFamily") Boolean isFamily,
+			HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
 		String userName = new Cookies(clientReq).getValue(BAHMNI_USER);
 		Submission submission = new Submission();
@@ -269,10 +263,10 @@ public class DHISIntegrator {
 			if (isFamily != null && isFamily) {
 				prepareFamilyPlanningReport(year, month);
 			}
-			
+
 			submitToDHIS(submission, program, year, month);
 			status = submission.getStatus();
-			
+
 			if (isImam != null && isImam)
 				databaseDriver.dropImamTable();
 		} catch (DHISIntegratorException | JSONException e) {
@@ -291,7 +285,7 @@ public class DHISIntegrator {
 
 		return submission.getInfo();
 	}
-	
+
 	@RequestMapping(path = "/submit-to-dhis_report_status")
 	public String submitToDHISLOG(@RequestParam("name") String program, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("comment") String comment, HttpServletRequest clientReq,
@@ -409,10 +403,11 @@ public class DHISIntegrator {
 				.getJSONObject(0); // TODO: why always 0 ?
 
 		JSONObject dhisConfig = getDHISConfig(name);
-		int lastDay=30;//TODO: Generalise 
-		DateTime startDate = new DateTime(year, month, 1,0,0);
-		DateTime endDate = new DateTime(year, month, lastDay,0,0);
-		ReportDateRange dateRange = new ReportDateRange(startDate,endDate);//DateConverter().getDateRange(year, month);
+		int lastDay = 30;// TODO: Generalise
+		DateTime startDate = new DateTime(year, month, 1, 0, 0);
+		DateTime endDate = new DateTime(year, month, lastDay, 0, 0);
+		ReportDateRange dateRange = new ReportDateRange(startDate, endDate);// DateConverter().getDateRange(year,
+																			// month);
 		List<Object> programDataValue = getProgramDataValuesAttrOptCombo(row, childReport,
 				dhisConfig.getJSONObject("reports"), dateRange);
 
@@ -510,11 +505,12 @@ public class DHISIntegrator {
 		}
 
 		JSONObject dhisConfig = getDHISConfig(name);
-		//ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
-		int lastDay=30;//TODO: Generalise 
-		DateTime startDate = new DateTime(year, month, 1,0,0);
-		DateTime endDate = new DateTime(year, month, lastDay,0,0);
-		ReportDateRange dateRange = new ReportDateRange(startDate,endDate);//DateConverter().getDateRange(year, month);
+		// ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
+		int lastDay = 30;// TODO: Generalise
+		DateTime startDate = new DateTime(year, month, 1, 0, 0);
+		DateTime endDate = new DateTime(year, month, lastDay, 0, 0);
+		ReportDateRange dateRange = new ReportDateRange(startDate, endDate);// DateConverter().getDateRange(year,
+																			// month);
 		List<Object> programDataValue = getProgramDataValues(childReports, dhisConfig.getJSONObject("reports"),
 				dateRange);
 
@@ -619,11 +615,9 @@ public class DHISIntegrator {
 	public void prepareFamilyPlanningReport(Integer year, Integer month) throws JSONException {
 		logger.info("Inside prepareFamilyPlanningReport method");
 
-
 		JSONObject dhisConfig = (JSONObject) getDHISConfig(FamilyPlanning_PROGRAM_NAME);
 		String orgUnit = (String) dhisConfig.get("orgUnit");
 		String familyPlanningDataSetId = (String) dhisConfig.get("dataSetIdFamily");
-
 
 		Integer prevMonth;
 		if (month == 1) {
