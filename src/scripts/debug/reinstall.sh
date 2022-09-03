@@ -1,5 +1,6 @@
 #!/bin/bash
 
+chmod +x reinstall.sh
 cd ../../../
 sudo yum autoremove dhis-integration -y
 mvn -Dmaven.test.skip=true install
