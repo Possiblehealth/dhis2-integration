@@ -1,8 +1,8 @@
 var reportConfigUrl = '/bahmni_config/openmrs/apps/reports/reports.json';
 var downloadUrl = '/dhis-integration/download?name=NAME&year=YEAR&month=MONTH&isImam=IS_IMAM&isFamily=IS_FAMILY';
 var submitUrl = '/dhis-integration/submit-to-dhis';
-var loadSchedulesUrl = '/dhis-integration/load-schedules';
-var submitSchedulesUrl = '/dhis-integration/save-schedules';
+var getSchedulesUrl = '/dhis-integration/get-schedules';
+var createScheduleUrl = '/dhis-integration/create-schedule';
 var deleteScheduleUrl='/dhis-integration/delete-schedule';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
@@ -140,7 +140,7 @@ function getDHISPrograms() {
 
 
 function getDHISSchedules() {
-	return $.get(loadSchedulesUrl).done(function(data) {
+	return $.get(getSchedulesUrl).done(function(data) {
 		//data = JSON.stringify(data);
 		//console.log(data);
 		
@@ -149,7 +149,7 @@ function getDHISSchedules() {
 	});
 }
 
-function deleteSchedule(clicked_id){
+function deleteDHISSchedule(clicked_id){
 	var scheduleId;
 
 	if(clicked_id == 'addWeeklySchedulebtn'){
@@ -181,7 +181,7 @@ function deleteSchedule(clicked_id){
 
 }
 
-function submitNewSchedule(clicked_id){
+function createDHISSchedule(clicked_id){
 	var programName;
 	var scheduleFrequency;
 	var scheduleTime;
@@ -245,7 +245,7 @@ function submitNewSchedule(clicked_id){
 		scheduleTime : scheduleTime
 	};
 
-	var submitTo = submitSchedulesUrl;
+	var submitTo = createScheduleUrl;
 	return $.get(submitTo,parameters).done(function(data) {
 		//data = JSON.stringify(data);
 		console.log('[Server result for submitNewSchedule()]');

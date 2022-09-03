@@ -174,7 +174,7 @@ public class DHISIntegrator {
 				numberOfFemalesMoreThanSix);
 
 	}
-
+	/* 
 	@RequestMapping(path = "/load-schedules")
 	public JSONArray loadIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
@@ -245,7 +245,7 @@ public class DHISIntegrator {
 
 		return results;
 	}
-
+	*/
 	@RequestMapping(path = "/submit-to-dhis")
 	public String submitToDHIS(@RequestParam("name") String program, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month, @RequestParam("comment") String comment,
