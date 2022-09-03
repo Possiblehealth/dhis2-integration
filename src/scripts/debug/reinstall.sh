@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd ../../../
+git pull
 sudo yum autoremove dhis-integration -y
 mvn -Dmaven.test.skip=true install
 sudo yum install target/rpm/dhis-integration/RPMS/noarch/dhis-integration-1.0-1.noarch.rpm -y
