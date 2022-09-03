@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
 
 import com.possible.dhis2int.Properties;
 import com.possible.dhis2int.audit.Recordlog;
+import com.possible.dhis2int.scheduler.Schedule;
 import com.possible.dhis2int.web.DHISIntegratorException;
 import com.possible.dhis2int.web.Messages;
-import com.possible.dhis2int.web.Schedules;
 
 @Service
 public class DatabaseDriver {
@@ -82,7 +82,7 @@ public class DatabaseDriver {
 		}
 	}
 
-	public void executeUpdateQuery(Schedules record) 
+	public void executeUpdateQuery(Schedule record) 
 	throws DHISIntegratorException {
 		logger.debug("Inside executeUpdateQuery method");
 		Connection connection = null;

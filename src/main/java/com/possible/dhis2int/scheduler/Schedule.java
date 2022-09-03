@@ -1,11 +1,11 @@
-package com.possible.dhis2int.web;
+package com.possible.dhis2int.scheduler;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Date;
 
 import org.joda.time.DateTime;
 
-public class Schedules {
+public class Schedule {
     private int id;
     private String programName;
     private String lastRun;

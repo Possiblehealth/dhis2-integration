@@ -21,7 +21,7 @@ import com.possible.dhis2int.db.Results;
 import com.possible.dhis2int.web.DHISIntegrator;
 import com.possible.dhis2int.web.DHISIntegratorException;
 import com.possible.dhis2int.web.Messages;
-import com.possible.dhis2int.web.Schedules;
+import com.possible.dhis2int.scheduler.Schedule;
 
 import org.apache.log4j.Logger;
 import static org.apache.log4j.Logger.getLogger;
@@ -56,10 +56,10 @@ public class DHISIntegratorScheduler{
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 		String sql = "SELECT id, report_name, frequency, last_run, status FROM dhis2_schedules;";
 		JSONArray jsonArray = new JSONArray();
-		ArrayList<Schedules> list = new ArrayList<Schedules>();
+		ArrayList<Schedule> list = new ArrayList<Schedule>();
 		Results results = new Results();
 		String type = "MRSGeneric";
-		Schedules schedule;
+		Schedule schedule;
 		ObjectMapper mapper;
 
 		try {
@@ -67,7 +67,7 @@ public class DHISIntegratorScheduler{
 
 			for (List<String> row : results.getRows()) {
 				logger.info(row);
-				schedule = new Schedules();
+				schedule = new Schedule();
 
 				schedule.setId(Integer.parseInt(row.get(0)));
 				schedule.setProgName(row.get(1));
@@ -97,7 +97,7 @@ public class DHISIntegratorScheduler{
 			@RequestParam("scheduleFrequency") String schedFrequency,
 			@RequestParam("scheduleTime") String schedTime, HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-		Schedules newschedule = new Schedules();
+		Schedule newschedule = new Schedule();
 		newschedule.setProgName(progName);
 		newschedule.setFrequency(schedFrequency);
 		newschedule.setCreatedBy("Test");
@@ -124,14 +124,14 @@ public class DHISIntegratorScheduler{
 
 
 	@Scheduled(cron="0 0/5 * * * *")
-	public void scheduleDailyDHISSubmissions()
+	public void runDailyDHISSubmissions()
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			System.out.println("Firing the daily task. Now is"+new Date());
 
 	}
 
     @Scheduled(cron="59 59 23 * * 0")
-	public void scheduleWeeklyDHISSubmissions()
+	public void runWeeklyDHISSubmissions()
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			System.out.println("Firing the weekly task. Now is"+new Date());
 			
@@ -139,7 +139,7 @@ public class DHISIntegratorScheduler{
 	}
 
 	@Scheduled(cron="59 59 23 28-31 * *")
-	public void scheduleMonthlyDHISSubmissions()
+	public void runMonthlyDHISSubmissions()
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			System.out.println("Firing the monthly task. Now is"+new Date());
 			
@@ -147,7 +147,7 @@ public class DHISIntegratorScheduler{
 	}
 
 	@Scheduled(cron="59 59 23 28-31 3,6,9,12 *")
-	public void scheduleQuarterlyDHISSubmissions()
+	public void runQuarterlyDHISSubmissions()
 			throws IOException, JSONException, DHISIntegratorException, Exception {
 			System.out.println("Firing the quarterly task. Now is"+new Date());
 
