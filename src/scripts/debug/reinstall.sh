@@ -1,6 +1,7 @@
 #!/bin/bash
+DHISIntegratorHome=/development/bahmni-app-dhis2-integration/
 
-cd ../../../
+cd ${DHISIntegratorHome}
 git pull
 sudo yum autoremove dhis-integration -y
 mvn -Dmaven.test.skip=true install
