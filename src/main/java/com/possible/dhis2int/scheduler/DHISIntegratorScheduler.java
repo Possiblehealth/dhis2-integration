@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.possible.dhis2int.db.DatabaseDriver;
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 @EnableScheduling
 @ConditionalOnProperty(name="scheduling.enabled",matchIfMissing = true)
+@RestController
 public class DHISIntegratorScheduler{
 
 	private  final DatabaseDriver databaseDriver;
