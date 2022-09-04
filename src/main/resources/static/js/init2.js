@@ -154,13 +154,13 @@ function getDHISSchedules() {
 function deleteDHISSchedule(clicked_id){
 	var scheduleId;
 
-	if(clicked_id == 'addWeeklySchedulebtn'){
+	if(clicked_id == 'deleteWeeklySchedulebtn'){
 		scheduleId=document.querySelector('.selectSchedule:checked').value;
 	}
-	else if(clicked_id == 'addMonthlySchedulebtn'){
+	else if(clicked_id == 'deleteMonthlySchedulebtn'){
 		scheduleId=document.querySelector('.selectSchedule:checked').value;
 	}
-	else if(clicked_id == 'addQuarterlySchedulebtn'){
+	else if(clicked_id == 'deleteQuarterlySchedulebtn'){
 		scheduleId=document.querySelector('.selectSchedule:checked').value;
 	}
 
