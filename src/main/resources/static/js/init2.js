@@ -184,6 +184,7 @@ function deleteDHISSchedule(clicked_id){
 }
 
 function createDHISSchedule(clicked_id, frequency){
+	console.log('Creating new schedule, clicked_id='+clicked_id+' frequency='+frequency);
 	var programName;
 	var scheduleFrequency=frequency;
 	var scheduleTime;
