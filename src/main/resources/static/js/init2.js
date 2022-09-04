@@ -153,7 +153,8 @@ function deleteDHISSchedule(clicked_id){
 	var scheduleIds=[];
 	$.each($(".selectSchedule:checked"), function(){            
 		scheduleIds.push($(this).val());
-		var checkbox=$(this);
+		console.log('Clicked schedule to delete is '+$(this).val());
+		/*var checkbox=$(this);
 		if(clicked_id == 'deleteWeeklySchedulebtn'){
 			var row_index=checkbox.parentElement.parentElement.rowIndex;
 			document.getElementById("weekly-program-schedules").deleteRow(row_index);
@@ -165,7 +166,7 @@ function deleteDHISSchedule(clicked_id){
 		else if(clicked_id == 'deleteQuarterlySchedulebtn'){
 			var row_index=checkbox.parentElement.parentElement.rowIndex;
 			document.getElementById("quarterly-program-schedules").deleteRow(row_index);
-		}
+		}*/
 
 	});
 
