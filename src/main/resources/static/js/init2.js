@@ -154,14 +154,21 @@ function getDHISSchedules() {
 function deleteDHISSchedule(clicked_id){
 	var scheduleId;
 
+	var checkbox=document.querySelector('.selectSchedule:checked');
 	if(clicked_id == 'deleteWeeklySchedulebtn'){
-		scheduleId=document.querySelector('.selectSchedule:checked').value;
+		scheduleId=checkbox.value;
+		var row_index=checkbox.parentElement.rowIndex;
+		document.getElementById("weekly-program-schedules").deleteRow(row_index);
 	}
 	else if(clicked_id == 'deleteMonthlySchedulebtn'){
-		scheduleId=document.querySelector('.selectSchedule:checked').value;
+		scheduleId=checkbox.value;
+		var row_index=checkbox.parentElement.rowIndex;
+		document.getElementById("monthly-program-schedules").deleteRow(row_index);
 	}
 	else if(clicked_id == 'deleteQuarterlySchedulebtn'){
-		scheduleId=document.querySelector('.selectSchedule:checked').value;
+		scheduleId=checkbox.value;
+		var row_index=checkbox.parentElement.rowIndex;
+		document.getElementById("quarterly-program-schedules").deleteRow(row_index);
 	}
 
 	console.log('Clicked schedule to delete is '+scheduleId);
@@ -175,6 +182,7 @@ function deleteDHISSchedule(clicked_id){
 		//data = JSON.stringify(data);
 		console.log('[Server result for deleteDHISSchedule()]');
 		console.log(data);
+
 		
 	}).fail(function(response) {
 		console.log('[Operation deletDHISSchedule() failed]');
