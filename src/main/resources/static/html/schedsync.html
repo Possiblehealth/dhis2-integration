@@ -142,7 +142,7 @@
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-										<input type="button" class="btn btn-success" value="Add" id="addWeeklySchedulebtn" onclick="createDHISSchedule(document.getElementById('weekly-frequency').value)">
+										<input type="button" class="btn btn-success" value="Add" id="addWeeklySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('weekly-frequency').value)">
 									</div>
 								</form>
 							</div>
@@ -300,7 +300,7 @@
 								</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-									<input type="button" class="btn btn-success" value="Add" id="addMonthlySchedulebtn" onclick="createDHISSchedule(document.getElementById('monthly-frequency').value)">
+									<input type="button" class="btn btn-success" value="Add" id="addMonthlySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('monthly-frequency').value)">
 								</div>
 							</form>
 						</div>
@@ -459,7 +459,7 @@
 								</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-									<input type="button" class="btn btn-success" value="Add" id="addQuarterlySchedulebtn" onclick="createDHISSchedule(document.getElementById('quarterly-frequency').value)">
+									<input type="button" class="btn btn-success" value="Add" id="addQuarterlySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('quarterly-frequency').value)">
 								</div>
 							</form>
 						</div>
