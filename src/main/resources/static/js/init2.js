@@ -70,24 +70,21 @@ function renderSchedules(){
 			if(object.frequency=="weekly"){
 				tr.innerHTML =tempHTML+
 							"<td>"+
-							"<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-							"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+							"<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
 							"</td>";
 				weeklySchedulesTable.appendChild(tr);
 			}
 			else if(object.frequency=="monthly"){
 				tr.innerHTML =tempHTML+
 							"<td>"+
-							"<a href='#editMonthlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-							"<a href='#deleteMonthlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+							"<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
 							"</td>";
 				monthlySchedulesTable.appendChild(tr);
 			}
 			else if(object.frequency=="quarterly"){
 				tr.innerHTML =tempHTML+
 							"<td>"+
-							"<a href='#editQuarterlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-							"<a href='#deleteQuarterlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+							"<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
 							"</td>";
 				quarterlySchedulesTable.appendChild(tr);
 			}
@@ -222,8 +219,7 @@ function createDHISSchedule(clicked_id, frequency){
 					  '<td>' + '' + '</td>' +
 					  '<td>' + '' + '</td>'+
 					  "<td>"+
-					  "<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-					  "<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+					  "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
 					  "</td>";
 		weeklySchedulesTable.appendChild(tr);
 	}
@@ -233,8 +229,7 @@ function createDHISSchedule(clicked_id, frequency){
 					  '<td>' + '' + '</td>' +
 					  '<td>' + '' + '</td>'+
 					  "<td>"+
-					  "<a href='#editMonthlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-					  "<a href='#deleteMonthlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+					  "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
 					  "</td>";
 		monthlySchedulesTable.appendChild(tr);
 	}
@@ -244,8 +239,7 @@ function createDHISSchedule(clicked_id, frequency){
 					  '<td>' + '' + '</td>' +
 					  '<td>' + '' + '</td>'+
 					  "<td>"+
-					  "<a href='#editQuarterlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-					  "<a href='#deleteQuarterlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+					  "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
 					  "</td>";
 		quarterlySchedulesTable.appendChild(tr);
 	}
