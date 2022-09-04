@@ -122,6 +122,26 @@ public class DHISIntegratorScheduler{
 		return results;
 	}
 
+	@RequestMapping(path = "/delete-schedule")
+	public Results deletIntegrationSchedule(@RequestParam("scheduleId") String scheduleId,
+			HttpServletRequest clientReq, HttpServletResponse clientRes)
+			throws IOException, JSONException {
+		Integer schedule_id=Integer.parseInt(scheduleId);
+		Results results = new Results();
+		logger.info("Inside deleteIntegrationSchedules..., schedule_id="+scheduleId);
+		try {
+			databaseDriver.executeDeleteQuery(schedule_id);
+			logger.info("Executed delete query successfully...");
+
+		} catch (DHISIntegratorException | JSONException e) {
+			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
+		} catch (Exception e) {
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
+		}
+
+		return results;
+	}
+
 
 	@Scheduled(cron="0 0/5 * * * *")
 	public void runDailyDHISSubmissions()

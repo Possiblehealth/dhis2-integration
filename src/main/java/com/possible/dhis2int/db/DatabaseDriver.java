@@ -109,6 +109,27 @@ public class DatabaseDriver {
 		}
 	}
 
+	public void executeDeleteQuery(Integer scheduleId) 
+	throws DHISIntegratorException {
+		logger.debug("Inside executeDeleteQuery method");
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			PreparedStatement ps = connection.prepareStatement(
+					"DELETE FROM dhis2_schedules WHERE id="+scheduleId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException ignored) {
+				}
+			}
+		}
+	}
+
 	public void recordQueryLog(Recordlog record, Integer month, Integer year) throws DHISIntegratorException {
 		logger.debug("Inside recordQueryLog method");
 		Connection connection = null;

@@ -169,17 +169,16 @@ function deleteDHISSchedule(clicked_id){
 	var parameters = {
 		scheduleId : scheduleId
 	};
-	/*
-	var submitTo = submitSchedulesUrl;
-	return $.get(deleteScheduleUrl,parameters).done(function(data) {
+	
+	var submitTo = deleteScheduleUrl;
+	return $.get(submitTo,parameters).done(function(data) {
 		//data = JSON.stringify(data);
-		console.log('[Server result for submitNewSchedule()]');
+		console.log('[Server result for deleteDHISSchedule()]');
 		console.log(data);
 		
 	}).fail(function(response) {
-		console.log('[Operation submitNewSchedule() failed]');
+		console.log('[Operation deletDHISSchedule() failed]');
 	});
-	*/
 
 }
 
