@@ -123,15 +123,16 @@ public class DHISIntegratorScheduler{
 	}
 
 	@RequestMapping(path = "/delete-schedule")
-	public Results deletIntegrationSchedule(@RequestParam("scheduleId") String scheduleId,
+	public Results deletIntegrationSchedule(@RequestParam(value="scheduleIds") List<String> scheduleIds,
 			HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-		Integer schedule_id=Integer.parseInt(scheduleId);
 		Results results = new Results();
-		logger.info("Inside deleteIntegrationSchedules..., schedule_id="+scheduleId);
+		logger.info("Inside deleteIntegrationSchedules..., schedule_id_0="+scheduleIds.get(0));
 		try {
-			databaseDriver.executeDeleteQuery(schedule_id);
-			logger.info("Executed delete query successfully...");
+			for (String schedule_id : scheduleIds) {
+				databaseDriver.executeDeleteQuery(Integer.parseInt(schedule_id));
+				logger.info("Executed delete query successfully...");
+			}
 
 		} catch (DHISIntegratorException | JSONException e) {
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
