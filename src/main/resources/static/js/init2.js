@@ -43,83 +43,85 @@ $(document).ready(
 				}
 			});
 			
-			//populate list of DHIS-enabled hmis programs into select element
-			var isYearlyReport = false;
-			var canSubmitReport = hasReportingPrivilege;
-			getContent(isYearlyReport, canSubmitReport).then(
-						function(content) {
-							console.log('[populate option element]');
-							console.log(content.programs);
-							let weekly_dropdown = $('#weekly-progname');
-							let monthly_dropdown = $('#monthly-progname');
-							let quarterly_dropdown = $('#quarterly-progname');
-							weekly_dropdown.empty();
-							monthly_dropdown.empty();
-							quarterly_dropdown.empty();
-							weekly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
-							monthly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
-							quarterly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
-							weekly_dropdown.prop('selectedIndex', 0);
-							monthly_dropdown.prop('selectedIndex', 0);
-							quarterly_dropdown.prop('selectedIndex', 0);
-							$.each(content.programs, function (key, entry) {
-								weekly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
-								monthly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
-								quarterly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
-							});
-						});
-
-			//populate list of schedules from db
-			getDHISSchedules().then(function(data){
-				console.log('[render hmis program schedules]');
-				console.log(data);
-				//alert(data);
-				var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
-				var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
-				var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
-				var schedules=JSON.parse(data);
-				schedules.forEach(function(object) {
-					console.log(object);
-					var tr = document.createElement('tr');
-					var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
-									"<input class='selectSchedule' type='checkbox' id='checkbox1' name='options[]' value='"+object.id+"'/>"+
-									"<label for='checkbox1'></label>"+"</span></td>" +
-									'<td>' + object.programName + '</td>' +
-									'<td>' + object.lastRun + '</td>' +
-									'<td>' + object.status + '</td>';
-					if(object.frequency=="weekly"){
-						tr.innerHTML =tempHTML+
-									"<td>"+
-									"<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-									"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
-									"</td>";
-						weeklySchedulesTable.appendChild(tr);
-					}
-					else if(object.frequency=="monthly"){
-						tr.innerHTML =tempHTML+
-									"<td>"+
-									"<a href='#editMonthlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-									"<a href='#deleteMonthlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
-									"</td>";
-						monthlySchedulesTable.appendChild(tr);
-					}
-					else if(object.frequency=="quarterly"){
-						tr.innerHTML =tempHTML+
-									"<td>"+
-									"<a href='#editQuarterlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
-									"<a href='#deleteQuarterlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
-									"</td>";
-						quarterlySchedulesTable.appendChild(tr);
-					}
-				});
-			});
-		
-
-
+			initSelects();
+			renderSchedules();
+			
 		});
 
+//populate list of schedules from db
+function renderSchedules(){
+	getDHISSchedules().then(function(data){
+		console.log('[render hmis program schedules]');
+		console.log(data);
+		//alert(data);
+		var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
+		var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
+		var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
+		var schedules=JSON.parse(data);
+		schedules.forEach(function(object) {
+			console.log(object);
+			var tr = document.createElement('tr');
+			var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
+							"<input class='selectSchedule' type='checkbox' id='checkbox1' name='options[]' value='"+object.id+"'/>"+
+							"<label for='checkbox1'></label>"+"</span></td>" +
+							'<td>' + object.programName + '</td>' +
+							'<td>' + object.lastRun + '</td>' +
+							'<td>' + object.status + '</td>';
+			if(object.frequency=="weekly"){
+				tr.innerHTML =tempHTML+
+							"<td>"+
+							"<a href='#editWeeklyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+							"<a href='#deleteWeeklyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+							"</td>";
+				weeklySchedulesTable.appendChild(tr);
+			}
+			else if(object.frequency=="monthly"){
+				tr.innerHTML =tempHTML+
+							"<td>"+
+							"<a href='#editMonthlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+							"<a href='#deleteMonthlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+							"</td>";
+				monthlySchedulesTable.appendChild(tr);
+			}
+			else if(object.frequency=="quarterly"){
+				tr.innerHTML =tempHTML+
+							"<td>"+
+							"<a href='#editQuarterlyScheduleModal' class='edit' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a>"+
+							"<a href='#deleteQuarterlyScheduleModal' class='delete' data-toggle='modal'><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a>"+
+							"</td>";
+				quarterlySchedulesTable.appendChild(tr);
+			}
+		});
+	});
+}
 
-
+//populate list of DHIS-enabled hmis programs into select element
+function initSelects(){
+	var isYearlyReport = false;
+	var canSubmitReport = hasReportingPrivilege;
+	getContent(isYearlyReport, canSubmitReport).then(
+				function(content) {
+					console.log('[populate option element]');
+					console.log(content.programs);
+					let weekly_dropdown = $('#weekly-progname');
+					let monthly_dropdown = $('#monthly-progname');
+					let quarterly_dropdown = $('#quarterly-progname');
+					weekly_dropdown.empty();
+					monthly_dropdown.empty();
+					quarterly_dropdown.empty();
+					weekly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
+					monthly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
+					quarterly_dropdown.append('<option selected="true" disabled>Choose Program</option>');
+					weekly_dropdown.prop('selectedIndex', 0);
+					monthly_dropdown.prop('selectedIndex', 0);
+					quarterly_dropdown.prop('selectedIndex', 0);
+					$.each(content.programs, function (key, entry) {
+						weekly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
+						monthly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
+						quarterly_dropdown.append($('<option></option>').attr('value', entry.name).text(entry.name));
+					});
+				});
+}
 
 function initTabs() {
 	$("#tabs").tabs();
@@ -181,9 +183,9 @@ function deleteDHISSchedule(clicked_id){
 
 }
 
-function createDHISSchedule(clicked_id){
+function createDHISSchedule(clicked_id, frequency){
 	var programName;
-	var scheduleFrequency;
+	var scheduleFrequency=frequency;
 	var scheduleTime;
 	var weeklySchedulesTable = document.getElementById('weekly-program-schedules');
 	var monthlySchedulesTable = document.getElementById('monthly-program-schedules');
@@ -195,9 +197,18 @@ function createDHISSchedule(clicked_id){
 
 	if(clicked_id == 'addWeeklySchedulebtn'){
 		programName=document.getElementById('weekly-progname').value;
-		scheduleFrequency=document.getElementById('weekly-frequency').value;
 		scheduleTime=document.getElementById('weekly-time').value;
+	}
+	else if(clicked_id == 'addMonthlySchedulebtn'){
+		programName=document.getElementById('monthly-progname').value;
+		scheduleTime=document.getElementById('monthly-time').value;
+	}
+	else if(clicked_id == 'addQuarterlySchedulebtn'){
+		programName=document.getElementById('quarterly-progname').value;
+		scheduleTime=document.getElementById('quarterly-time').value;
+	}
 
+	if(frequency=='weekly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
 					  '<td>' + '' + '</td>' +
@@ -208,11 +219,7 @@ function createDHISSchedule(clicked_id){
 					  "</td>";
 		weeklySchedulesTable.appendChild(tr);
 	}
-	else if(clicked_id == 'addMonthlySchedulebtn'){
-		programName=document.getElementById('monthly-progname').value;
-		scheduleFrequency=document.getElementById('monthly-frequency').value;
-		scheduleTime=document.getElementById('monthly-time').value;
-
+	else if(frequency=='monthly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
 					  '<td>' + '' + '</td>' +
@@ -223,11 +230,7 @@ function createDHISSchedule(clicked_id){
 					  "</td>";
 		monthlySchedulesTable.appendChild(tr);
 	}
-	else if(clicked_id == 'addQuarterlySchedulebtn'){
-		programName=document.getElementById('quarterly-progname').value;
-		scheduleFrequency=document.getElementById('quarterly-frequency').value;
-		scheduleTime=document.getElementById('quarterly-time').value;
-
+	else if(frequency=='quarterly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
 					  '<td>' + '' + '</td>' +
