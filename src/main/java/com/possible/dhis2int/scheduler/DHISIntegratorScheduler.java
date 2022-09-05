@@ -240,6 +240,34 @@ public class DHISIntegratorScheduler {
 		return responseEntity;
 	}
 
+	@Scheduled(fixedDelay = 30000)
+	public void processSchedules() {
+		// read from table
+		// for each row, is this report due
+		// if due => call submitToDHIS(x,y,z)
+		logger.info("Executing schedule at :" + new Date().toString());
+
+		// get from DB
+
+		Integer month = 6;
+		Integer year = 2020;
+		String reportName = "TESTS-01 DHIS Integration App Sync Test";
+		String comment = "Submitted by daemon";
+
+		String DHISIntegratorUrl = buildDHISIntegratorUrl(reportName, month, year, comment);
+		String openmrsUrl = properties.openmrsRootUrl + OPENMRS_LOGIN_ENDPOINT;
+		System.out.println("DHISIntegrator url: " + DHISIntegratorUrl);
+
+		AuthResponse authResponse = authenticate(openmrsUrl);
+
+		//
+		if (authResponse.getSessionId() != "") {
+			submitToDHISIntegrator(DHISIntegratorUrl, authResponse);
+		}
+		logout(openmrsUrl);
+		// logout when done
+	}
+
 	@Scheduled(cron = "0 0/5 * * * *")
 	public void runDailyDHISSubmissions()
 			throws IOException, JSONException, DHISIntegratorException, Exception {
