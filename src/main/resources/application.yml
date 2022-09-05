@@ -12,3 +12,6 @@ log4j.config.file: log4j.properties
 server.port: 8040
 server.context-path: /dhis-integration/
 submission.audit.folder: /dhis-integration-data
+dhis.integrator.root.url: http://localhost:8040
+dhis.integrator.scheduler.user: user
+dhis.integrator.scheduler.password: password
