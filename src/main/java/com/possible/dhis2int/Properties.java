@@ -42,4 +42,13 @@ public class Properties {
 	@Value("${submission.audit.folder}")
 	public String submissionAuditFolder;
 
+	@Value("${dhis.integrator.scheduler.password}")
+	public String dhisIntegratorSchedulerPassword;
+
+	@Value("${dhis.integrator.scheduler.user}")
+	public String dhisIntegratorSchedulerUser;
+
+	@Value("${dhis.integrator.root.url}")
+	public String dhisIntegratorRootUrl;
+
 }
