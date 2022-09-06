@@ -70,21 +70,21 @@ function renderSchedules(){
 			if(object.frequency=="weekly"){
 				tr.innerHTML =tempHTML+
 							"<td>"+
-							"<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
+							"<label class='switch'><input type='checkbox' value='"+object.id+"'><span class='slider round'></span></label>"+
 							"</td>";
 				weeklySchedulesTable.appendChild(tr);
 			}
 			else if(object.frequency=="monthly"){
 				tr.innerHTML =tempHTML+
 							"<td>"+
-							"<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
+							"<label class='switch'><input type='checkbox' value='"+object.id+"'><span class='slider round'></span></label>"+
 							"</td>";
 				monthlySchedulesTable.appendChild(tr);
 			}
 			else if(object.frequency=="quarterly"){
 				tr.innerHTML =tempHTML+
 							"<td>"+
-							"<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
+							"<label class='switch'><input type='checkbox' value='"+object.id+"'><span class='slider round'></span></label>"+
 							"</td>";
 				quarterlySchedulesTable.appendChild(tr);
 			}
