@@ -256,6 +256,7 @@ function createDHISSchedule(clicked_id, frequency){
 	return $.get(submitTo,parameters).done(function(data) {
 		//data = JSON.stringify(data);
 		console.log('[Server result for submitNewSchedule()]');
+		console.log("URL:"+submitTo);
 		console.log(data);
 		
 	}).fail(function(response) {

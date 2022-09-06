@@ -61,7 +61,7 @@ public class DatabaseDriver {
 
 	public ResultSet executeQuery(String formattedSql) throws DHISIntegratorException {
 		Connection connection = null;
-		String type="MRSGeneric";
+		String type = "MRSGeneric";
 		try {
 
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
@@ -82,8 +82,8 @@ public class DatabaseDriver {
 		}
 	}
 
-	public void executeUpdateQuery(Schedule record) 
-	throws DHISIntegratorException {
+	public void executeUpdateQuery(Schedule record)
+			throws DHISIntegratorException {
 		logger.debug("Inside executeUpdateQuery method");
 		Connection connection = null;
 		try {
@@ -95,7 +95,7 @@ public class DatabaseDriver {
 			ps.setString(2, record.getFrequency());
 			ps.setString(3, record.getCreatedBy());
 			ps.setString(4, record.getCreatedDate().toString());
-			ps.setString(5, record.getTargetTime().toString());
+			ps.setString(5, record.getTargetDate().toString());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
@@ -109,14 +109,14 @@ public class DatabaseDriver {
 		}
 	}
 
-	public void executeDeleteQuery(Integer scheduleId) 
-	throws DHISIntegratorException {
+	public void executeDeleteQuery(Integer scheduleId)
+			throws DHISIntegratorException {
 		logger.debug("Inside executeDeleteQuery method");
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
 			PreparedStatement ps = connection.prepareStatement(
-					"DELETE FROM dhis2_schedules WHERE id="+scheduleId);
+					"DELETE FROM dhis2_schedules WHERE id=" + scheduleId);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
@@ -184,7 +184,7 @@ public class DatabaseDriver {
 			log = jsonObject.toString(INDENT_FACTOR);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DHISIntegratorException ("DB Exception occurred "+ e.getMessage(), e);
+			throw new DHISIntegratorException("DB Exception occurred " + e.getMessage(), e);
 		} catch (JSONException e) {
 			throw new DHISIntegratorException(String.format(Messages.SQL_EXECUTION_EXCEPTION), e);
 		} finally {
@@ -212,9 +212,9 @@ public class DatabaseDriver {
 					"CREATE TABLE imam(male_less_than_six int, female_less_than_six int, male_more_than_six int, female_more_than_six int)");
 			String insertImamData = new StringBuffer(
 					"INSERT INTO imam(male_less_than_six , female_less_than_six , male_more_than_six , female_more_than_six) SELECT ")
-							.append(numberOfMaleLessThanSix).append(", ").append(numberOfFemalesLessThanSix)
-							.append(", ").append(numberOfMalesMoreThanSix).append(", ")
-							.append(numberOfFemalesMoreThanSix).toString();
+					.append(numberOfMaleLessThanSix).append(", ").append(numberOfFemalesLessThanSix)
+					.append(", ").append(numberOfMalesMoreThanSix).append(", ")
+					.append(numberOfFemalesMoreThanSix).toString();
 			statement.executeUpdate(insertImamData);
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format("Failed to create table imam"), e);
@@ -263,10 +263,10 @@ public class DatabaseDriver {
 
 			String insertFamilyPlanningData = new StringBuffer(
 					"INSERT INTO familyPlanning(vasectomy_user, pills_user, other_user,  minilap_user, IUCD_user, implant_user, depo_user, condoms_user) SELECT ")
-							.append(numberOfVasectomyUser).append(", ").append(numberOfPillsUser).append(", ")
-							.append(numberOfOtherUser).append(", ").append(numberOfMinilipUser).append(", ")
-							.append(numberOfIUCDUser).append(", ").append(numberOfImplantUser).append(", ")
-							.append(numberOfDepoUser).append(", ").append(numberOfCondomsUser).toString();
+					.append(numberOfVasectomyUser).append(", ").append(numberOfPillsUser).append(", ")
+					.append(numberOfOtherUser).append(", ").append(numberOfMinilipUser).append(", ")
+					.append(numberOfIUCDUser).append(", ").append(numberOfImplantUser).append(", ")
+					.append(numberOfDepoUser).append(", ").append(numberOfCondomsUser).toString();
 			statement.executeUpdate(insertFamilyPlanningData);
 
 		} catch (SQLException e) {

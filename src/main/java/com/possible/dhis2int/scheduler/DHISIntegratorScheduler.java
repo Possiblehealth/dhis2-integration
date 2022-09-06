@@ -3,6 +3,8 @@ package com.possible.dhis2int.scheduler;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -34,6 +36,7 @@ import com.possible.dhis2int.web.Messages;
 import com.possible.dhis2int.scheduler.Schedule;
 
 import org.apache.log4j.Logger;
+
 import static org.apache.log4j.Logger.getLogger;
 
 import java.util.ArrayList;
@@ -102,7 +105,6 @@ public class DHISIntegratorScheduler {
 		}
 
 		return jsonArray;
-
 	}
 
 	@RequestMapping(path = "/create-schedule")
@@ -116,9 +118,12 @@ public class DHISIntegratorScheduler {
 		newschedule.setCreatedBy("Test");
 
 		LocalDate created_date = LocalDate.now();
-		LocalDate target_time = LocalDate.now();
+		// LocalDate target_time = LocalDate.now();
+		// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy
+		// HH:mm:ss");
+		LocalDate target_date = getMonthlyTargetDate(created_date);
 		newschedule.setCreatedDate(created_date);
-		newschedule.setTargetTime(target_time);
+		newschedule.setTargetDate(target_date);
 
 		Results results = new Results();
 		logger.info("Inside saveIntegrationSchedules...");
@@ -133,6 +138,12 @@ public class DHISIntegratorScheduler {
 		}
 
 		return results;
+	}
+
+	private LocalDate getMonthlyTargetDate(LocalDate aDate) {
+		// Returns a copy of this LocalDate with the day-of-month altered to the last
+		// day of the month
+		return aDate.withDayOfMonth(aDate.getMonth().length(aDate.isLeapYear()));
 	}
 
 	@RequestMapping(path = "/delete-schedule")
@@ -240,32 +251,122 @@ public class DHISIntegratorScheduler {
 		return responseEntity;
 	}
 
+	private Boolean isDue(Schedule schedule) {
+		return schedule.getTargetDate().isBefore(LocalDate.now());
+	}
+
+	private ArrayList<Schedule> getIntegrationSchedules()
+			throws IOException, DHISIntegratorException, Exception {
+		String sql = "SELECT id, report_name, frequency, last_run, status, target_time FROM dhis2_schedules;";
+		ArrayList<Schedule> list = new ArrayList<Schedule>();
+		Results results = new Results();
+		String type = "MRSGeneric";
+		Schedule schedule;
+
+		try {
+			results = databaseDriver.executeQuery(sql, type);
+
+			for (List<String> row : results.getRows()) {
+				logger.info(row);
+				schedule = new Schedule();
+
+				schedule.setId(Integer.parseInt(row.get(0)));
+				schedule.setProgName(row.get(1));
+				schedule.setFrequency(row.get(2));
+				schedule.setLastRun(row.get(3));
+				schedule.setStatus(row.get(4));
+				schedule.setTargetDate(LocalDate.parse(row.get(5).substring(0, 10)));
+				list.add(schedule);
+
+			}
+			logger.info("Inside loadIntegrationSchedules...");
+		} catch (DHISIntegratorException | JSONException e) {
+			// logger.info("Inside loadIntegrationSchedules...");
+			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
+		} catch (Exception e) {
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
+		}
+		return list;
+	}
+
 	@Scheduled(fixedDelay = 30000)
 	public void processSchedules() {
-		// read from table
-		// for each row, is this report due
-		// if due => call submitToDHIS(x,y,z)
-		logger.info("Executing schedule at :" + new Date().toString());
+		// get schedules
+		ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+		try {
+			schedules = getIntegrationSchedules();
+			// for each item, is this report due
+			// if due => call submitToDHIS(x,y,z)
+			for (int i = 0; i < schedules.size(); i++) {
+				logger.info("Current item " + schedules.get(i).getProgramName());
+				Schedule currSchedule = schedules.get(i);
+				switch (currSchedule.getFrequency()) {
+					case "daily":
+						// daily logic
+						logger.info("Processing a daily schedule at " + LocalDate.now() + "for report "
+								+ currSchedule.getProgramName());
+						break;
+					case "weekly":
+						// weekly logic
+						logger.info("Processing a weekly schedule at " + LocalDate.now() + "for report "
+								+ currSchedule.getProgramName());
+						break;
+					case "monthly":
+						// monthly logic
+						logger.info("Processing a montly schedule at " + LocalDate.now() + "for report "
+								+ currSchedule.getProgramName());
+						if (isDue(currSchedule)) {
+							// send report
+							logger.info("The following report is due " + currSchedule.getProgramName());
+						} else {
+							logger.info("The following report is NOT due " + currSchedule.getProgramName());
+						}
+						break;
+					case "quarterly":
+						// quarterly logic
+						logger.info("Processing a quarterly schedule at " + LocalDate.now() + "for report "
+								+ currSchedule.getProgramName());
+						break;
+					case "yearly":
+						// yearly logic
+						logger.info("Processing a yearly schedule at " + LocalDate.now() + "for report "
+								+ currSchedule.getProgramName());
+						break;
+					default:
+						// Ache banna, how did we get here?? .. do nothing
+				}
 
-		// get from DB
-
-		Integer month = 6;
-		Integer year = 2020;
-		String reportName = "TESTS-01 DHIS Integration App Sync Test";
-		String comment = "Submitted by daemon";
-
-		String DHISIntegratorUrl = buildDHISIntegratorUrl(reportName, month, year, comment);
-		String openmrsUrl = properties.openmrsRootUrl + OPENMRS_LOGIN_ENDPOINT;
-		System.out.println("DHISIntegrator url: " + DHISIntegratorUrl);
-
-		AuthResponse authResponse = authenticate(openmrsUrl);
-
-		//
-		if (authResponse.getSessionId() != "") {
-			submitToDHISIntegrator(DHISIntegratorUrl, authResponse);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		logout(openmrsUrl);
-		// logout when done
+
+		/*
+		 * logger.info("Executing schedule at :" + new Date().toString());
+		 * 
+		 * // get from DB
+		 * 
+		 * Integer month = 6;
+		 * Integer year = 2020;
+		 * String reportName = "TESTS-01 DHIS Integration App Sync Test";
+		 * String comment = "Submitted by daemon";
+		 * 
+		 * String DHISIntegratorUrl = buildDHISIntegratorUrl(reportName, month, year,
+		 * comment);
+		 * String openmrsUrl = properties.openmrsRootUrl + OPENMRS_LOGIN_ENDPOINT;
+		 * System.out.println("DHISIntegrator url: " + DHISIntegratorUrl);
+		 * 
+		 * AuthResponse authResponse = authenticate(openmrsUrl);
+		 * 
+		 * //
+		 * if (authResponse.getSessionId() != "") {
+		 * submitToDHISIntegrator(DHISIntegratorUrl, authResponse);
+		 * }
+		 * logout(openmrsUrl);
+		 * // logout when done
+		 * getSchedules();
+		 */
 	}
 
 	@Scheduled(cron = "0 0/5 * * * *")
