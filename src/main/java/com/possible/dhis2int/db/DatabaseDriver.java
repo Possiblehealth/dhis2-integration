@@ -93,10 +93,10 @@ public class DatabaseDriver {
 
 			ps.setString(1, record.getProgramName());
 			ps.setString(2, record.getFrequency());
-			ps.setBoolean(2, record.getEnabled());
-			ps.setString(3, record.getCreatedBy());
-			ps.setString(4, record.getCreatedDate().toString());
-			ps.setString(5, record.getTargetDate().toString());
+			ps.setBoolean(3, record.getEnabled());
+			ps.setString(4, record.getCreatedBy());
+			ps.setString(5, record.getCreatedDate().toString());
+			ps.setString(6, record.getTargetDate().toString());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
