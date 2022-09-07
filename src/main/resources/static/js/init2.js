@@ -94,8 +94,10 @@ function renderSchedules(){
 }
 
 function disenSchedule(toggled_id){
+	var checkboxvalue = document.getElementById(toggled_id).checked ? 'on' : 'off';
 	console.log('Clicked toggle switch element is '+toggled_id);
 	console.log('Clicked toggle switch element value is '+document.getElementById(toggled_id).value);
+	console.log('Clicked toggle switch element value is '+checkboxvalue);
 }
 
 //populate list of DHIS-enabled hmis programs into select element
