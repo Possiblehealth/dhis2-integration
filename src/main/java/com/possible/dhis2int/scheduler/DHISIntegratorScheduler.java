@@ -82,13 +82,14 @@ public class DHISIntegratorScheduler {
 			results = databaseDriver.executeQuery(sql, type);
 
 			for (List<String> row : results.getRows()) {
+				logger.info("Showing getIntegrationSChedules results...");
 				logger.info(row);
 				schedule = new Schedule();
 
 				schedule.setId(Integer.parseInt(row.get(0)));
 				schedule.setProgName(row.get(1));
 				schedule.setFrequency(row.get(2));
-				schedule.setEnabled(Boolean.parseBoolean(row.get(3)));
+				schedule.setEnabled(Integer.parseInt(row.get(3))==1?true:false);
 				schedule.setLastRun(row.get(4));
 				schedule.setStatus(row.get(5));
 				list.add(schedule);
