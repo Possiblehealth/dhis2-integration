@@ -88,7 +88,7 @@ public class DHISIntegratorScheduler {
 				schedule.setId(Integer.parseInt(row.get(0)));
 				schedule.setProgName(row.get(1));
 				schedule.setFrequency(row.get(2));
-				schedule.setEnabled(Boolean.parseBoolean(row.get(2)));
+				schedule.setEnabled(Boolean.parseBoolean(row.get(3)));
 				schedule.setLastRun(row.get(4));
 				schedule.setStatus(row.get(5));
 				list.add(schedule);
@@ -97,9 +97,9 @@ public class DHISIntegratorScheduler {
 			mapper = new ObjectMapper();
 			String jsonstring = mapper.writeValueAsString(list);
 			jsonArray.put(jsonstring);
-			logger.info("Inside loadIntegrationSchedules...");
+			logger.info("Task loadIntegrationSchedules ran successfully...");
 		} catch (DHISIntegratorException | JSONException e) {
-			// logger.info("Inside loadIntegrationSchedules...");
+			//logger.info("Inside loadIntegrationSchedules...");
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
 		} catch (Exception e) {
 			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
@@ -172,7 +172,7 @@ public class DHISIntegratorScheduler {
 	}
 
 	@RequestMapping(path = "/delete-schedule")
-	public Results deletIntegrationSchedule(@RequestParam(value = "scheduleIds[]") String scheduleIds[],
+	public Results deleteIntegrationSchedule(@RequestParam(value = "scheduleIds[]") String scheduleIds[],
 			HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
 		Results results = new Results();

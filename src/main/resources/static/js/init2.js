@@ -149,7 +149,7 @@ function getDHISPrograms() {
 
 function getDHISSchedules() {
 	return $.get(getSchedulesUrl).done(function(data) {
-		//data = JSON.stringify(data);
+		console.log('[Get DHIS schedules]');
 		//console.log(data);
 		
 	}).fail(function(response) {
