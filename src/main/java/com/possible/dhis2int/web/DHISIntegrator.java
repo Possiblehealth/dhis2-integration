@@ -96,7 +96,7 @@ public class DHISIntegrator {
 
 	@RequestMapping(path = "/is-logged-in")
 	public String isLoggedIn() {
-		logger.info("Inside isLoggedIn");
+		//logger.info("Inside isLoggedIn");
 		return "Logged in";
 	}
 
@@ -106,7 +106,7 @@ public class DHISIntegrator {
 	}
 
 	public void prepareImamReport(Integer year, Integer month) throws JSONException {
-		logger.info("Inside prepareImamReport method");
+		//logger.info("Inside prepareImamReport method");
 
 		JSONObject dhisConfig = (JSONObject) getDHISConfig(IMAM_PROGRAM_NAME);
 		String orgUnit = (String) dhisConfig.get("orgUnit");
@@ -257,7 +257,7 @@ public class DHISIntegrator {
 	@RequestMapping(path = "/log")
 	public String getLog(@RequestParam String programName, @RequestParam("year") Integer year,
 			@RequestParam("month") Integer month) throws SQLException {
-		logger.info("Inside getLog method");
+		//logger.info("Inside getLog method");
 		return databaseDriver.getQuerylog(programName, month, year);
 	}
 
@@ -391,7 +391,7 @@ public class DHISIntegrator {
 			@RequestParam("endYear") Integer endYear, @RequestParam("endMonth") Integer endMonth,
 			@RequestParam("isImam") Boolean isImam, HttpServletResponse response)
 			throws JSONException, NotAvailableException {
-		logger.info("Inside downloadFiscalYearReport");
+		//logger.info("Inside downloadFiscalYearReport");
 		ReportDateRange reportDateRange = new DateConverter().getDateRangeForFiscalYear(startYear, startMonth, endYear,
 				endMonth);
 		logger.info(reportDateRange);
@@ -542,7 +542,7 @@ public class DHISIntegrator {
 	}
 
 	public void prepareFamilyPlanningReport(Integer year, Integer month) throws JSONException {
-		logger.info("Inside prepareFamilyPlanningReport method");
+		//logger.info("Inside prepareFamilyPlanningReport method");
 
 		JSONObject dhisConfig = (JSONObject) getDHISConfig(FamilyPlanning_PROGRAM_NAME);
 		String orgUnit = (String) dhisConfig.get("orgUnit");
