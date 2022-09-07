@@ -238,6 +238,7 @@ public class DHISIntegrator {
 		recordLog(userName, program, year, month, submission.getInfo(), status, comment);
 		return submission.getInfo();
 	}
+	
 
 	private String recordLog(String userName, String program, Integer year, Integer month, String log, Status status,
 			String comment) throws IOException, JSONException {

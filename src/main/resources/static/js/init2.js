@@ -4,7 +4,7 @@ var submitUrl = '/dhis-integration/submit-to-dhis';
 var getSchedulesUrl = '/dhis-integration/get-schedules';
 var createScheduleUrl = '/dhis-integration/create-schedule';
 var deleteScheduleUrl='/dhis-integration/delete-schedule';
-var disenScheduleUrl='/dhis-integration/enable-disable-schedule';
+var disenScheduleUrl='/dhis-integration/disable-enable-schedule';
 var submitUrlAtr = '/dhis-integration/submit-to-dhis-atr';
 var loginRedirectUrl = '/bahmni/home/index.html#/login?showLoginMessage&from=';
 var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
@@ -45,12 +45,12 @@ $(document).ready(
 			});
 			
 			initSelects();
-			renderSchedules();
+			renderDHISSchedules();
 			
 		});
 
 //populate list of schedules from db
-function renderSchedules(){
+function renderDHISSchedules(){
 	getDHISSchedules().then(function(data){
 		console.log('[render hmis program schedules]');
 		console.log(data);
@@ -89,6 +89,7 @@ function renderSchedules(){
 							"</td>";
 				quarterlySchedulesTable.appendChild(tr);
 			}
+			document.getElementById('object.id').prop('checked', object.enabled);
 		});
 	});
 }

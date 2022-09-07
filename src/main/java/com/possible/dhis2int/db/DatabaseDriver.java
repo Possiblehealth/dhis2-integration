@@ -82,7 +82,7 @@ public class DatabaseDriver {
 		}
 	}
 
-	public void executeUpdateQuery(Schedule record)
+	public void executeCreateQuery(Schedule record)
 			throws DHISIntegratorException {
 		logger.debug("Inside executeUpdateQuery method");
 		Connection connection = null;
@@ -96,6 +96,29 @@ public class DatabaseDriver {
 			ps.setString(3, record.getCreatedBy());
 			ps.setString(4, record.getCreatedDate().toString());
 			ps.setString(5, record.getTargetDate().toString());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException ignored) {
+				}
+			}
+		}
+	}
+
+	public void executeUpdateQuery(Integer scheduleId, Boolean enabled)
+			throws DHISIntegratorException {
+		logger.debug("Inside executeUpdateQuery method");
+		Integer schedule_id=scheduleId;
+		Boolean schedule_enabled=enabled;
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			PreparedStatement ps = connection.prepareStatement(
+					"UPDATE dhis2_schedules SET enabled ="+schedule_enabled+" WHERE id=" + schedule_id);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);

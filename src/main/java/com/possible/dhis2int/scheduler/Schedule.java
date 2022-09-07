@@ -11,6 +11,7 @@ public class Schedule {
 	private LocalDate target_date;
 	private String created_by;
 	private String frequency;
+	private Boolean enabled;
 
 	public int getId() {
 		return id;
@@ -74,6 +75,14 @@ public class Schedule {
 
 	public void setTargetDate(LocalDate target_date) {
 		this.target_date = target_date;
+	}
+
+	public void setEnabled(Boolean enabled){
+		this.enabled=enabled;
+	}
+
+	public Boolean setEnabled(){
+		return enabled;
 	}
 
 }
