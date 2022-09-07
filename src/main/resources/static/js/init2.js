@@ -89,7 +89,7 @@ function renderDHISSchedules(){
 							"</td>";
 				quarterlySchedulesTable.appendChild(tr);
 			}
-			document.getElementById('object.id').checked= object.enabled;
+			document.getElementById(object.id).checked= object.enabled;
 		});
 	});
 }
