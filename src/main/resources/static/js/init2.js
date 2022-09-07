@@ -95,10 +95,29 @@ function renderDHISSchedules(){
 }
 
 function disenSchedule(toggled_id){
-	var checkboxvalue = document.getElementById(toggled_id).checked ? 'on' : 'off';
+	var scheduleId=toggled_id;
+	var enabled = document.getElementById(toggled_id).checked ? 'true' : 'false';
 	console.log('Clicked toggle switch element is '+toggled_id);
 	console.log('Clicked toggle switch element value is '+document.getElementById(toggled_id).value);
-	console.log('Clicked toggle switch element value is '+checkboxvalue);
+	console.log('Clicked toggle switch element value is '+enabled);
+
+	console.log('Clicked schedule to enable/disable is '+toggled_id);
+
+	var parameters = {
+		scheduleId : scheduleId,
+		enabled:enabled
+	};
+	
+	var submitTo = disenScheduleUrl;
+	return $.get(submitTo,parameters).done(function(data) {
+		console.log('[Server result for disenSchedule()]');
+		console.log(data);
+
+		
+	}).fail(function(response) {
+		console.log('[Operation disenSchedule() failed]');
+	});
+
 }
 
 //populate list of DHIS-enabled hmis programs into select element

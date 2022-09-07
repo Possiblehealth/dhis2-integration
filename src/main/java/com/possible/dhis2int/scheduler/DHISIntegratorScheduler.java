@@ -155,7 +155,7 @@ public class DHISIntegratorScheduler {
 		logger.info("Inside disenIntegrationSchedule...");
 		try {
 			databaseDriver.executeUpdateQuery(schedule_id,schedule_enabled);
-			logger.info("Executed update schedule query successfully...");
+			logger.info("Executed disable/enable schedule query successfully...");
 
 		} catch (DHISIntegratorException | JSONException e) {
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
