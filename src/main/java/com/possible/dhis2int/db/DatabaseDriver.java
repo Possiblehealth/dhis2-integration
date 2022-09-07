@@ -89,10 +89,11 @@ public class DatabaseDriver {
 		try {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
 			PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO dhis2_schedules (report_name,frequency,created_by,created_date,target_time) VALUES (?, ?, ?, ?, ?)");
+					"INSERT INTO dhis2_schedules (report_name,frequency,enabled,created_by,created_date,target_time) VALUES (?, ?, ?, ?, ?, ?)");
 
 			ps.setString(1, record.getProgramName());
 			ps.setString(2, record.getFrequency());
+			ps.setBoolean(2, record.getEnabled());
 			ps.setString(3, record.getCreatedBy());
 			ps.setString(4, record.getCreatedDate().toString());
 			ps.setString(5, record.getTargetDate().toString());

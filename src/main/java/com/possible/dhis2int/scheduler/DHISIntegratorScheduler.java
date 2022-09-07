@@ -117,6 +117,7 @@ public class DHISIntegratorScheduler {
 		newschedule.setProgName(progName);
 		newschedule.setFrequency(schedFrequency);
 		newschedule.setCreatedBy("Test");
+		newschedule.setEnabled(true);
 
 		LocalDate created_date = LocalDate.now();
 		// LocalDate target_time = LocalDate.now();

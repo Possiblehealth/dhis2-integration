@@ -81,7 +81,7 @@ public class Schedule {
 		this.enabled=enabled;
 	}
 
-	public Boolean setEnabled(){
+	public Boolean getEnabled(){
 		return enabled;
 	}
 
