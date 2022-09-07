@@ -88,7 +88,7 @@ public class DHISIntegratorScheduler {
 				schedule.setId(Integer.parseInt(row.get(0)));
 				schedule.setProgName(row.get(1));
 				schedule.setFrequency(row.get(2));
-				schedule.setEnabled(Integer.parseInt(row.get(3))==1?true:false);
+				schedule.setEnabled(Boolean.parseBoolean(row.get(2)));
 				schedule.setLastRun(row.get(4));
 				schedule.setStatus(row.get(5));
 				list.add(schedule);
