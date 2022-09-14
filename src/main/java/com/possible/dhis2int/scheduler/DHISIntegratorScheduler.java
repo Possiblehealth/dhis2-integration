@@ -70,7 +70,7 @@ public class DHISIntegratorScheduler {
 	@RequestMapping(path = "/get-schedules")
 	public JSONArray getIntegrationSchedules(HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException, DHISIntegratorException, Exception {
-		String sql = "SELECT id, report_name, frequency, last_run, status FROM dhis2_schedules;";
+		String sql = "SELECT id, report_name, frequency, enabled, last_run, status FROM dhis2_schedules;";
 		JSONArray jsonArray = new JSONArray();
 		ArrayList<Schedule> list = new ArrayList<Schedule>();
 		Results results = new Results();
@@ -82,21 +82,23 @@ public class DHISIntegratorScheduler {
 			results = databaseDriver.executeQuery(sql, type);
 
 			for (List<String> row : results.getRows()) {
+				logger.info("Showing getIntegrationSChedules results...");
 				logger.info(row);
 				schedule = new Schedule();
 
 				schedule.setId(Integer.parseInt(row.get(0)));
 				schedule.setProgName(row.get(1));
 				schedule.setFrequency(row.get(2));
-				schedule.setLastRun(row.get(3));
-				schedule.setStatus(row.get(4));
+				schedule.setEnabled(Integer.parseInt(row.get(3)) == 1 ? true : false);
+				schedule.setLastRun(row.get(4));
+				schedule.setStatus(row.get(5));
 				list.add(schedule);
 
 			}
 			mapper = new ObjectMapper();
 			String jsonstring = mapper.writeValueAsString(list);
 			jsonArray.put(jsonstring);
-			logger.info("Inside loadIntegrationSchedules...");
+			logger.info("Task loadIntegrationSchedules ran successfully...");
 		} catch (DHISIntegratorException | JSONException e) {
 			// logger.info("Inside loadIntegrationSchedules...");
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
@@ -116,6 +118,7 @@ public class DHISIntegratorScheduler {
 		newschedule.setProgName(progName);
 		newschedule.setFrequency(schedFrequency);
 		newschedule.setCreatedBy("Test");
+		newschedule.setEnabled(true);
 
 		LocalDate created_date = LocalDate.now();
 		// LocalDate target_time = LocalDate.now();
@@ -128,8 +131,31 @@ public class DHISIntegratorScheduler {
 		Results results = new Results();
 		logger.info("Inside saveIntegrationSchedules...");
 		try {
-			databaseDriver.executeUpdateQuery(newschedule);
+			databaseDriver.executeCreateQuery(newschedule);
 			logger.info("Executed insert query successfully...");
+
+		} catch (DHISIntegratorException | JSONException e) {
+			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
+		} catch (Exception e) {
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
+		}
+
+		return results;
+	}
+
+	@RequestMapping(path = "/disable-enable-schedule")
+	public Results disenIntegrationSchedule(@RequestParam("scheduleId") String scheduleId,
+			@RequestParam("enabled") Boolean enabled,
+			HttpServletRequest clientReq, HttpServletResponse clientRes)
+			throws IOException, JSONException {
+		Integer schedule_id = Integer.parseInt(scheduleId);
+		Boolean schedule_enabled = enabled;
+
+		Results results = new Results();
+		logger.info("Inside disenIntegrationSchedule...");
+		try {
+			databaseDriver.executeUpdateQuery(schedule_id, schedule_enabled);
+			logger.info("Executed disable/enable schedule query successfully...");
 
 		} catch (DHISIntegratorException | JSONException e) {
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
@@ -147,7 +173,7 @@ public class DHISIntegratorScheduler {
 	}
 
 	@RequestMapping(path = "/delete-schedule")
-	public Results deletIntegrationSchedule(@RequestParam(value = "scheduleIds[]") String scheduleIds[],
+	public Results deleteIntegrationSchedule(@RequestParam(value = "scheduleIds[]") String scheduleIds[],
 			HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
 		Results results = new Results();
