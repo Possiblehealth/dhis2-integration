@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -89,7 +88,7 @@ public class DHISIntegratorScheduler {
 				schedule.setId(Integer.parseInt(row.get(0)));
 				schedule.setProgName(row.get(1));
 				schedule.setFrequency(row.get(2));
-				schedule.setEnabled(Integer.parseInt(row.get(3))==1?true:false);
+				schedule.setEnabled(Integer.parseInt(row.get(3)) == 1 ? true : false);
 				schedule.setLastRun(row.get(4));
 				schedule.setStatus(row.get(5));
 				list.add(schedule);
@@ -100,7 +99,7 @@ public class DHISIntegratorScheduler {
 			jsonArray.put(jsonstring);
 			logger.info("Task loadIntegrationSchedules ran successfully...");
 		} catch (DHISIntegratorException | JSONException e) {
-			//logger.info("Inside loadIntegrationSchedules...");
+			// logger.info("Inside loadIntegrationSchedules...");
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
 		} catch (Exception e) {
 			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
@@ -144,17 +143,17 @@ public class DHISIntegratorScheduler {
 	}
 
 	@RequestMapping(path = "/disable-enable-schedule")
-	public Results disenIntegrationSchedule(@RequestParam("scheduleId") String scheduleId, 
+	public Results disenIntegrationSchedule(@RequestParam("scheduleId") String scheduleId,
 			@RequestParam("enabled") Boolean enabled,
 			HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-		Integer schedule_id=Integer.parseInt(scheduleId);
-		Boolean schedule_enabled=enabled;
+		Integer schedule_id = Integer.parseInt(scheduleId);
+		Boolean schedule_enabled = enabled;
 
 		Results results = new Results();
 		logger.info("Inside disenIntegrationSchedule...");
 		try {
-			databaseDriver.executeUpdateQuery(schedule_id,schedule_enabled);
+			databaseDriver.executeUpdateQuery(schedule_id, schedule_enabled);
 			logger.info("Executed disable/enable schedule query successfully...");
 
 		} catch (DHISIntegratorException | JSONException e) {
@@ -315,6 +314,13 @@ public class DHISIntegratorScheduler {
 		return list;
 	}
 
+	private Boolean isSubmissionSuccessful(ResponseEntity<String> response) {
+		if (response == null || response.getStatusCodeValue() != 200) {
+			return false;
+		}
+		return true;
+	}
+
 	@Scheduled(fixedDelay = 30000)
 	public void processSchedules() {
 		// get schedules
@@ -344,6 +350,30 @@ public class DHISIntegratorScheduler {
 						if (isDue(currSchedule)) {
 							// send report
 							logger.info("The following report is due " + currSchedule.getProgramName());
+							// extract period
+							Integer year = currSchedule.getTargetDate().getYear();
+							Integer month = currSchedule.getTargetDate().getMonthValue();
+							String comment = "DHISIntegratorScheduler submitted " + currSchedule.getProgramName()
+									+ " on " + LocalDate.now();
+							String DHISIntegratorUrl = buildDHISIntegratorUrl(currSchedule.getProgramName(), month,
+									year, comment);
+							AuthResponse authResponse = authenticate(
+									properties.openmrsRootUrl + OPENMRS_LOGIN_ENDPOINT);
+							ResponseEntity<String> responseEntity = null;
+							if (authResponse.getSessionId() != "") {
+								responseEntity = submitToDHISIntegrator(DHISIntegratorUrl, authResponse);
+							}
+							logout(properties.openmrsRootUrl + OPENMRS_LOGIN_ENDPOINT);
+
+							// if submitted successfully, set new target, else leave it to be retried.
+							if (isSubmissionSuccessful(responseEntity)) {
+								// set new target
+								logger.info("Submission went through ... :-)");
+								logger.info("Response body: " + responseEntity.getBody());
+							} else {
+								logger.info("Submission did not go through ... :-(");
+								logger.info("Response body: " + responseEntity.getBody());
+							}
 						} else {
 							logger.info("The following report is NOT due " + currSchedule.getProgramName());
 						}

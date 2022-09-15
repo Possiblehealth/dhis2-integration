@@ -22,7 +22,7 @@ mysql --user="root" --password="P@ssw0rd" --database="openmrs" --execute="CREATE
 																		submitted_by varchar(30) not null, 
 																		report_log varchar(4000) not null, 
 																		status varchar(30) not null,
-																		comment varchar(30) not null, 
+																		comment varchar(500) not null, 
 																		report_month integer, 
 																		report_year integer);"
 
