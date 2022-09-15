@@ -249,7 +249,7 @@ function createDHISSchedule(clicked_id, frequency){
 					  '<td>' + '' + '</td>' +
 					  '<td>' + '' + '</td>'+
 					  "<td>"+
-					  "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
+					  "<label class='switch'><input type='checkbox'><span class='slider round' checked></span></label>"+
 					  "</td>";
 		weeklySchedulesTable.appendChild(tr);
 	}
@@ -259,7 +259,7 @@ function createDHISSchedule(clicked_id, frequency){
 					  '<td>' + '' + '</td>' +
 					  '<td>' + '' + '</td>'+
 					  "<td>"+
-					  "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
+					  "<label class='switch'><input type='checkbox'><span class='slider round' checked></span></label>"+
 					  "</td>";
 		monthlySchedulesTable.appendChild(tr);
 	}
@@ -269,7 +269,7 @@ function createDHISSchedule(clicked_id, frequency){
 					  '<td>' + '' + '</td>' +
 					  '<td>' + '' + '</td>'+
 					  "<td>"+
-					  "<label class='switch'><input type='checkbox'><span class='slider round'></span></label>"+
+					  "<label class='switch'><input type='checkbox'><span class='slider round' checked></span></label>"+
 					  "</td>";
 		quarterlySchedulesTable.appendChild(tr);
 	}
