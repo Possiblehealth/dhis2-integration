@@ -283,7 +283,7 @@ public class DHISIntegratorScheduler {
 
 	private ArrayList<Schedule> getIntegrationSchedules()
 			throws IOException, DHISIntegratorException, Exception {
-		String sql = "SELECT id, report_name, frequency, last_run, status, target_time FROM dhis2_schedules;";
+		String sql = "SELECT id, report_name, frequency, last_run, status, target_time FROM dhis2_schedules WHERE enabled;";
 		ArrayList<Schedule> list = new ArrayList<Schedule>();
 		Results results = new Results();
 		String type = "MRSGeneric";
