@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -137,16 +138,13 @@ public class DatabaseDriver {
 
 	public void executeUpdateQuery(Integer scheduleId, LocalDate targetDate)
 			throws DHISIntegratorException {
-		LocalDate dateToday = LocalDate.now();
+		LocalDateTime dateTimeNow = LocalDateTime.now();
 		logger.debug("Inside executeUpdateQuery method ... edit target date and last run");
-		logger.info(
-				"SQL : " + "UPDATE dhis2_schedules SET target_time ='" + targetDate + "', SET last_run = '" + dateToday
-						+ "' WHERE id=" + scheduleId);
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
 			PreparedStatement ps = connection.prepareStatement(
-					"UPDATE dhis2_schedules SET target_time ='" + targetDate + "', last_run = '" + dateToday
+					"UPDATE dhis2_schedules SET target_time ='" + targetDate + "', last_run = '" + dateTimeNow
 							+ "' WHERE id=" + scheduleId);
 			ps.executeUpdate();
 		} catch (SQLException e) {
