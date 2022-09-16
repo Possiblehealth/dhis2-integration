@@ -35,6 +35,7 @@ import com.possible.dhis2int.web.Messages;
 import com.possible.dhis2int.scheduler.Schedule;
 
 import org.apache.log4j.Logger;
+import org.apache.tomcat.jni.Local;
 
 import static org.apache.log4j.Logger.getLogger;
 
@@ -314,8 +315,23 @@ public class DHISIntegratorScheduler {
 		return list;
 	}
 
+	private void editScheduleTargetDate(Integer scheduleId, LocalDate targetDate) {
+		logger.info("Inside disenIntegrationSchedule...");
+		try {
+			databaseDriver.executeUpdateQuery(scheduleId, targetDate);
+			logger.info("Executed edit schedule query successfully...");
+
+		} catch (DHISIntegratorException | JSONException e) {
+			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
+		} catch (Exception e) {
+			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
+		}
+	}
+
 	private Boolean isSubmissionSuccessful(ResponseEntity<String> response) {
-		if (response == null || response.getStatusCodeValue() != 200) {
+		JSONObject responseBody = new JSONObject(new JSONTokener(response.getBody()));
+		if (response == null || response.getStatusCodeValue() != 200
+				|| !(responseBody.getString("status").equals("Success"))) {
 			return false;
 		}
 		return true;
@@ -367,9 +383,12 @@ public class DHISIntegratorScheduler {
 
 							// if submitted successfully, set new target, else leave it to be retried.
 							if (isSubmissionSuccessful(responseEntity)) {
-								// set new target
+								// determine & set new target date
+								LocalDate newTatgetDate = getMonthlyTargetDate(LocalDate.now());
+								editScheduleTargetDate(currSchedule.getId(), newTatgetDate);
 								logger.info("Submission went through ... :-)");
 								logger.info("Response body: " + responseEntity.getBody());
+
 							} else {
 								logger.info("Submission did not go through ... :-(");
 								logger.info("Response body: " + responseEntity.getBody());
