@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -112,14 +113,36 @@ public class DatabaseDriver {
 
 	public void executeUpdateQuery(Integer scheduleId, Boolean enabled)
 			throws DHISIntegratorException {
-		logger.debug("Inside executeUpdateQuery method");
-		Integer schedule_id=scheduleId;
-		Boolean schedule_enabled=enabled;
+		logger.debug("Inside executeUpdateQuery method ... enable/disable schedule");
+		Integer schedule_id = scheduleId;
+		Boolean schedule_enabled = enabled;
+		Connection connection = null;
+
+		try {
+			connection = DriverManager.getConnection(properties.openmrsDBUrl);
+			PreparedStatement ps = connection.prepareStatement(
+					"UPDATE dhis2_schedules SET enabled =" + schedule_enabled + " WHERE id=" + schedule_id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException ignored) {
+				}
+			}
+		}
+	}
+
+	public void executeUpdateQuery(Integer scheduleId, LocalDate targetDate)
+			throws DHISIntegratorException {
+		logger.debug("Inside executeUpdateQuery method ... edit target date");
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
 			PreparedStatement ps = connection.prepareStatement(
-					"UPDATE dhis2_schedules SET enabled ="+schedule_enabled+" WHERE id=" + schedule_id);
+					"UPDATE dhis2_schedules SET target_time ='" + targetDate + "' WHERE id=" + scheduleId);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
