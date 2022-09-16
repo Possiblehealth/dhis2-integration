@@ -315,8 +315,12 @@ public class DHISIntegratorScheduler {
 		return list;
 	}
 
-	private void editScheduleTargetDate(Integer scheduleId, LocalDate targetDate) {
-		logger.info("Inside disenIntegrationSchedule...");
+	private void updateSchedule(Integer scheduleId, LocalDate targetDate) {
+		/*
+		 * This method updates the target date and last run on successful submission to
+		 * DHIS2
+		 */
+		logger.info("Inside updateIntegrationSchedule...");
 		try {
 			databaseDriver.executeUpdateQuery(scheduleId, targetDate);
 			logger.info("Executed edit schedule query successfully...");
@@ -385,7 +389,7 @@ public class DHISIntegratorScheduler {
 							if (isSubmissionSuccessful(responseEntity)) {
 								// determine & set new target date
 								LocalDate newTatgetDate = getMonthlyTargetDate(LocalDate.now());
-								editScheduleTargetDate(currSchedule.getId(), newTatgetDate);
+								updateSchedule(currSchedule.getId(), newTatgetDate);
 								logger.info("Submission went through ... :-)");
 								logger.info("Response body: " + responseEntity.getBody());
 
