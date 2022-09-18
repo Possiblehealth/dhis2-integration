@@ -36,6 +36,7 @@ import com.possible.dhis2int.scheduler.Schedule;
 
 import org.apache.log4j.Logger;
 import org.apache.tomcat.jni.Local;
+import org.joda.time.Months;
 
 import static org.apache.log4j.Logger.getLogger;
 
@@ -330,6 +331,16 @@ public class DHISIntegratorScheduler {
 		} catch (Exception e) {
 			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		}
+	}
+
+	private ArrayList<MonthlyPeriod> getDuePeriods(LocalDate targetDate, LocalDate today) {
+		ArrayList<MonthlyPeriod> duePeriods = new ArrayList<MonthlyPeriod>();
+		LocalDate startDate = targetDate;
+		while (startDate.isBefore(today)) {
+			duePeriods.add(new MonthlyPeriod(startDate.getMonthValue(), startDate.getYear()));
+			startDate = startDate.plusMonths(1);
+		}
+		return duePeriods;
 	}
 
 	private Boolean isSubmissionSuccessful(ResponseEntity<String> response) {
