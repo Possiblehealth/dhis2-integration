@@ -176,6 +176,21 @@ function getDHISSchedules() {
 	});
 }
 
+function removeAllRowsContainingCheckedCheckbox(table) {
+    for (var rowi= table.rows.length; rowi-->0;) {
+        var row= table.rows[rowi];
+        var inputs= row.getElementsByTagName('input');
+        for (var inputi= inputs.length; inputi-->0;) {
+            var input= inputs[inputi];
+
+            if (input.type==='checkbox' && input.checked) {
+                row.parentNode.removeChild(row);
+                break;
+            }
+        }
+    }
+}
+
 function deleteDHISSchedule(clicked_id){
 
 	var scheduleIds=[];
@@ -183,19 +198,22 @@ function deleteDHISSchedule(clicked_id){
 		scheduleIds.push($(this).val());
 		console.log('ID of clicked schedule to delete is '+$(this).val());
 		var checkbox=this;
-		var row_index=$(checkbox).parentElement.parentElement.rowIndex;
+		var row_index=checkbox.parentElement.parentElement.rowIndex;
 		console.log('Row index of schedule to delete is '+ row_index);
 		if(clicked_id == 'deleteWeeklySchedulebtn'){
 			//var row_index=checkbox.parentElement.parentElement.rowIndex;
-			document.getElementById("weekly-program-schedules").deleteRow(row_index);
+			//document.getElementById("weekly-program-schedules").deleteRow(row_index);
+			removeAllRowsContainingCheckedCheckbox(document.getElementById("weekly-program-schedules"));
 		}
 		else if(clicked_id == 'deleteMonthlySchedulebtn'){
 			//var row_index=checkbox.parentElement.parentElement.rowIndex;
-			document.getElementById("monthly-program-schedules").deleteRow(row_index);
+			//document.getElementById("monthly-program-schedules").deleteRow(row_index);
+			removeAllRowsContainingCheckedCheckbox(document.getElementById("monthly-program-schedules"));
 		}
 		else if(clicked_id == 'deleteQuarterlySchedulebtn'){
 			//var row_index=checkbox.parentElement.parentElement.rowIndex;
-			document.getElementById("quarterly-program-schedules").deleteRow(row_index);
+			//document.getElementById("quarterly-program-schedules").deleteRow(row_index);
+			removeAllRowsContainingCheckedCheckbox(document.getElementById("quarterly-program-schedules"));
 		}
 
 	});
