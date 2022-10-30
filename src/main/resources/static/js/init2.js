@@ -183,7 +183,7 @@ function removeAllRowsContainingCheckedCheckbox(table) {
         for (var inputi= inputs.length; inputi-->0;) {
             var input= inputs[inputi];
 
-            if (input.type==='checkbox' && input.checked && input.class=='action-select') {
+            if (input.type==='checkbox' && input.checked && input.className =='action-select') {
                 row.parentNode.removeChild(row);
                 break;
             }
