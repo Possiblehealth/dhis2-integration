@@ -249,7 +249,9 @@ a.header-link:hover {
     border: 1px solid #669999;
 }
 
-
+.table {
+    font-size: 1em;
+}
 
 .table-responsive {
     margin: 30px 0;
