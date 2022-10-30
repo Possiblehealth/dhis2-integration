@@ -247,7 +247,7 @@ function createDHISSchedule(clicked_id, frequency){
 	var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
 	var tr = document.createElement('tr');
 	var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
-				  "<input type='checkbox' class='action-select' id='checkbox1' name='options[]' value='1'/>"+
+				  "<input type='checkbox' class='selectSchedule' id='checkbox1' name='options[]' value='1'/>"+
 				  "<label for='checkbox1'></label>"+"</span></td>";
 
 	if(clicked_id == 'addWeeklySchedulebtn'){
