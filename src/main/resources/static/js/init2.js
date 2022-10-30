@@ -183,7 +183,7 @@ function deleteDHISSchedule(clicked_id){
 		scheduleIds.push($(this).val());
 		console.log('ID of clicked schedule to delete is '+$(this).val());
 		var checkbox=this;
-		var row_index=checkbox.parentElement.parentElement.rowIndex;
+		var row_index=$(checkbox).parentElement.parentElement.rowIndex;
 		console.log('Row index of schedule to delete is '+ row_index);
 		if(clicked_id == 'deleteWeeklySchedulebtn'){
 			//var row_index=checkbox.parentElement.parentElement.rowIndex;
