@@ -181,18 +181,20 @@ function deleteDHISSchedule(clicked_id){
 	var scheduleIds=[];
 	$.each($(".selectSchedule:checked"), function(){            
 		scheduleIds.push($(this).val());
-		console.log('Clicked schedule to delete is '+$(this).val());
+		console.log('ID of clicked schedule to delete is '+$(this).val());
 		var checkbox=this;
+		var row_index=checkbox.parentElement.parentElement.rowIndex;
+		console.log('Row index of schedule to delete is '+$(this).val());
 		if(clicked_id == 'deleteWeeklySchedulebtn'){
-			var row_index=checkbox.parentElement.parentElement.rowIndex;
+			//var row_index=checkbox.parentElement.parentElement.rowIndex;
 			document.getElementById("weekly-program-schedules").deleteRow(row_index);
 		}
 		else if(clicked_id == 'deleteMonthlySchedulebtn'){
-			var row_index=checkbox.parentElement.parentElement.rowIndex;
+			//var row_index=checkbox.parentElement.parentElement.rowIndex;
 			document.getElementById("monthly-program-schedules").deleteRow(row_index);
 		}
 		else if(clicked_id == 'deleteQuarterlySchedulebtn'){
-			var row_index=checkbox.parentElement.parentElement.rowIndex;
+			//var row_index=checkbox.parentElement.parentElement.rowIndex;
 			document.getElementById("quarterly-program-schedules").deleteRow(row_index);
 		}
 
