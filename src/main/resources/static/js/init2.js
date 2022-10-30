@@ -183,7 +183,7 @@ function removeAllRowsContainingCheckedCheckbox(table) {
         for (var inputi= inputs.length; inputi-->0;) {
             var input= inputs[inputi];
 
-            if (input.type==='checkbox' && input.checked) {
+            if (input.type==='checkbox' && input.checked && input.class=='action-select') {
                 row.parentNode.removeChild(row);
                 break;
             }
@@ -247,7 +247,7 @@ function createDHISSchedule(clicked_id, frequency){
 	var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
 	var tr = document.createElement('tr');
 	var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
-				  "<input type='checkbox' id='checkbox1' name='options[]' value='1'/>"+
+				  "<input type='checkbox' class='action-select' id='checkbox1' name='options[]' value='1'/>"+
 				  "<label for='checkbox1'></label>"+"</span></td>";
 
 	if(clicked_id == 'addWeeklySchedulebtn'){
