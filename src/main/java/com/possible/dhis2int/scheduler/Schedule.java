@@ -34,7 +34,7 @@ public class Schedule {
 	}
 
 	public void setLastRun(String lastRun) {
-		this.lastRun = lastRun;
+		this.lastRun = lastRun == null ? "-": lastRun;
 	}
 
 	public String getStatus() {

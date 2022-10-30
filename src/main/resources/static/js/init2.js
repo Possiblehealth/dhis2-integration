@@ -246,8 +246,8 @@ function createDHISSchedule(clicked_id, frequency){
 	if(frequency=='weekly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
-					  '<td>' + '' + '</td>' +
-					  '<td>' + '' + '</td>'+
+					  '<td>' + '-' + '</td>' +
+					  '<td>' + 'Ready' + '</td>'+
 					  "<td>"+
 					  "<label class='switch'><input type='checkbox' checked><span class='slider round'></span></label>"+
 					  "</td>";
@@ -256,8 +256,8 @@ function createDHISSchedule(clicked_id, frequency){
 	else if(frequency=='monthly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
-					  '<td>' + '' + '</td>' +
-					  '<td>' + '' + '</td>'+
+					  '<td>' + '-' + '</td>' +
+					  '<td>' + 'Ready' + '</td>'+
 					  "<td>"+
 					  "<label class='switch'><input type='checkbox' checked><span class='slider round'></span></label>"+
 					  "</td>";
@@ -266,8 +266,8 @@ function createDHISSchedule(clicked_id, frequency){
 	else if(frequency=='quarterly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
-					  '<td>' + '' + '</td>' +
-					  '<td>' + '' + '</td>'+
+					  '<td>' + '-' + '</td>' +
+					  '<td>' + 'Ready' + '</td>'+
 					  "<td>"+
 					  "<label class='switch'><input type='checkbox' checked><span class='slider round'></span></label>"+
 					  "</td>";
