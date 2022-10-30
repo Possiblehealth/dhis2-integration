@@ -229,6 +229,7 @@ function deleteDHISSchedule(clicked_id){
 		//data = JSON.stringify(data);
 		console.log('[Server result for deleteDHISSchedule()]');
 		console.log(data);
+		window.location.reload();
 
 		
 	}).fail(function(response) {
@@ -306,6 +307,7 @@ function createDHISSchedule(clicked_id, frequency){
 		console.log('[Server result for submitNewSchedule()]');
 		console.log("URL:"+submitTo);
 		console.log(data);
+		window.location.reload();
 		
 	}).fail(function(response) {
 		console.log('[Operation submitNewSchedule() failed]');
