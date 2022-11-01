@@ -446,14 +446,15 @@ table.table .avatar {
     padding: 20px 30px;
 }
 .modal .modal-content {
-    border-radius: 3px;
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
     font-size: 14px;
     left: 50px;
     top: 150px;
     position: absolute;
 }
 .modal .modal-footer {
-    background: #ecf0f1;
+    /*background: #ecf0f1;*/
     border-radius: 0 0 3px 3px;
 }
 
