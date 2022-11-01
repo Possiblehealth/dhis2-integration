@@ -307,6 +307,12 @@ function createDHISSchedule(clicked_id, frequency){
 		console.log('[Server result for submitNewSchedule()]');
 		console.log("URL:"+submitTo);
 		console.log(data);
+		if(data==true){
+
+		}
+		else{
+			
+		}
 		window.location.reload();
 		
 	}).fail(function(response) {
