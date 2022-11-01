@@ -458,8 +458,9 @@ table.table .avatar {
 }
 
 .modal .modal-footer{
-    margin: 0 auto;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .modal .modal-title {
     display: inline-block;
