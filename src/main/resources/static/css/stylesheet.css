@@ -457,7 +457,7 @@ table.table .avatar {
     border-radius: 0 0 3px 3px;
 }
 
-.modal-footer{
+.modal .modal-footer{
     margin: 0 auto;
     display: block;
 }
