@@ -24,17 +24,6 @@ $(document).ready(
 			initTabs();
 			// Activate tooltip
 			//$('[data-toggle="tooltip"]').tooltip();
-
-			// Load last active tab after refresh
-			$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-				localStorage.setItem('activeTab', $(e.target).attr('href'));
-				alert("Saved active tab id "+ $(e.target).attr('href'));
-			});
-			var activeTab = localStorage.getItem('activeTab');
-			if(activeTab){
-				alert("Saved active tab id "+ activeTab);
-				$('#scheduler-tabs a[href="' + activeTab + '"]').tab('show');
-			}
 			
 			// Select/Deselect checkboxes
 			var checkbox = $('table tbody input[type="checkbox"]');
@@ -59,6 +48,22 @@ $(document).ready(
 			renderDHISSchedules();
 			
 		});
+
+
+$(function() {
+  
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			  localStorage.setItem('lastTab', $(this).attr('href'));
+			  alert("Saved active tab id "+ $(this).attr('href'));
+			});
+			var lastTab = localStorage.getItem('lastTab');
+			
+			if (lastTab) {
+			  alert("Saved active tab id "+ lastTab);
+			  $('[href="' + lastTab + '"]').tab('show');
+			}
+			
+});
 
 //populate list of schedules from db
 function renderDHISSchedules(){
