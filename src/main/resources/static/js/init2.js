@@ -25,6 +25,7 @@ $(document).ready(
 			// Activate tooltip
 			//$('[data-toggle="tooltip"]').tooltip();
 			var last_id = localStorage.getItem('tab_id');
+			alert('the last active tab was '+last_id);
 			if (last_id) {
 				$('ul.nav a').removeClass('active');
 				$('.tab-pane').removeClass('active');
@@ -33,6 +34,7 @@ $(document).ready(
 			}
 			$('ul.nav a').click(function() {
 				var tab_id = $(this).attr('href');
+				alert('cliked tab '+tab_id);
 				$('ul.nav a').removeClass('active');
 				$('.tab-pane').removeClass('active');
 
