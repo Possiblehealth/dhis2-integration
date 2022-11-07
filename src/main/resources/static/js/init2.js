@@ -156,7 +156,7 @@ function initTabs() {
 	});
 	var activeTab = localStorage.getItem('activeTab');
 	if(activeTab){
-		$('#myTab a[href="' + activeTab + '"]').tab('show');
+		$('#scheduler-tabs a[href="' + activeTab + '"]').tab('show');
 	}
 }
 
