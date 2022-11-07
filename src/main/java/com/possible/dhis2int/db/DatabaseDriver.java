@@ -136,17 +136,27 @@ public class DatabaseDriver {
 		}
 	}
 
-	public void executeUpdateQuery(Integer scheduleId, LocalDate targetDate)
+	public void executeUpdateQuery(Integer scheduleId, LocalDate targetDate, String status)
 			throws DHISIntegratorException {
 		LocalDateTime dateTimeNow = LocalDateTime.now();
 		logger.debug("Inside executeUpdateQuery method ... edit target date and last run");
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(properties.openmrsDBUrl);
-			PreparedStatement ps = connection.prepareStatement(
-					"UPDATE dhis2_schedules SET target_time ='" + targetDate + "', last_run = '" + dateTimeNow
-							+ "' WHERE id=" + scheduleId);
-			ps.executeUpdate();
+
+			if (targetDate == null) { // unsuccessful schedule run
+				PreparedStatement ps = connection.prepareStatement(
+						"UPDATE dhis2_schedules SET status = '" + status + "', last_run = '" + dateTimeNow
+								+ "' WHERE id=" + scheduleId);
+				ps.executeUpdate();
+			} else { // successful schedule run so set new target date as well
+				PreparedStatement ps = connection.prepareStatement(
+						"UPDATE dhis2_schedules SET target_time ='" + targetDate + "', status = '" + status
+								+ "', last_run = '" + dateTimeNow
+								+ "' WHERE id=" + scheduleId);
+				ps.executeUpdate();
+			}
+
 		} catch (SQLException e) {
 			throw new DHISIntegratorException(String.format(Messages.JSON_EXECUTION_EXCEPTION), e);
 		} finally {

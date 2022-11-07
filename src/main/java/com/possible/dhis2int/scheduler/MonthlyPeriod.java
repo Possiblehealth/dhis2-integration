@@ -1,7 +1,5 @@
 package com.possible.dhis2int.scheduler;
 
-import java.time.Month;
-
 public class MonthlyPeriod {
 	private Integer month;
 	private Integer year;

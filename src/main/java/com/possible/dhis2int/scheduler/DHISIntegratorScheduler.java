@@ -115,7 +115,7 @@ public class DHISIntegratorScheduler {
 			@RequestParam("scheduleFrequency") String schedFrequency,
 			@RequestParam("scheduleTime") String schedTime, HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
-		Boolean created=true;
+		Boolean created = true;
 		Schedule newschedule = new Schedule();
 		newschedule.setProgName(progName);
 		newschedule.setFrequency(schedFrequency);
@@ -133,10 +133,10 @@ public class DHISIntegratorScheduler {
 			logger.info("Executed insert query successfully...");
 
 		} catch (DHISIntegratorException | JSONException e) {
-			created=false;
+			created = false;
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
 		} catch (Exception e) {
-			created=false;
+			created = false;
 			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		}
 
@@ -315,14 +315,14 @@ public class DHISIntegratorScheduler {
 		return list;
 	}
 
-	private void updateSchedule(Integer scheduleId, LocalDate targetDate) {
+	private void updateSchedule(Integer scheduleId, LocalDate targetDate, String status) {
 		/*
 		 * This method updates the target date and last run on successful submission to
 		 * DHIS2
 		 */
 		logger.info("Inside updateIntegrationSchedule...");
 		try {
-			databaseDriver.executeUpdateQuery(scheduleId, targetDate);
+			databaseDriver.executeUpdateQuery(scheduleId, targetDate, status);
 			logger.info("Executed edit schedule query successfully...");
 
 		} catch (DHISIntegratorException | JSONException e) {
@@ -378,6 +378,9 @@ public class DHISIntegratorScheduler {
 						logger.info("Processing a montly schedule at " + LocalDate.now() + "for report "
 								+ currSchedule.getProgramName());
 						if (isDue(currSchedule)) {
+							// ArrayList<MonthlyPeriod> currSchedDuePeriods =
+							// getDuePeriods(currSchedule.getTargetDate(), LocalDate.now());
+							// loop over due periods
 							// send report
 							logger.info("The following report is due " + currSchedule.getProgramName());
 							// extract period
@@ -399,11 +402,15 @@ public class DHISIntegratorScheduler {
 							if (isSubmissionSuccessful(responseEntity)) {
 								// determine & set new target date
 								LocalDate newTatgetDate = getMonthlyTargetDate(LocalDate.now());
-								updateSchedule(currSchedule.getId(), newTatgetDate);
+								String status = "Success";
+								updateSchedule(currSchedule.getId(), newTatgetDate, status);
 								logger.info("Submission went through ... :-)");
 								logger.info("Response body: " + responseEntity.getBody());
 
 							} else {
+								LocalDate newTatgetDate = null;
+								String status = "Failure";
+								updateSchedule(currSchedule.getId(), newTatgetDate, status);
 								logger.info("Submission did not go through ... :-(");
 								logger.info("Response body: " + responseEntity.getBody());
 							}
