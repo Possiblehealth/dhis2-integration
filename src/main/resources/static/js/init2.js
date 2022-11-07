@@ -150,14 +150,6 @@ function initSelects(){
 
 function initTabs() {
 	$("#tabs").tabs();
-	// Stay on the same tab after page refresh
-	console.log("Initialising tabs...");
-	var activeTab = localStorage.getItem('activeTab');
-	alert("Last active tab was "+activeTab);
-	if(activeTab){
-		$('#tabs a[href="' + activeTab + '"]').tab('show');
-		$('#scheduler-tabs a[href="' + activeTab + '"]').tab('show');
-	}
 }
 
 function getDHISPrograms() {
@@ -238,10 +230,6 @@ function deleteDHISSchedule(clicked_id){
 		console.log('[Server result for deleteDHISSchedule()]');
 		console.log(data);
 
-		$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-			localStorage.setItem('activeTab', $(e.target).attr('href'));
-			alert("Current active tabe is "+$(e.target).attr('href'));
-		});
 		window.location.reload();
 
 		
@@ -326,11 +314,6 @@ function createDHISSchedule(clicked_id, frequency){
 		else{
 			
 		}
-
-		$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-			localStorage.setItem('activeTab', $(e.target).attr('href'));
-			alert("Current active tabe is "+$(e.target).attr('href'));
-		});
 		window.location.reload();
 		
 	}).fail(function(response) {
