@@ -21,7 +21,7 @@ var hasReportingPrivilege = true;
 $(document).ready(
 		function() {
 
-			//initTabs();
+			initTabs();
 			// Activate tooltip
 			//$('[data-toggle="tooltip"]').tooltip();
 
