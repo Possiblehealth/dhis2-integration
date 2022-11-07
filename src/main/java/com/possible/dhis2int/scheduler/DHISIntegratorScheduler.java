@@ -379,6 +379,9 @@ public class DHISIntegratorScheduler {
 						logger.info("Processing a montly schedule at " + LocalDate.now() + "for report "
 								+ currSchedule.getProgramName());
 						if (isDue(currSchedule)) {
+							// ArrayList<MonthlyPeriod> currSchedDuePeriods =
+							// getDuePeriods(currSchedule.getTargetDate(), LocalDate.now());
+							// loop over due periods
 							// send report
 							logger.info("The following report is due " + currSchedule.getProgramName());
 							// extract period
