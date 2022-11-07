@@ -176,24 +176,44 @@ function getDHISSchedules() {
 	});
 }
 
+function removeAllRowsContainingCheckedCheckbox(table) {
+    for (var rowi= table.rows.length; rowi-->0;) {
+        var row= table.rows[rowi];
+        var inputs= row.getElementsByTagName('input');
+        for (var inputi= inputs.length; inputi-->0;) {
+            var input= inputs[inputi];
+
+            if (input.type==='checkbox' && input.checked && input.className =='selectSchedule') {
+                row.parentNode.removeChild(row);
+                break;
+            }
+        }
+    }
+}
+
 function deleteDHISSchedule(clicked_id){
 
 	var scheduleIds=[];
 	$.each($(".selectSchedule:checked"), function(){            
 		scheduleIds.push($(this).val());
-		console.log('Clicked schedule to delete is '+$(this).val());
+		console.log('ID of clicked schedule to delete is '+$(this).val());
 		var checkbox=this;
+		var row_index=checkbox.parentElement.parentElement.rowIndex;
+		console.log('Row index of schedule to delete is '+ row_index);
 		if(clicked_id == 'deleteWeeklySchedulebtn'){
-			var row_index=checkbox.parentElement.parentElement.rowIndex;
-			document.getElementById("weekly-program-schedules").deleteRow(row_index);
+			//var row_index=checkbox.parentElement.parentElement.rowIndex;
+			//document.getElementById("weekly-program-schedules").deleteRow(row_index);
+			removeAllRowsContainingCheckedCheckbox(document.getElementById("weekly-program-schedules"));
 		}
 		else if(clicked_id == 'deleteMonthlySchedulebtn'){
-			var row_index=checkbox.parentElement.parentElement.rowIndex;
-			document.getElementById("monthly-program-schedules").deleteRow(row_index);
+			//var row_index=checkbox.parentElement.parentElement.rowIndex;
+			//document.getElementById("monthly-program-schedules").deleteRow(row_index);
+			removeAllRowsContainingCheckedCheckbox(document.getElementById("monthly-program-schedules"));
 		}
 		else if(clicked_id == 'deleteQuarterlySchedulebtn'){
-			var row_index=checkbox.parentElement.parentElement.rowIndex;
-			document.getElementById("quarterly-program-schedules").deleteRow(row_index);
+			//var row_index=checkbox.parentElement.parentElement.rowIndex;
+			//document.getElementById("quarterly-program-schedules").deleteRow(row_index);
+			removeAllRowsContainingCheckedCheckbox(document.getElementById("quarterly-program-schedules"));
 		}
 
 	});
@@ -209,6 +229,7 @@ function deleteDHISSchedule(clicked_id){
 		//data = JSON.stringify(data);
 		console.log('[Server result for deleteDHISSchedule()]');
 		console.log(data);
+		window.location.reload();
 
 		
 	}).fail(function(response) {
@@ -227,7 +248,7 @@ function createDHISSchedule(clicked_id, frequency){
 	var quarterlySchedulesTable = document.getElementById('quarterly-program-schedules');
 	var tr = document.createElement('tr');
 	var tempHTML ="<td>"+"<span class='custom-checkbox'>"+
-				  "<input type='checkbox' id='checkbox1' name='options[]' value='1'/>"+
+				  "<input type='checkbox' class='selectSchedule' id='checkbox1' name='options[]' value='1'/>"+
 				  "<label for='checkbox1'></label>"+"</span></td>";
 
 	if(clicked_id == 'addWeeklySchedulebtn'){
@@ -246,30 +267,30 @@ function createDHISSchedule(clicked_id, frequency){
 	if(frequency=='weekly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
-					  '<td>' + '' + '</td>' +
-					  '<td>' + '' + '</td>'+
+					  '<td>' + '-' + '</td>' +
+					  '<td>' + 'Ready' + '</td>'+
 					  "<td>"+
-					  "<label class='switch'><input type='checkbox'><span class='slider round' checked></span></label>"+
+					  "<label class='switch'><input type='checkbox' checked><span class='slider round'></span></label>"+
 					  "</td>";
 		weeklySchedulesTable.appendChild(tr);
 	}
 	else if(frequency=='monthly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
-					  '<td>' + '' + '</td>' +
-					  '<td>' + '' + '</td>'+
+					  '<td>' + '-' + '</td>' +
+					  '<td>' + 'Ready' + '</td>'+
 					  "<td>"+
-					  "<label class='switch'><input type='checkbox'><span class='slider round' checked></span></label>"+
+					  "<label class='switch'><input type='checkbox' checked><span class='slider round'></span></label>"+
 					  "</td>";
 		monthlySchedulesTable.appendChild(tr);
 	}
 	else if(frequency=='quarterly'){
 		tr.innerHTML =tempHTML+
 					  '<td>' + programName + '</td>' +
-					  '<td>' + '' + '</td>' +
-					  '<td>' + '' + '</td>'+
+					  '<td>' + '-' + '</td>' +
+					  '<td>' + 'Ready' + '</td>'+
 					  "<td>"+
-					  "<label class='switch'><input type='checkbox'><span class='slider round' checked></span></label>"+
+					  "<label class='switch'><input type='checkbox' checked><span class='slider round'></span></label>"+
 					  "</td>";
 		quarterlySchedulesTable.appendChild(tr);
 	}
@@ -286,6 +307,13 @@ function createDHISSchedule(clicked_id, frequency){
 		console.log('[Server result for submitNewSchedule()]');
 		console.log("URL:"+submitTo);
 		console.log(data);
+		if(data==true){
+
+		}
+		else{
+			
+		}
+		window.location.reload();
 		
 	}).fail(function(response) {
 		console.log('[Operation submitNewSchedule() failed]');

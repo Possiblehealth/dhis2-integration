@@ -111,10 +111,11 @@ public class DHISIntegratorScheduler {
 	}
 
 	@RequestMapping(path = "/create-schedule")
-	public Results createIntegrationSchedule(@RequestParam("programName") String progName,
+	public Boolean createIntegrationSchedule(@RequestParam("programName") String progName,
 			@RequestParam("scheduleFrequency") String schedFrequency,
 			@RequestParam("scheduleTime") String schedTime, HttpServletRequest clientReq, HttpServletResponse clientRes)
 			throws IOException, JSONException {
+		Boolean created=true;
 		Schedule newschedule = new Schedule();
 		newschedule.setProgName(progName);
 		newschedule.setFrequency(schedFrequency);
@@ -122,26 +123,24 @@ public class DHISIntegratorScheduler {
 		newschedule.setEnabled(true);
 
 		LocalDate created_date = LocalDate.now();
-		// LocalDate target_time = LocalDate.now();
-		// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy
-		// HH:mm:ss");
 		LocalDate target_date = getMonthlyTargetDate(created_date);
 		newschedule.setCreatedDate(created_date);
 		newschedule.setTargetDate(target_date);
 
-		Results results = new Results();
 		logger.info("Inside saveIntegrationSchedules...");
 		try {
 			databaseDriver.executeCreateQuery(newschedule);
 			logger.info("Executed insert query successfully...");
 
 		} catch (DHISIntegratorException | JSONException e) {
+			created=false;
 			logger.error(Messages.SQL_EXECUTION_EXCEPTION, e);
 		} catch (Exception e) {
+			created=false;
 			logger.error(Messages.INTERNAL_SERVER_ERROR, e);
 		}
 
-		return results;
+		return created;
 	}
 
 	@RequestMapping(path = "/disable-enable-schedule")

@@ -4,7 +4,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="/bahmni/favicon.ico">
 <link rel="stylesheet" href="../bower_components/nepali-date-picker/dist/nepaliDatePicker.min.css">
 
-<link rel="stylesheet" href="../css/stylesheet-auto.css">
+<!--link rel="stylesheet" href="../css/stylesheet-auto.css"-->
 <link rel="stylesheet" href="../css/stylesheet.css">
 <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.min.css">
 
@@ -23,8 +23,6 @@
 <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-
 
 </head>
 <body>
@@ -104,7 +102,7 @@
 							<div class="modal-content">
 								<form>
 									<div class="modal-header">						
-										<h4 class="modal-title">New Weekly Schedule</h4>
+										<h4 class="modal-title">Create weekly schedules</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 									<div class="modal-body">					
@@ -143,7 +141,7 @@
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-										<input type="button" class="btn btn-success" value="Add" id="addWeeklySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('weekly-frequency').value)">
+										<input type="button" class="btn btn-success" value="Save" id="addWeeklySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('weekly-frequency').value)">
 									</div>
 								</form>
 							</div>
@@ -155,7 +153,7 @@
 							<div class="modal-content">
 								<form>
 									<div class="modal-header">						
-										<h4 class="modal-title">Edit Employee</h4>
+										<h4 class="modal-title">Edit weekly schedules</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 									<div class="modal-body">					
@@ -190,7 +188,7 @@
 							<div class="modal-content">
 								<form>
 									<div class="modal-header">						
-										<h4 class="modal-title">Delete Weekly Schedule</h4>
+										<h4 class="modal-title">Delete weekly schedules</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 									<div class="modal-body">					
@@ -234,7 +232,7 @@
 										</th>
 										<th>Program</th>
 										<th>Last Run</th>
-										<th>Success</th>
+										<th>Status</th>
 										<th>On/Off</th>
 									</tr>
 								</thead>
@@ -263,7 +261,7 @@
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">New Monthly Schedule</h4>
+									<h4 class="modal-title">Create monthly schedules</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
@@ -302,7 +300,7 @@
 								</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-									<input type="button" class="btn btn-success" value="Add" id="addMonthlySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('monthly-frequency').value)">
+									<input type="button" class="btn btn-success" value="Save" id="addMonthlySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('monthly-frequency').value)">
 								</div>
 							</form>
 						</div>
@@ -314,7 +312,7 @@
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Edit Monthly Schedule</h4>
+									<h4 class="modal-title">Edit monthly schedules</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
@@ -349,7 +347,7 @@
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Delete Monthly Schedule</h4>
+									<h4 class="modal-title">Delete monthly schedules</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
@@ -423,7 +421,7 @@
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">New Quarterly Schedule</h4>
+									<h4 class="modal-title">Create quarterly schedules</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
@@ -462,7 +460,7 @@
 								</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-									<input type="button" class="btn btn-success" value="Add" id="addQuarterlySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('quarterly-frequency').value)">
+									<input type="button" class="btn btn-success" value="Save" id="addQuarterlySchedulebtn" onclick="createDHISSchedule(this.id, document.getElementById('quarterly-frequency').value)">
 								</div>
 							</form>
 						</div>
@@ -474,7 +472,7 @@
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Edit Quarterly Schedule</h4>
+									<h4 class="modal-title">Edit quarterly schedules</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
@@ -509,7 +507,7 @@
 						<div class="modal-content">
 							<form>
 								<div class="modal-header">						
-									<h4 class="modal-title">Delete Quarterly Schedule</h4>
+									<h4 class="modal-title">Delete quarterly schedules</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">					
