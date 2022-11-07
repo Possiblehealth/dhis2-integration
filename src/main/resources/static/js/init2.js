@@ -24,15 +24,6 @@ $(document).ready(
 			initTabs();
 			// Activate tooltip
 			$('[data-toggle="tooltip"]').tooltip();
-
-			// Stay on the same tab after page refresh
-			$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
-				localStorage.setItem('activeTab', $(e.target).attr('href'));
-			});
-			var activeTab = localStorage.getItem('activeTab');
-			if(activeTab){
-				$('#myTab a[href="' + activeTab + '"]').tab('show');
-			}
 			
 			// Select/Deselect checkboxes
 			var checkbox = $('table tbody input[type="checkbox"]');
@@ -159,6 +150,14 @@ function initSelects(){
 
 function initTabs() {
 	$("#tabs").tabs();
+	// Stay on the same tab after page refresh
+	$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+		localStorage.setItem('activeTab', $(e.target).attr('href'));
+	});
+	var activeTab = localStorage.getItem('activeTab');
+	if(activeTab){
+		$('#myTab a[href="' + activeTab + '"]').tab('show');
+	}
 }
 
 function getDHISPrograms() {
