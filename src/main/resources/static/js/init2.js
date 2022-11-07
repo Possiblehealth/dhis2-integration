@@ -21,10 +21,10 @@ var hasReportingPrivilege = true;
 $(document).ready(
 		function() {
 
-			initTabs();
+			//initTabs();
 			// Activate tooltip
 			//$('[data-toggle="tooltip"]').tooltip();
-			localStorage.setItem('tab_id', 'hello-world';
+			//localStorage.setItem('tab_id', 'hello-world';
 			var last_id = localStorage.getItem('tab_id');
 			alert('the last active tab was '+last_id);
 			if (last_id) {
