@@ -21,9 +21,20 @@ var hasReportingPrivilege = true;
 $(document).ready(
 		function() {
 
-			initTabs();
+			//initTabs();
 			// Activate tooltip
-			$('[data-toggle="tooltip"]').tooltip();
+			//$('[data-toggle="tooltip"]').tooltip();
+
+			// Load last active tab after refresh
+			$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+				localStorage.setItem('activeTab', $(e.target).attr('href'));
+				alert("Saved active tab id "+ $(e.target).attr('href'));
+			});
+			var activeTab = localStorage.getItem('activeTab');
+			if(activeTab){
+				alert("Saved active tab id "+ activeTab);
+				$('#scheduler-tabs a[href="' + activeTab + '"]').tab('show');
+			}
 			
 			// Select/Deselect checkboxes
 			var checkbox = $('table tbody input[type="checkbox"]');
