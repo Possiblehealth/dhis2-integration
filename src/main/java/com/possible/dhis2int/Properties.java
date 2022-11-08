@@ -30,6 +30,9 @@ public class Properties {
 	@Value("${openelis.db.url}")
 	public String openelisDBUrl;
 
+	@Value("${odoo.db.url}")
+	public String odooDBUrl;
+
 	@Value("${dhis.password}")
 	public String dhisPassword;
 
