@@ -23,7 +23,6 @@
 <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 	<div class="header">
@@ -42,12 +41,12 @@
 
 	<div class="dhisWrapper">
 		<div id="tabs">
-			<ul>
-				<li><a href="#tab-weekly">Weekly</a></li>
-				<li><a href="#tab-monthly">Monthly</a></li>
-				<li><a href="#tab-quarterly">Quarterly</a></li>
+			<ul id="scheduler-tabs" class="nav nav-tabs">
+				<li class="nav-item"><a href="#tab-weekly" class="nav-link active" data-toggle="tab">Weekly</a></li>
+				<li class="nav-item"><a href="#tab-monthly" class="nav-link" data-toggle="tab">Monthly</a></li>
+				<li class="nav-item"><a href="#tab-quarterly" class="nav-link" data-toggle="tab">Quarterly</a></li>
 			</ul>
-			<div id="tab-weekly">
+			<div id="tab-weekly" class="tab-pane fade show active">
 					<div class="container-xl">
 						<div class="table-responsive">
 							<div class="table-wrapper">
@@ -116,9 +115,9 @@
 											<label>Frequency</label>
 											<!--input type="text" class="form-control" required-->
 											<select name="weekly-frequency" id="weekly-frequency" required>
-												<option value="weekly">Weekly</option>
-												<option value="monthly">Monthly</option>
-												<option value="quarterly">Quarterly</option>
+												<option selected value="weekly">Weekly</option>
+												<!--option value="monthly">Monthly</option>
+												<option value="quarterly">Quarterly</option!-->
 											</select>
 										</div>
 										<div class="form-group">
@@ -206,7 +205,7 @@
 
 			</div>
 			<!-- List Monthly Schedules HTML -->
-			<div id="tab-monthly">
+			<div id="tab-monthly" class="tab-pane fade">
 				<div class="container-xl">
 					<div class="table-responsive">
 						<div class="table-wrapper">
@@ -275,9 +274,9 @@
 										<label>Frequency</label>
 										<!--input type="text" class="form-control" required-->
 										<select name="monthly-frequency" id="monthly-frequency" required>
-											<option value="weekly">Weekly</option>
-											<option value="monthly">Monthly</option>
-											<option value="quarterly">Quarterly</option>
+											<!--option value="weekly">Weekly</option-->
+											<option selected value="monthly">Monthly</option>
+											<!--option value="quarterly">Quarterly</option-->
 										</select>
 									</div>
 									<div class="form-group">
@@ -366,7 +365,7 @@
 
 			</div>
 			<!-- List Quarterly Schedules HTML -->
-			<div id="tab-quarterly" class="tab-quarterly">
+			<div id="tab-quarterly" class="tab-quarterly tab-pane fade">
 				<div class="container-xl">
 					<div class="table-responsive">
 						<div class="table-wrapper">
@@ -435,9 +434,9 @@
 										<label>Frequency</label>
 										<!--input type="text" class="form-control" required-->
 										<select name="quarterly-frequency" id="quarterly-frequency" required>
-											<option value="weekly">Weekly</option>
-											<option value="monthly">Monthly</option>
-											<option value="quarterly">Quarterly</option>
+											<!--option value="weekly">Weekly</option>
+											<option value="monthly">Monthly</option!-->
+											<option selected value="quarterly">Quarterly</option>
 										</select>
 									</div>
 									<div class="form-group">
