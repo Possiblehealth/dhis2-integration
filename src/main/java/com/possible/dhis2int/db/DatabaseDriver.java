@@ -47,6 +47,9 @@ public class DatabaseDriver {
 			if ("ElisGeneric".equalsIgnoreCase(type)) {
 				connection = DriverManager.getConnection(properties.openelisDBUrl);
 			}
+			if ("ERPGeneric".equalsIgnoreCase(type)) {
+				connection = DriverManager.getConnection(properties.odooDBUrl);
+			}
 			ResultSet resultSet = connection.createStatement().executeQuery(formattedSql);
 			return Results.create(resultSet);
 		} catch (SQLException e) {
