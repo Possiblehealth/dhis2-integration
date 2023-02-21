@@ -21,7 +21,7 @@ db_user=$(echo "$query_string" | sed -n 's/.*[?&]user=\([^&]*\).*/\1/p');
 db_password=$(echo "$query_string" | sed -n 's/.*[?&]password=\([^&]*\).*/\1/p');
 
 
-mysql --user=${db_user} --password=${db_password} --database="openmrs" --execute="CREATE table dhis2_log ( 
+mysql --user="root" --password="P@ssw0rd" --database="openmrs" --execute="CREATE table dhis2_log ( 
 																		id INT(6) unsigned auto_increment primary key, 
 																		report_name varchar(100) not null, 
 																		submitted_date timestamp, 
