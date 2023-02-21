@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source /opt/dhis-integration/etc/application.yml
 set -x
 
 USER=bahmni
@@ -15,7 +15,13 @@ if [ $? -eq 1 ]; then
     useradd -g ${USER} ${USER}
 fi
 
-mysql --user="root" --password="P@ssw0rd" --database="openmrs" --execute="CREATE table dhis2_log ( 
+openmrs_db_url=$(grep -A1 'dhis.password:' /opt/dhis-integration/etc/application.yml | tail -n1); db=${db//*openmrs.db.url: /};
+query_string=$(echo "$openmrs_db_url" | grep -o '?[^ ]*');
+db_user=$(echo "$query_string" | sed -n 's/.*[?&]user=\([^&]*\).*/\1/p');
+db_password=$(echo "$query_string" | sed -n 's/.*[?&]password=\([^&]*\).*/\1/p');
+
+
+mysql --user=${db_user} --password={db_passowrd} --database="openmrs" --execute="CREATE table dhis2_log ( 
 																		id INT(6) unsigned auto_increment primary key, 
 																		report_name varchar(100) not null, 
 																		submitted_date timestamp, 
