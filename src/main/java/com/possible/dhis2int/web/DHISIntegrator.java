@@ -334,7 +334,7 @@ public class DHISIntegrator {
 
 		JSONObject dhisConfig = getDHISConfig(name);
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(year, month, 1);
+		calendar.set(year, month-1, 1);
 		int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);// TODO: Generalise
 		DateTime startDate = new DateTime(year, month, 1, 0, 0);
 		DateTime endDate = new DateTime(year, month, lastDay, 0, 0);
@@ -440,7 +440,7 @@ public class DHISIntegrator {
 		// ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
 		//int lastDay = 30;// TODO: Generalise
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(year, month, 1);
+		calendar.set(year, month-1, 1);
 		int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);// TODO: Generalise
 		logger.error("Last day of "+month+" is "+lastDay);
 		DateTime startDate = new DateTime(year, month, 1, 0, 0);
