@@ -438,7 +438,10 @@ public class DHISIntegrator {
 
 		JSONObject dhisConfig = getDHISConfig(name);
 		// ReportDateRange dateRange = new DateConverter().getDateRange(year, month);
-		int lastDay = 30;// TODO: Generalise
+		//int lastDay = 30;// TODO: Generalise
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year, month, 1);
+		int lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);// TODO: Generalise
 		DateTime startDate = new DateTime(year, month, 1, 0, 0);
 		DateTime endDate = new DateTime(year, month, lastDay, 0, 0);
 		ReportDateRange dateRange = new ReportDateRange(startDate, endDate);// DateConverter().getDateRange(year,
