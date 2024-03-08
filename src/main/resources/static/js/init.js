@@ -7,47 +7,47 @@ var NUTRITION_PROGRAM = '03-2 Nutrition Acute Malnutrition';
 var FAMILYPLANNING_PROGRAM = '07 Family Planning Program';
 var logUrl = '/dhis-integration/log';
 var fiscalYearReportUrl = '/dhis-integration/download/fiscal-year-report?name=NAME&startYear=START_YEAR&startMonth=START_MONTH&endYear=END_YEAR&endMonth=END_MONTH&isImam=IS_IMAM';
-var supportedStartDate = 2090;
+var supportedStartDate = 2008;
 var supportedEndDate = 2065;
 var approximateNepaliYear = (new Date()).getFullYear() + 56;
 var spinner = spinner || {};
 
 var months = [ {
 	number : 12,
-	name : "Chaitra"
+	name : "Decembre"
 }, {
 	number : 11,
-	name : "Falgun"
+	name : "Novembre"
 }, {
 	number : 10,
-	name : "Mangh"
+	name : "Octobre"
 }, {
 	number : 9,
-	name : "Paush"
+	name : "Septembre"
 }, {
 	number : 8,
-	name : "Mangsir"
+	name : "Aout"
 }, {
 	number : 7,
-	name : "Kartik"
+	name : "Juillet"
 }, {
 	number : 6,
-	name : "Ashwin"
+	name : "Juin"
 }, {
 	number : 5,
-	name : "Bhadra"
+	name : "Mai"
 }, {
 	number : 4,
-	name : "Shrawan"
+	name : "Avril"
 }, {
 	number : 3,
-	name : "Ashadh"
+	name : "Mars"
 }, {
 	number : 2,
-	name : "Jestha"
+	name : "Fevrier"
 }, {
 	number : 1,
-	name : "Baisakh"
+	name : "Janvier"
 } ];
 
 var years = range(supportedStartDate, supportedEndDate);
